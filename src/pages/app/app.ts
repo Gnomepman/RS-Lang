@@ -3,6 +3,7 @@ import MainPage from "../main-page/main-page";
 import StatisticsPage from "../statistics/statistics";
 import Nav_menu from "../components/nav-menu/nav-menu";
 import ErrorPage from "../error-page/error";
+import LearningPage from "../learning/learning";
 import { ErrorTypes, PageIds } from "../components/types_and_enums/types_and_enums";
 
 export default class App {
@@ -26,6 +27,9 @@ export default class App {
         break;
       case PageIds.StatisticsPage:
         page = new StatisticsPage(idPage);
+        break;
+      case PageIds.LearningPage:
+        page = new LearningPage(idPage);
         break;
       default:
         page = new ErrorPage(idPage, ErrorTypes.Error_404);

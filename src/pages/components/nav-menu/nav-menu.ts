@@ -44,7 +44,7 @@ const Buttons = [
     text: 'Главная',
   },
   {
-    id: PageIds.LearnPage,
+    id: PageIds.LearningPage,
     text: 'Учебник',
   },
   {
