@@ -1,6 +1,6 @@
 import './nav-menu.scss'
 import Component from '../templates/component';
-import burger_menu from '../../../assets/burger-menu.png' //need svg (loader connected and image exist, but does not work)
+import burger_menu from '../../../assets/burger-menu.svg' //need svg (loader connected and image exist, but does not work)
 import { PageIds } from '../types_and_enums/types_and_enums';
 
 export default class Nav_menu extends Component {
