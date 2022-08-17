@@ -14,12 +14,12 @@ class LearningPage extends Page {
     super(id);
   }
 
+  // Render words from needed page and group
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
     const words = await api.getWords(page, group);
     const div = document.createElement("div");
     div.className = "learning";
-    console.log("words", words);
     words.forEach((word) => {
       const wordCard = new WordCard("div", "learning__word-card", word);
       div.append(wordCard.render());
@@ -27,6 +27,8 @@ class LearningPage extends Page {
     this.container.insertAdjacentElement('afterbegin',div);
   }
 
+  //TODO: refactor functions renderNextPage and renderPrevPage - repeated code
+  // Render next page after click on button next page
   async renderNextPage(
     pagButtons:PaginationButtons
   ) {
@@ -36,16 +38,21 @@ class LearningPage extends Page {
       const buttonPrev = document.querySelector(`.${pagButtons.prev}`) as HTMLButtonElement;
       const buttonFirst = document.querySelector(`.${pagButtons.first}`) as HTMLButtonElement;
       const buttonLast = document.querySelector(`.${pagButtons.last}`) as HTMLButtonElement;
+      // get current page
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent += 1;
+      // if current page 30 - disable buttons next and last
       if (pageCurrent === 30) {
         buttonNext.disabled = true;
         buttonLast.disabled = true;
       }
+
+      // if prev button disabled - enable
       if (buttonPrev.disabled){
         buttonPrev.disabled = false;
         buttonFirst.disabled = false;
       }
+      // remove div with class .learning and append new div with new words
       const current = document.querySelector('.learning') as HTMLDivElement;
       current.remove();
       await this.renderCardWords(pageCurrent,1);
@@ -53,6 +60,7 @@ class LearningPage extends Page {
     });
   }
 
+  // Render previous page after click on button prev page
   async renderPrevPage(pagButtons:PaginationButtons){
     const buttonPrev = document.querySelector(`.${pagButtons.prev}`) as HTMLButtonElement;
     buttonPrev.addEventListener('click',async ()=>{
@@ -62,14 +70,17 @@ class LearningPage extends Page {
       const spanPage = document.querySelector(`.${pagButtons.page}`) as HTMLSpanElement;
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent -= 1;
+      // if current page 1 - disable buttons prev and first
       if (pageCurrent === 1) {
         buttonPrev.disabled = true;
         buttonFirst.disabled = true;
       }
+      // if next button disabled - enable
       if (buttonNext.disabled) {
         buttonNext.disabled = false;
         buttonLast.disabled = true;
       }
+      // remove div with class .learning and append new div with new words
       const current = document.querySelector('.learning') as HTMLDivElement;
       current.remove();
       await this.renderCardWords(pageCurrent,1);
