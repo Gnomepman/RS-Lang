@@ -23,21 +23,30 @@ class LearningPage extends Page{
     console.log('words',words);
     words.forEach((word)=>{
       const wordCard = new WordCard('div','learning__word-card',word);
-      console.log('wordCard',wordCard);
       div.append(wordCard.render());
     })
     this.container.append(div);
     
   }
 
-
+  async renderNextPage(next:HTMLButtonElement | null,page:HTMLSpanElement | null){
+    console.log(next);
+    next?.addEventListener('click',()=>{
+      console.log('click');
+      let count: number = +(page?.textContent as string);
+      count += 1;
+      if (page) page.textContent = count.toString(10);
+    })
+  }
 
   render() {
     const title = this.createHeaderTitle(LearningPage.TextObject.MainTitle);
     const pagination = new Pagination('div','pagination');
     console.log('begin:');
     this.container.append(title);
-    this.renderCardWords(1,1).then(() => this.container.append(pagination.render()));
+    this.renderCardWords(1,1).then(() => {this.container.append(pagination.render()),
+      this.renderNextPage(pagination.next,pagination.page);});
+    
     return this.container;
   }
 }

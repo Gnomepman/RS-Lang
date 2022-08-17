@@ -7,13 +7,15 @@ class Pagination extends Component{
   prev:HTMLButtonElement | null;
   last:HTMLButtonElement | null;
   first:HTMLButtonElement | null;
+  page:HTMLSpanElement | null;
   constructor(tagName: string, className: string) {
     super(tagName, className);
-    this.currentPage = 0;
+    this.currentPage = 1;
     this.next = null;
     this.prev = null;
     this.last = null;
     this.first = null;
+    this.page = null;
 
   }
 
@@ -34,7 +36,7 @@ class Pagination extends Component{
       this.last = buttonLast;
       this.next = buttonNext;
       this.prev = buttonPrev;
-
+      this.page = page;
       this.container.append(buttonFirst,buttonPrev,page,buttonNext,buttonLast);
       return this.container;
   }
