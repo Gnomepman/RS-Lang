@@ -12,6 +12,12 @@ abstract class Page {
       headerTitle.innerText = text;
       return headerTitle;
     }
+
+    protected createDivBlock(className?: string){
+      const block = document.createElement('div');
+      if (className) block.classList.add(className)
+      return block;
+    }
   
     render() {
       return this.container;
