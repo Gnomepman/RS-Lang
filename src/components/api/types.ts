@@ -15,4 +15,6 @@ type Word = {
   textExampleTranslate: "string";
 };
 
+export const API_URL = 'https://rs-lang-test.herokuapp.com';
+
 export default Word;

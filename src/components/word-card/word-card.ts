@@ -1,4 +1,4 @@
-import Word from "../api/types";
+import Word, { API_URL } from "../api/types";
 import Component from "../templates/component";
 import play_icon from "../../assets/play.svg";
 import { createElement } from "../utils/utils";
@@ -50,12 +50,12 @@ class WordCard extends Component {
     );
     const buttonAdd = createElement("button", "learning__word-card-button-add");
 
-    (img as HTMLImageElement).src = `${this.wordTemplate.image}`;
+    (img as HTMLImageElement).src = `${API_URL}/${this.wordTemplate.image}`;
     spanWord.textContent = `${this.wordTemplate.word}`;
     spanTranslate.textContent = `${this.wordTemplate.wordTranslate}`;
     spanTranscription.textContent = `${this.wordTemplate.transcription}`;
     (imgAudio as HTMLImageElement).src = `${play_icon}`;
-    (audio as HTMLAudioElement).src = `${this.wordTemplate.audio}`;
+    (audio as HTMLAudioElement).src = `${API_URL}/${this.wordTemplate.audio}`;
     spanMeaning.innerHTML = this.wordTemplate.textMeaning;
     spanMeaningEx.innerHTML = this.wordTemplate.textExample;
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
