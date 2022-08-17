@@ -1,15 +1,7 @@
-.learning__word-card{
+
+.learning{
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  border: 2px solid black;
-  width: 500px;
-}
-.learning__word-card-img{
-  width: 200px;
-  height: auto;
-}
-.learning__word-card-audio-img{
-  width: 34px;
-  height: 34px;
+  flex-wrap: wrap;
+  gap: 20px;
 }

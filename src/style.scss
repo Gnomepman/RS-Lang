@@ -4,9 +4,7 @@ body {
     display: flex;
 }
 
-#current-page{
-    width: 100%;
+#current{
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
 }
