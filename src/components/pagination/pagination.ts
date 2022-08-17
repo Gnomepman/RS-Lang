@@ -1,21 +1,28 @@
 import Component from '../templates/component';
 import { createElement } from '../utils/utils';
+import './pagination.scss';
+
+export type PaginationButtons = {
+  next:string;
+  prev:string;
+  last:string;
+  first:string;
+  page:string;
+}
 
 class Pagination extends Component{
   currentPage: number;
-  next:HTMLButtonElement | null;
-  prev:HTMLButtonElement | null;
-  last:HTMLButtonElement | null;
-  first:HTMLButtonElement | null;
-  page:HTMLSpanElement | null;
+  pagButtons:PaginationButtons
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.currentPage = 1;
-    this.next = null;
-    this.prev = null;
-    this.last = null;
-    this.first = null;
-    this.page = null;
+    this.pagButtons = {
+      next:'',
+      prev:'',
+      last:'',
+      first:'',
+      page:''
+    }
 
   }
 
@@ -32,11 +39,14 @@ class Pagination extends Component{
       buttonLast.textContent = '>>';
       page.textContent ='1';
 
-      this.first = buttonFirst;
-      this.last = buttonLast;
-      this.next = buttonNext;
-      this.prev = buttonPrev;
-      this.page = page;
+      buttonPrev.disabled = true;
+      buttonFirst.disabled = true;
+
+      this.pagButtons.first = buttonFirst.className;
+      this.pagButtons.last = buttonLast.className;
+      this.pagButtons.next = buttonNext.className;
+      this.pagButtons.prev = buttonPrev.className;
+      this.pagButtons.page = page.className;
       this.container.append(buttonFirst,buttonPrev,page,buttonNext,buttonLast);
       return this.container;
   }

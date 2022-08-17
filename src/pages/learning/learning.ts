@@ -2,7 +2,7 @@ import Page from "../../components/templates/page";
 import Api from "../../components/api/api";
 import "./learning.scss";
 import WordCard from "../../components/word-card/word-card";
-import Pagination from "../../components/pagination/pagination";
+import Pagination, { PaginationButtons } from "../../components/pagination/pagination";
 import { API_URL } from "../../components/api/types";
 
 class LearningPage extends Page {
@@ -28,19 +28,25 @@ class LearningPage extends Page {
   }
 
   async renderNextPage(
-    next: HTMLButtonElement | null,
-    page: HTMLSpanElement | null
+    pagButtons:PaginationButtons
   ) {
-    console.log(next);
-    next?.addEventListener("click",async () => {
-      let pageCurrent: number = +(page?.textContent as string);
+    console.log(pagButtons.next);
+    const buttonNext = document.querySelector(`.${pagButtons.next}`) as HTMLButtonElement;
+    buttonNext?.addEventListener("click",async () => {
+      const spanPage = document.querySelector(`.${pagButtons.page}`) as HTMLSpanElement;
+      const buttonPrev = document.querySelector(`.${pagButtons.prev}`) as HTMLButtonElement;
+      const buttonFirst = document.querySelector(`.${pagButtons.first}`) as HTMLButtonElement;
+      let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent += 1;
-      if (page) {
+      if (buttonPrev.disabled){
+        buttonPrev.disabled = false;
+        buttonFirst.disabled = false;
+      }
+      if (spanPage) {
         const current = document.querySelector('.learning') as HTMLDivElement;
         current.remove();
         await this.renderCardWords(pageCurrent,1);
-        page.textContent = pageCurrent.toString(10);
-
+        spanPage.textContent = pageCurrent.toString(10);
       }
     });
   }
@@ -50,7 +56,7 @@ class LearningPage extends Page {
     console.log("begin:");
     this.renderCardWords(1, 1).then(() => {
       this.container.append(pagination.render()),
-      this.renderNextPage(pagination.next, pagination.page);
+      this.renderNextPage(pagination.pagButtons);
     });
 
     return this.container;
