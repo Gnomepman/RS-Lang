@@ -34,7 +34,6 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        clean:true,
         assetModuleFilename: 'assets/logo/[hash][ext][query]'
     },
     plugins: [new HtmlWebpackPlugin({template: 'src/index.html'})],

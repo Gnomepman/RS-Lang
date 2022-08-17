@@ -63,6 +63,7 @@ export default class App {
   //To the <body> we append nav_menu and render page "main-page"
   run() {
     App.container.append(this.nav_menu.render());
+    window.location.hash = '';
     App.renderNewPage("main-page");
     this.enableRouteChange();
   }
