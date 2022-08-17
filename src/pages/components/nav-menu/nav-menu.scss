@@ -1,61 +1,62 @@
-.nav-container{
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 180px;
+  border-right: 1px solid #000000;
+  height: 100vh;
+  padding: 24px 0px;
+  background: #ffffff;
+  align-items: center;
+  position: fixed;
+
+  a {
+    color: #535350;
+    font-family: sans-serif;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 24px;
+    text-decoration: none;
+  }
+
+  img {
+    width: 35px;
+    height: 35px;
+    align-self: flex-start;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .login_wrapper {
     display: flex;
+    width: 135px;
     flex-direction: column;
-    gap: 20px;
-    width: 180px;
-    border-right: 1px solid #000000;
-    height: 100vh;
-    padding: 24px 0px;
-    background: #ffffff;
-    align-items: center;
+    gap: 15px;
 
-    a{
-        color: #535350;
-        font-family: sans-serif;
-        padding: 5px 15px;
-        box-sizing: border-box;
-        font-size: 16px;
-        line-height: 24px;
-        text-decoration: none;
+    .login_button {
+      pad: 8px 45px;
+      text-align: center;
+      border: 1px solid #9a9a98;
+      border-radius: 4px;
+      color: #161613;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      box-sizing: border-box;
     }
 
-    img{
-        width: 35px;
-        height: 35px;
-        align-self: flex-start;
-        
-        &:hover{
-            cursor: pointer;
-        }
+    // #log_in{
+
+    // }
+
+    #sign_up {
+      color: #ffffff;
+      background: #084777;
+      border: none;
     }
-
-    .login_wrapper{
-        display: flex;
-        width: 135px;
-        flex-direction: column;
-        gap: 15px;
-
-        .login_button {
-            pad: 8px 45px;
-            text-align: center;
-            border: 1px solid #9A9A98;
-            border-radius: 4px;
-            color: #161613;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            box-sizing: border-box;
-        }
-
-        // #log_in{
-
-        // }
-
-        #sign_up{
-            color: #FFFFFF;
-            background: #084777;
-            border: none;
-        }
-    }
+  }
 }
