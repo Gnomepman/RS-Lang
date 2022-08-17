@@ -30,25 +30,51 @@ class LearningPage extends Page {
   async renderNextPage(
     pagButtons:PaginationButtons
   ) {
-    console.log(pagButtons.next);
     const buttonNext = document.querySelector(`.${pagButtons.next}`) as HTMLButtonElement;
     buttonNext?.addEventListener("click",async () => {
       const spanPage = document.querySelector(`.${pagButtons.page}`) as HTMLSpanElement;
       const buttonPrev = document.querySelector(`.${pagButtons.prev}`) as HTMLButtonElement;
       const buttonFirst = document.querySelector(`.${pagButtons.first}`) as HTMLButtonElement;
+      const buttonLast = document.querySelector(`.${pagButtons.last}`) as HTMLButtonElement;
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent += 1;
+      if (pageCurrent === 30) {
+        buttonNext.disabled = true;
+        buttonLast.disabled = true;
+      }
       if (buttonPrev.disabled){
         buttonPrev.disabled = false;
         buttonFirst.disabled = false;
       }
-      if (spanPage) {
-        const current = document.querySelector('.learning') as HTMLDivElement;
-        current.remove();
-        await this.renderCardWords(pageCurrent,1);
-        spanPage.textContent = pageCurrent.toString(10);
-      }
+      const current = document.querySelector('.learning') as HTMLDivElement;
+      current.remove();
+      await this.renderCardWords(pageCurrent,1);
+      spanPage.textContent = pageCurrent.toString(10);
     });
+  }
+
+  async renderPrevPage(pagButtons:PaginationButtons){
+    const buttonPrev = document.querySelector(`.${pagButtons.prev}`) as HTMLButtonElement;
+    buttonPrev.addEventListener('click',async ()=>{
+      const buttonNext = document.querySelector(`.${pagButtons.next}`) as HTMLButtonElement;
+      const buttonFirst = document.querySelector(`.${pagButtons.first}`) as HTMLButtonElement;
+      const buttonLast = document.querySelector(`.${pagButtons.last}`) as HTMLButtonElement;
+      const spanPage = document.querySelector(`.${pagButtons.page}`) as HTMLSpanElement;
+      let pageCurrent: number = +(spanPage?.textContent as string);
+      pageCurrent -= 1;
+      if (pageCurrent === 1) {
+        buttonPrev.disabled = true;
+        buttonFirst.disabled = true;
+      }
+      if (buttonNext.disabled) {
+        buttonNext.disabled = false;
+        buttonLast.disabled = true;
+      }
+      const current = document.querySelector('.learning') as HTMLDivElement;
+      current.remove();
+      await this.renderCardWords(pageCurrent,1);
+      spanPage.textContent = pageCurrent.toString(10);
+    })
   }
 
   render() {
@@ -57,6 +83,8 @@ class LearningPage extends Page {
     this.renderCardWords(1, 1).then(() => {
       this.container.append(pagination.render()),
       this.renderNextPage(pagination.pagButtons);
+    }).then(() => {
+      this.renderPrevPage(pagination.pagButtons);
     });
 
     return this.container;
