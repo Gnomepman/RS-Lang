@@ -11,7 +11,7 @@ class Api{
     this.apiUrl = url;
   }
 
-  // get array of words on page of group
+  // get array of words with needed page and group
 
   async getWords(page:number,group:number):Promise<Word[]>{
     const request = `${this.apiUrl}/${ApiLinks.Words}?page=${page}&group=${group}`;
