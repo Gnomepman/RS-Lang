@@ -1,9 +1,10 @@
-import Page from "../components/templates/page";
+import Page from "../../components/templates/page";
 import MainPage from "../main-page/main-page";
 import StatisticsPage from "../statistics/statistics";
-import Nav_menu from "../components/nav-menu/nav-menu";
+import Nav_menu from "../../components/nav-menu/nav-menu";
 import ErrorPage from "../error-page/error";
-import { ErrorTypes, PageIds } from "../components/types_and_enums/types_and_enums";
+import LearningPage from "../learning/learning";
+import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
@@ -26,6 +27,9 @@ export default class App {
         break;
       case PageIds.StatisticsPage:
         page = new StatisticsPage(idPage);
+        break;
+      case PageIds.LearningPage:
+        page = new LearningPage(idPage);
         break;
       default:
         page = new ErrorPage(idPage, ErrorTypes.Error_404);
@@ -59,6 +63,7 @@ export default class App {
   //To the <body> we append nav_menu and render page "main-page"
   run() {
     App.container.append(this.nav_menu.render());
+    window.location.hash = '';
     App.renderNewPage("main-page");
     this.enableRouteChange();
   }

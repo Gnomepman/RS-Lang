@@ -1,5 +1,5 @@
-import Page from "../components/templates/page";
-import { ErrorTypes } from "../components/types_and_enums/types_and_enums";
+import Page from "../../components/templates/page";
+import { ErrorTypes } from "../../components/types_and_enums/types_and_enums";
 import './error.scss'
 
 export default class ErrorPage extends Page {

@@ -1,4 +1,4 @@
-import Page from '../components/templates/page';
+import Page from '../../components/templates/page';
 import './main-page.scss'
 
 export default class MainPage extends Page {
