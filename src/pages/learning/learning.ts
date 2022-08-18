@@ -95,8 +95,8 @@ class LearningPage extends Page {
       }
       // if next button disabled - enable
       if (buttonNext.disabled) {
-        buttonNext.disabled = true;
-        buttonLast.disabled = true;
+        buttonNext.disabled = false;
+        buttonLast.disabled = false;
       }
       // remove div with class .learning and append new div with new words
       const current = document.querySelector(".learning") as HTMLDivElement;
@@ -106,6 +106,35 @@ class LearningPage extends Page {
     });
   }
 
+  async renderLastPage(pagButtons: PaginationButtons){
+    const buttonLast = document.querySelector(`.${pagButtons.last}`) as HTMLButtonElement;
+    const buttonNext = document.querySelector(
+      `.${pagButtons.next}`
+    ) as HTMLButtonElement;
+    const buttonFirst = document.querySelector(
+      `.${pagButtons.first}`
+    ) as HTMLButtonElement;
+    const buttonPrev = document.querySelector(
+      `.${pagButtons.prev}`
+    ) as HTMLButtonElement;
+    buttonLast.addEventListener('click',async ()=>{
+      const spanPage = document.querySelector(
+        `.${pagButtons.page}`
+      ) as HTMLSpanElement;
+      const current = document.querySelector(".learning") as HTMLDivElement;
+
+      spanPage.textContent = `30`;
+      buttonLast.disabled = true;
+      buttonNext.disabled = true;
+      if (buttonPrev.disabled) {
+        buttonPrev.disabled = false;
+        buttonFirst.disabled = false;
+      }
+      current.remove();
+      await this.renderCardWords(30, 1);
+    })
+  }
+
   render() {
     const pagination = new Pagination("div", "pagination");
     console.log("begin:");
@@ -113,11 +142,9 @@ class LearningPage extends Page {
       .then(() => {
         this.container.append(pagination.render()),
           this.renderNextPage(pagination.pagButtons);
-      })
-      .then(() => {
-        this.renderPrevPage(pagination.pagButtons);
+          this.renderPrevPage(pagination.pagButtons);
+          this.renderLastPage(pagination.pagButtons);
       });
-
     return this.container;
   }
 }
