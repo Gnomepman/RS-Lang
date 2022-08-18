@@ -1,7 +1,10 @@
 import './nav-menu.scss'
 import Component from '../templates/component';
-import burger_menu from '../../assets/burger-menu.svg' //need svg (loader connected and image exist, but does not work)
 import { PageIds } from '../types_and_enums/types_and_enums';
+import book from '../../assets/icon_book.svg'
+import chart from '../../assets/icon_chart.svg'
+import home from '../../assets/icon_home.svg'
+import medal from '../../assets/icon_medal.svg'
 
 export default class Nav_menu extends Component {
   //this.container = <nav class="nav-container">
@@ -10,19 +13,19 @@ export default class Nav_menu extends Component {
   }
 
   renderNavButtons() {
-    //TODO: add icons
+    let nav_buttons_wrapper = document.createElement('div');
+    nav_buttons_wrapper.classList.add("nav-wrapper");
     Buttons.forEach((button) => {
-      const buttonHTML = document.createElement("a");
-      buttonHTML.href = `#${button.id}`;
-      buttonHTML.innerText = button.text;
-      this.container.append(buttonHTML)
+      nav_buttons_wrapper.innerHTML += `
+      <a href="#${button.id}" class="nav_button">
+      <img src="${button.icon}">
+      ${button.text}</a>
+      `
     });
+    this.container.append(nav_buttons_wrapper);
   }
 
   render() {
-    const burger: HTMLImageElement = document.createElement("img");
-    burger.src = burger_menu;
-    this.container.append(burger);
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper")
     login_form.innerHTML = `
@@ -42,17 +45,21 @@ const Buttons = [
   {
     id: PageIds.MainPage,
     text: 'Main page',
+    icon: home,
   },
   {
     id: PageIds.LearningPage,
     text: 'Textbook',
+    icon: book,
   },
   {
     id: PageIds.MiniGamesPage,
     text: 'Minigames',
+    icon: medal,
   },
   {
     id: PageIds.StatisticsPage,
     text: 'Statistics',
+    icon: chart,
   },
 ];
