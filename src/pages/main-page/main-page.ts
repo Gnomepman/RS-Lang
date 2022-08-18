@@ -1,4 +1,4 @@
-import Page from '../components/templates/page';
+import Page from '../../components/templates/page';
 import './main-page.scss'
 import humans_picture from '../../assets/humans_background.png'
 import danya from '../../assets/developer_danya.jpg'

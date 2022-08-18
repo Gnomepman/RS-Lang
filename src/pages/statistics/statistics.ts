@@ -1,4 +1,4 @@
-import Page from '../components/templates/page';
+import Page from '../../components/templates/page';
 import './statistics.scss'
 
 export default class StatisticsPage extends Page {

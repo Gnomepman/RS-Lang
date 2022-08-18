@@ -22,17 +22,10 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
-                use: [
-                  {
-                    loader: 'file-loader',
-                  },
-                ],
-            },
-            {
-                test: /\.svg$/,
-                loader: 'svg-inline-loader'
-            },
+              test: /\.(png|jpg|jpeg|gif|svg)$/i,
+              type:'asset/resource',
+      
+            }
         ],
     },
     resolve: {
@@ -41,6 +34,7 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        assetModuleFilename: 'assets/logo/[hash][ext][query]'
     },
     plugins: [new HtmlWebpackPlugin({template: 'src/index.html'})],
     experiments: {
