@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Silkscreen&display=swap');
+$margin_top_beetwen_section: 60px;
+
+@mixin role ($color){
+    height: 20px;
+    font-size: 16px;
+    padding: 5px 10px;
+    background-color: $color;
+    border-radius: 20px;
+}
+
+.section_title{
+    align-self: center;
+    margin: 0;
+    margin-bottom: 40px;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 32px;
+    font-family: 'Roboto', sans-serif; 
+}
+
+.main_page_wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: hsla(311, 0%, 100%, 1);
+    background-image:
+    radial-gradient(at 92% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y; 
+}
+
+.description_wrapper{
+    display: flex;
+    align-items: center;
+    margin-top: $margin_top_beetwen_section;
+    gap: 60px;
+    padding: 35px 0 35px 0;
+    
+    *{
+        margin: 0;
+    }
+
+    .description{
+        width: 460px;
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        flex-direction: column;
+
+        &_logo{
+            font-family: 'Silkscreen', cursive;
+            text-transform: uppercase;
+            font-size: 80px;
+            color: rgb(71, 71, 203);
+        }
+
+        &_title{
+            margin-top: 45px;
+            font-size: 48px;
+            line-height: 64px;
+            color: #161616
+        }
+
+        &_desc{
+            margin-top: 25px;
+            font-size: 24px;
+            line-height: 32px;
+            color: #535350;
+        }
+
+        &_button{
+            width: fit-content;
+            margin-top: 25px;
+            background: #084777;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 25px;
+            line-height: 24px;
+            color: #FFFFFF;
+            padding: 20px 25px;
+            border-radius: 4px;
+            text-align: center;
+        }
+    }
+
+    img{
+        width: 500px;
+        height: 300px;
+    }
+}
+
+.benefits_wrapper {
+    font-family: 'Roboto', sans-serif; 
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    margin-top: $margin_top_beetwen_section;
+
+    .benefits{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    
+        &_title{
+            align-self: center;
+            margin: 0;
+            margin-bottom: 40px;
+            font-weight: 400;
+            font-size: 50px;
+            line-height: 32px;
+        }
+    }
+
+    .benefits_enum {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 40px;
+
+        .benefit{
+            width: 400px;
+            height: fit-content;
+            filter: drop-shadow(5px 5px 2px rgba(32, 32, 32, 0.25));
+            background: #F7FFFE;
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;   
+            padding: 30px 10px;
+
+            *{
+                margin: 0;
+            }
+
+            &:nth-child(2n) {
+                align-self: flex-start;
+            }
+    
+            &:nth-child(2n+1) {
+                align-self: flex-end;
+            }
+
+            img{
+                width: 80px;
+                height: 80px;
+            }
+
+            &_title{
+                font-weight: 400;
+                font-size: 45px;
+                line-height: 32px;
+                margin-top: 25px;
+                color: #202020;
+            }
+
+            &_description{
+                font-size: 20px;
+                line-height: 32px;
+                text-align: center;
+                margin-top: 30px;
+            }
+        }
+
+        
+    }
+}
+
+.video{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: $margin_top_beetwen_section;
+
+    h2{
+        margin-bottom: 20px;
+    }
+}
+
+.developers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+    margin-top: $margin_top_beetwen_section;
+
+    &_wrapper{
+        width: 950px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+
+        .developer{
+            filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.25));
+            background: #F6FFFF;
+            border-radius: 40px 10px;
+            display: flex;
+            gap: 40px;
+            font-family: 'Roboto', sans-serif; 
+            color: #202020;
+            height: 320px;
+
+            &_image{
+                min-width: 310px;
+                height: 100%;
+                background-size: cover;
+                border-radius: 40px 10px 10px 10px;
+            }
+
+            &_name{
+                margin-top: 15px;
+                margin-bottom: 10px;
+                font-weight: 400;
+                font-size: 40px;
+                line-height: 32px;
+            }
+
+            &_role{
+                display: flex;
+                align-items: center;
+                height: 40px;
+                gap: 10px;
+
+                #front-end{
+                    @include role(#adf530);
+                }
+
+                #back-end{
+                    @include role(#4a9edf);
+                }
+
+                #design{
+                    @include role(#d126ef);
+                }
+
+                #team-lead{
+                    @include role(#fff30b);
+                }
+            }
+
+            &_short_desc{
+                margin: 25px 0 0 0 ;
+                font-weight: 400;
+                font-size: 25px;
+                line-height: 32px;
+                padding-right: 25px;
+            }
+
+            &_text{
+                padding: 20px 0;
+            }
+        }
+    }
+}
