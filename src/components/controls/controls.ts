@@ -10,16 +10,16 @@ export type PaginationButtons = {
   page: string;
 };
 
-export type DropdownClasses ={
+export type DropdownClasses = {
   div: string;
   content: string;
-  group:string
-}
+  group: string;
+};
 
 class Controls extends Component {
   currentPage: number;
   pagButtons: PaginationButtons;
-  dropdown:DropdownClasses;
+  dropdown: DropdownClasses;
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.currentPage = 1;
@@ -31,10 +31,10 @@ class Controls extends Component {
       page: "",
     };
     this.dropdown = {
-      div:"",
-      content:"",
-      group:""
-    }
+      div: "",
+      content: "",
+      group: "",
+    };
   }
   renderDropdown(className: string): HTMLElement {
     const dropdown = createElement("div", `${className}`);
@@ -52,29 +52,30 @@ class Controls extends Component {
     this.dropdown = {
       div: `${className}`,
       content: `${className}-content`,
-      group: `${className}-group`
-    }
+      group: `${className}-group`,
+    };
     return dropdown;
   }
-  render(): HTMLElement {
+
+  renderPagination(className: string): HTMLDivElement {
+    const div = createElement("div", className) as HTMLDivElement;
     const buttonNext = createElement(
       "button",
-      "pagination__next"
+      `${className}__next`
     ) as HTMLButtonElement;
     const buttonPrev = createElement(
       "button",
-      "pagination__prev"
+      `${className}__prev`
     ) as HTMLButtonElement;
     const buttonFirst = createElement(
       "button",
-      "pagination__first"
+      `${className}__first`
     ) as HTMLButtonElement;
     const buttonLast = createElement(
       "button",
-      "pagination__last"
+      `${className}__last`
     ) as HTMLButtonElement;
-    const div = createElement('div','pagination') as HTMLButtonElement;
-    const page = createElement("span", "pagination__page") as HTMLSpanElement;
+    const page = createElement("span", `${className}__page`) as HTMLSpanElement;
 
     buttonNext.textContent = ">";
     buttonPrev.textContent = "<";
@@ -90,14 +91,15 @@ class Controls extends Component {
     this.pagButtons.next = buttonNext.className;
     this.pagButtons.prev = buttonPrev.className;
     this.pagButtons.page = page.className;
-    div.append(
-      buttonFirst,
-      buttonPrev,
-      page,
-      buttonNext,
-      buttonLast
+    div.append(buttonFirst, buttonPrev, page, buttonNext, buttonLast);
+    return div;
+  }
+
+  render(): HTMLElement {
+    this.container.append(
+      this.renderPagination("pagination"),
+      this.renderDropdown("pagination__groups")
     );
-    this.container.append(div,this.renderDropdown("pagination__groups"));
     return this.container;
   }
 }
