@@ -12,18 +12,18 @@ class LearningPage extends Page {
   static TextObject = {
     MainTitle: "Learning2 Page",
   };
-
+  static currentGroup = 1;
   constructor(id: string) {
     super(id);
   }
 
-  async renderNewGroup(dropdown:DropdownClasses){
+  async renderNewGroup(dropdown:DropdownClasses,pagButtons:PaginationButtons){
     const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
     const content = document.querySelector(`.${dropdown.content}`) as HTMLDialogElement;
 
-    div.addEventListener("click", (e) => {
+    div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
-      console.log(dropdown.group);
+      
       if (
         (e.target as HTMLDivElement).classList.contains(dropdown.group)
       ) {
@@ -46,6 +46,11 @@ class LearningPage extends Page {
           content.insertAdjacentElement("beforeend", newGroup);
         else groups[prevGroupId - 1].insertAdjacentElement("beforebegin", newGroup);
         (e.target as HTMLDivElement).remove();
+
+        const current = document.querySelector(".learning") as HTMLDivElement;
+        LearningPage.currentGroup = +clickedGroupId;
+        await this.renderCardWords(1, LearningPage.currentGroup);
+        LearningPage.resetPagination(pagButtons);
       }
     });
   }
@@ -55,13 +60,18 @@ class LearningPage extends Page {
     const api = new Api(`${API_URL}`);
     const words = await api.getWords(page, group);
     const div = document.createElement("div");
+    const current = document.querySelector(".learning") as HTMLDivElement;
+    if (current) current.remove();
     div.className = "learning";
     words.forEach((word) => {
       const wordCard = new WordCard("div", "learning__word-card", word);
       div.append(wordCard.render());
     });
+    console.log('1');
     this.container.insertAdjacentElement("afterbegin", div);
   }
+
+  
 
   // Render next page after click on button next page
   async renderNextPage(pagButtons: PaginationButtons) {
@@ -97,7 +107,7 @@ class LearningPage extends Page {
       // remove div with class .learning and append new div with new words
       const current = document.querySelector(".learning") as HTMLDivElement;
       current.remove();
-      await this.renderCardWords(pageCurrent, 1);
+      await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
       spanPage.textContent = pageCurrent.toString(10);
     });
   }
@@ -133,9 +143,7 @@ class LearningPage extends Page {
         buttonLast.disabled = false;
       }
       // remove div with class .learning and append new div with new words
-      const current = document.querySelector(".learning") as HTMLDivElement;
-      current.remove();
-      await this.renderCardWords(pageCurrent, 1);
+      await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
       spanPage.textContent = pageCurrent.toString(10);
     });
   }
@@ -155,7 +163,6 @@ class LearningPage extends Page {
       const spanPage = document.querySelector(
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
-      const current = document.querySelector(".learning") as HTMLDivElement;
 
       spanPage.textContent = `30`;
       buttonLast.disabled = true;
@@ -164,8 +171,7 @@ class LearningPage extends Page {
         buttonPrev.disabled = false;
         buttonFirst.disabled = false;
       }
-      current.remove();
-      await this.renderCardWords(30, 1);
+      await this.renderCardWords(30, LearningPage.currentGroup);
     })
   }
 
@@ -186,7 +192,6 @@ class LearningPage extends Page {
       const spanPage = document.querySelector(
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
-      const current = document.querySelector(".learning") as HTMLDivElement;
       spanPage.textContent = `1`;
       buttonPrev.disabled = true;
       buttonFirst.disabled = true;
@@ -194,10 +199,38 @@ class LearningPage extends Page {
         buttonNext.disabled = false;
         buttonLast.disabled = false;
       }
-      current.remove();
-      await this.renderCardWords(1, 1);
+      await this.renderCardWords(1, LearningPage.currentGroup);
     })
     
+  }
+
+  static resetPagination(pagButtons:PaginationButtons){
+    const buttonFirst = document.querySelector(
+      `.${pagButtons.first}`
+    ) as HTMLButtonElement;
+      const buttonNext = document.querySelector(
+        `.${pagButtons.next}`
+      ) as HTMLButtonElement;
+      const buttonPrev = document.querySelector(
+        `.${pagButtons.prev}`
+      ) as HTMLButtonElement;
+      const buttonLast = document.querySelector(
+        `.${pagButtons.last}`
+      ) as HTMLButtonElement;
+      const spanPage = document.querySelector(
+        `.${pagButtons.page}`
+      ) as HTMLSpanElement;
+
+      spanPage.textContent = `1`;
+      if (buttonNext.disabled){
+        buttonNext.disabled = false;
+        buttonLast.disabled = false
+      }
+      if (!buttonPrev.disabled){
+        buttonPrev.disabled = true;
+        buttonFirst.disabled = true
+      }
+
   }
 
   render() {
@@ -210,7 +243,7 @@ class LearningPage extends Page {
           this.renderPrevPage(pagination.pagButtons);
           this.renderLastPage(pagination.pagButtons);
           this.renderFirstPage(pagination.pagButtons);
-          this.renderNewGroup(pagination.dropdown);
+          this.renderNewGroup(pagination.dropdown,pagination.pagButtons);
       });
     return this.container;
   }
