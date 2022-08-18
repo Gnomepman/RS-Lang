@@ -30,15 +30,35 @@ class Pagination extends Component {
     for (let i = 1; i < 6; i++) {
       const element = createElement("div", `${className}-group`);
       element.textContent = `Раздел ${i + 1}`;
+      element.setAttribute('data-group',`${i + 1}`);
       content.append(element);
     }
     dropdown.textContent = 'Раздел 1';
-
-    dropdown.addEventListener('click',()=>{
-      dropdown.classList.toggle('js-clicked');
-    })
-
+    dropdown.setAttribute('data-group','1');
     dropdown.append(content);
+
+    dropdown.addEventListener('click',(e)=>{
+      dropdown.classList.toggle('js-clicked');
+
+      if ((e.target as HTMLDivElement).classList.contains(`${className}-group`)) {
+        const prevGroup = dropdown.innerText;
+        const prevGroupId:number = +(dropdown.getAttribute('data-group') as string);
+        const clickedGroupId:string = (e.target as HTMLDivElement).getAttribute('data-group') as string;
+        const clickedGroup = (e.target as HTMLDivElement).textContent;
+        const div = createElement('div',`${className}-group`);
+        div.setAttribute('data-group',prevGroupId.toString(10));
+        div.textContent = prevGroup;
+        dropdown.childNodes[0].textContent = clickedGroup;
+        dropdown.setAttribute('data-group',clickedGroupId);
+        const groups = document.querySelectorAll(`.${className}-group`);
+        if (prevGroupId === 1) content.insertAdjacentElement('afterbegin',div);
+        else if (prevGroupId === 6) content.insertAdjacentElement('beforeend',div);
+        else groups[prevGroupId - 1].insertAdjacentElement('beforebegin',div);
+        (e.target as HTMLDivElement).remove();
+ 
+      }
+
+    })
     return dropdown;
   }
   render(): HTMLElement {
