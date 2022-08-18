@@ -3,9 +3,10 @@ import Api from "../../components/api/api";
 import "./learning.scss";
 import WordCard from "../../components/word-card/word-card";
 import Pagination, {
-  PaginationButtons,
+  PaginationButtons,DropdownClasses
 } from "../../components/pagination/pagination";
 import { API_URL } from "../../components/api/types";
+import { createElement } from "../../components/utils/utils";
 
 class LearningPage extends Page {
   static TextObject = {
@@ -14,6 +15,39 @@ class LearningPage extends Page {
 
   constructor(id: string) {
     super(id);
+  }
+
+  async renderNewGroup(dropdown:DropdownClasses){
+    const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
+    const content = document.querySelector(`.${dropdown.content}`) as HTMLDialogElement;
+
+    div.addEventListener("click", (e) => {
+      div.classList.toggle("js-clicked");
+      console.log(dropdown.group);
+      if (
+        (e.target as HTMLDivElement).classList.contains(dropdown.group)
+      ) {
+        const prevGroup = div.innerText;
+        const prevGroupId: number = +(div.getAttribute(
+          "data-group"
+        ) as string);
+        const clickedGroupId: string = (
+          e.target as HTMLDivElement
+        ).getAttribute("data-group") as string;
+        const clickedGroup = (e.target as HTMLDivElement).textContent;
+        const newGroup = createElement("div", dropdown.group);
+        newGroup.setAttribute("data-group", prevGroupId.toString(10));
+        newGroup.textContent = prevGroup;
+        div.childNodes[0].textContent = clickedGroup;
+        div.setAttribute("data-group", clickedGroupId);
+        const groups = document.querySelectorAll(`.${dropdown.group}`) as NodeListOf<HTMLDivElement>;
+        if (prevGroupId === 1) content.insertAdjacentElement("afterbegin", newGroup);
+        else if (prevGroupId === 6)
+          content.insertAdjacentElement("beforeend", newGroup);
+        else groups[prevGroupId - 1].insertAdjacentElement("beforebegin", newGroup);
+        (e.target as HTMLDivElement).remove();
+      }
+    });
   }
 
   // Render words from needed page and group
@@ -176,6 +210,7 @@ class LearningPage extends Page {
           this.renderPrevPage(pagination.pagButtons);
           this.renderLastPage(pagination.pagButtons);
           this.renderFirstPage(pagination.pagButtons);
+          this.renderNewGroup(pagination.dropdown);
       });
     return this.container;
   }

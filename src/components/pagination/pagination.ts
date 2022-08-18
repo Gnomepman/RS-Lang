@@ -10,9 +10,16 @@ export type PaginationButtons = {
   page: string;
 };
 
+export type DropdownClasses ={
+  div: string;
+  content: string;
+  group:string
+}
+
 class Pagination extends Component {
   currentPage: number;
   pagButtons: PaginationButtons;
+  dropdown:DropdownClasses;
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.currentPage = 1;
@@ -23,6 +30,11 @@ class Pagination extends Component {
       first: "",
       page: "",
     };
+    this.dropdown = {
+      div:"",
+      content:"",
+      group:""
+    }
   }
   renderDropdown(className: string): HTMLElement {
     const dropdown = createElement("div", `${className}`);
@@ -30,35 +42,46 @@ class Pagination extends Component {
     for (let i = 1; i < 6; i++) {
       const element = createElement("div", `${className}-group`);
       element.textContent = `Раздел ${i + 1}`;
-      element.setAttribute('data-group',`${i + 1}`);
+      element.setAttribute("data-group", `${i + 1}`);
       content.append(element);
     }
-    dropdown.textContent = 'Раздел 1';
-    dropdown.setAttribute('data-group','1');
+    dropdown.textContent = "Раздел 1";
+    dropdown.setAttribute("data-group", "1");
     dropdown.append(content);
 
-    dropdown.addEventListener('click',(e)=>{
-      dropdown.classList.toggle('js-clicked');
+    this.dropdown = {
+      div: `${className}`,
+      content: `${className}-content`,
+      group: `${className}-group`
+    }
 
-      if ((e.target as HTMLDivElement).classList.contains(`${className}-group`)) {
-        const prevGroup = dropdown.innerText;
-        const prevGroupId:number = +(dropdown.getAttribute('data-group') as string);
-        const clickedGroupId:string = (e.target as HTMLDivElement).getAttribute('data-group') as string;
-        const clickedGroup = (e.target as HTMLDivElement).textContent;
-        const div = createElement('div',`${className}-group`);
-        div.setAttribute('data-group',prevGroupId.toString(10));
-        div.textContent = prevGroup;
-        dropdown.childNodes[0].textContent = clickedGroup;
-        dropdown.setAttribute('data-group',clickedGroupId);
-        const groups = document.querySelectorAll(`.${className}-group`);
-        if (prevGroupId === 1) content.insertAdjacentElement('afterbegin',div);
-        else if (prevGroupId === 6) content.insertAdjacentElement('beforeend',div);
-        else groups[prevGroupId - 1].insertAdjacentElement('beforebegin',div);
-        (e.target as HTMLDivElement).remove();
- 
-      }
+    // dropdown.addEventListener("click", (e) => {
+    //   dropdown.classList.toggle("js-clicked");
 
-    })
+    //   if (
+    //     (e.target as HTMLDivElement).classList.contains(`${className}-group`)
+    //   ) {
+    //     const prevGroup = dropdown.innerText;
+    //     const prevGroupId: number = +(dropdown.getAttribute(
+    //       "data-group"
+    //     ) as string);
+    //     const clickedGroupId: string = (
+    //       e.target as HTMLDivElement
+    //     ).getAttribute("data-group") as string;
+    //     const clickedGroup = (e.target as HTMLDivElement).textContent;
+    //     const div = createElement("div", `${className}-group`);
+    //     div.setAttribute("data-group", prevGroupId.toString(10));
+    //     div.textContent = prevGroup;
+    //     dropdown.childNodes[0].textContent = clickedGroup;
+    //     dropdown.setAttribute("data-group", clickedGroupId);
+    //     const groups = document.querySelectorAll(`.${className}-group`);
+    //     if (prevGroupId === 1) content.insertAdjacentElement("afterbegin", div);
+    //     else if (prevGroupId === 6)
+    //       content.insertAdjacentElement("beforeend", div);
+    //     else groups[prevGroupId - 1].insertAdjacentElement("beforebegin", div);
+    //     (e.target as HTMLDivElement).remove();
+    //   }
+    // });
     return dropdown;
   }
   render(): HTMLElement {
