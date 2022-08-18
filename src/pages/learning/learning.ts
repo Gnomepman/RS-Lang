@@ -135,6 +135,37 @@ class LearningPage extends Page {
     })
   }
 
+  async renderFirstPage(pagButtons: PaginationButtons){
+    const buttonFirst = document.querySelector(
+      `.${pagButtons.first}`
+    ) as HTMLButtonElement;
+    buttonFirst.addEventListener('click',async ()=>{
+      const buttonNext = document.querySelector(
+        `.${pagButtons.next}`
+      ) as HTMLButtonElement;
+      const buttonPrev = document.querySelector(
+        `.${pagButtons.prev}`
+      ) as HTMLButtonElement;
+      const buttonLast = document.querySelector(
+        `.${pagButtons.last}`
+      ) as HTMLButtonElement;
+      const spanPage = document.querySelector(
+        `.${pagButtons.page}`
+      ) as HTMLSpanElement;
+      const current = document.querySelector(".learning") as HTMLDivElement;
+      spanPage.textContent = `1`;
+      buttonPrev.disabled = true;
+      buttonFirst.disabled = true;
+      if (buttonNext.disabled) {
+        buttonNext.disabled = false;
+        buttonLast.disabled = false;
+      }
+      current.remove();
+      await this.renderCardWords(1, 1);
+    })
+    
+  }
+
   render() {
     const pagination = new Pagination("div", "pagination");
     console.log("begin:");
@@ -144,6 +175,7 @@ class LearningPage extends Page {
           this.renderNextPage(pagination.pagButtons);
           this.renderPrevPage(pagination.pagButtons);
           this.renderLastPage(pagination.pagButtons);
+          this.renderFirstPage(pagination.pagButtons);
       });
     return this.container;
   }
