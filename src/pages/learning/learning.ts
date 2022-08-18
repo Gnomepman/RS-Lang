@@ -2,9 +2,9 @@ import Page from "../../components/templates/page";
 import Api from "../../components/api/api";
 import "./learning.scss";
 import WordCard from "../../components/word-card/word-card";
-import Pagination, {
+import Controls, {
   PaginationButtons,DropdownClasses
-} from "../../components/pagination/pagination";
+} from "../../components/controls/controls";
 import { API_URL } from "../../components/api/types";
 import { createElement } from "../../components/utils/utils";
 
@@ -46,8 +46,6 @@ class LearningPage extends Page {
           content.insertAdjacentElement("beforeend", newGroup);
         else groups[prevGroupId - 1].insertAdjacentElement("beforebegin", newGroup);
         (e.target as HTMLDivElement).remove();
-
-        const current = document.querySelector(".learning") as HTMLDivElement;
         LearningPage.currentGroup = +clickedGroupId;
         await this.renderCardWords(1, LearningPage.currentGroup);
         LearningPage.resetPagination(pagButtons);
@@ -234,16 +232,16 @@ class LearningPage extends Page {
   }
 
   render() {
-    const pagination = new Pagination("div", "pagination");
+    const controls = new Controls("div", "controls");
     console.log("begin:");
     this.renderCardWords(1, 1)
       .then(() => {
-        this.container.append(pagination.render()),
-          this.renderNextPage(pagination.pagButtons);
-          this.renderPrevPage(pagination.pagButtons);
-          this.renderLastPage(pagination.pagButtons);
-          this.renderFirstPage(pagination.pagButtons);
-          this.renderNewGroup(pagination.dropdown,pagination.pagButtons);
+        this.container.append(controls.render()),
+          this.renderNextPage(controls.pagButtons);
+          this.renderPrevPage(controls.pagButtons);
+          this.renderLastPage(controls.pagButtons);
+          this.renderFirstPage(controls.pagButtons);
+          this.renderNewGroup(controls.dropdown,controls.pagButtons);
       });
     return this.container;
   }

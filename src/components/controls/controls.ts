@@ -1,6 +1,6 @@
 import Component from "../templates/component";
 import { createElement } from "../utils/utils";
-import "./pagination.scss";
+import "./controls.scss";
 
 export type PaginationButtons = {
   next: string;
@@ -16,7 +16,7 @@ export type DropdownClasses ={
   group:string
 }
 
-class Pagination extends Component {
+class Controls extends Component {
   currentPage: number;
   pagButtons: PaginationButtons;
   dropdown:DropdownClasses;
@@ -73,6 +73,7 @@ class Pagination extends Component {
       "button",
       "pagination__last"
     ) as HTMLButtonElement;
+    const div = createElement('div','pagination') as HTMLButtonElement;
     const page = createElement("span", "pagination__page") as HTMLSpanElement;
 
     buttonNext.textContent = ">";
@@ -89,16 +90,16 @@ class Pagination extends Component {
     this.pagButtons.next = buttonNext.className;
     this.pagButtons.prev = buttonPrev.className;
     this.pagButtons.page = page.className;
-    this.container.append(
+    div.append(
       buttonFirst,
       buttonPrev,
       page,
       buttonNext,
-      buttonLast,
-      this.renderDropdown("pagination__groups")
+      buttonLast
     );
+    this.container.append(div,this.renderDropdown("pagination__groups"));
     return this.container;
   }
 }
 
-export default Pagination;
+export default Controls;
