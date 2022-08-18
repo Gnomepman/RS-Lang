@@ -26,8 +26,8 @@ export default class Nav_menu extends Component {
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper")
     login_form.innerHTML = `
-        <a href="#" class="login_button" id="log_in">Войти</a>
-        <a href="#" class="login_button" id="sign_up">Регистрация</a>
+        <a href="#" class="login_button" id="log_in">Log in</a>
+        <a href="#" class="login_button" id="sign_up">Sign up</a>
     `
     this.renderNavButtons();
     this.container.append(login_form);
@@ -41,18 +41,18 @@ export default class Nav_menu extends Component {
 const Buttons = [
   {
     id: PageIds.MainPage,
-    text: 'Главная',
+    text: 'Main page',
   },
   {
     id: PageIds.LearningPage,
-    text: 'Учебник',
+    text: 'Textbook',
   },
   {
     id: PageIds.MiniGamesPage,
-    text: 'Мини-игры',
+    text: 'Minigames',
   },
   {
     id: PageIds.StatisticsPage,
-    text: 'Статистика',
+    text: 'Statistics',
   },
 ];
