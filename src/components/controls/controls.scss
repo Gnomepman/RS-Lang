@@ -34,8 +34,15 @@
   height: auto;
   width: 100px;
 }
+
 .pagination__groups-group{
   border: 1px solid black;
   cursor: pointer;
+}
+
+.controls__home,
+.controls__mini-games{
+  width: 30px;
+  height: auto;
 }
 

@@ -1,5 +1,7 @@
 import Component from "../templates/component";
 import { createElement } from "../utils/utils";
+import home_icon from '../../assets/home.svg';
+import miniGames_icon from '../../assets/mini-games.svg';
 import "./controls.scss";
 
 export type PaginationButtons = {
@@ -20,6 +22,7 @@ class Controls extends Component {
   currentPage: number;
   pagButtons: PaginationButtons;
   dropdown: DropdownClasses;
+  miniGamesClass:string;
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.currentPage = 1;
@@ -35,6 +38,7 @@ class Controls extends Component {
       content: "",
       group: "",
     };
+    this.miniGamesClass = "";
   }
   renderDropdown(className: string): HTMLElement {
     const dropdown = createElement("div", `${className}`);
@@ -95,8 +99,17 @@ class Controls extends Component {
     return div;
   }
 
+  renderIcon(className:string,path:string){
+    const icon = createElement('img',className) as HTMLImageElement;
+    icon.src = path;
+    return icon;
+  }
+
   render(): HTMLElement {
+    this.miniGamesClass = "controls__mini-games";
     this.container.append(
+      this.renderIcon('controls__home',home_icon),
+      this.renderIcon( this.miniGamesClass,miniGames_icon),
       this.renderPagination("pagination"),
       this.renderDropdown("pagination__groups")
     );
