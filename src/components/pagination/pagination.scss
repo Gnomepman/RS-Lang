@@ -8,3 +8,26 @@
   height: 50px;
   background-color: antiquewhite;
 }
+
+.pagination__groups{
+  position: relative;
+
+  &.js-clicked > .pagination__groups-content{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.pagination__groups-content{
+  display: none;
+  position: absolute;
+  bottom: 30px;
+  height: auto;
+  width: 100px;
+}
+.pagination__groups-group{
+  border: 1px solid black;
+  cursor: pointer;
+}
+
