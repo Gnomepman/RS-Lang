@@ -1,12 +1,13 @@
 import Page from "../../components/templates/page";
 import { ErrorTypes } from "../../components/types_and_enums/types_and_enums";
-import './error.scss'
+import ErrorImage from "../../assets/404-error.svg";
+import "./error.scss";
 
 export default class ErrorPage extends Page {
   private errorType: ErrorTypes | string;
 
   static TextObject: { [prop: string]: string } = {
-    '404': 'Error! The page was not found.'
+    "404": "Error! The page was not found.",
   };
 
   constructor(id: string, errorType: ErrorTypes | string) {
@@ -15,9 +16,18 @@ export default class ErrorPage extends Page {
   }
 
   render() {
+    const img = new Image();
+    img.src = ErrorImage;
+    img.classList.add("error-image");
+
+    const errorPage = document.createElement("div");
+    errorPage.classList.add("error-container");
+
     const title = this.createHeaderTitle(ErrorPage.TextObject[this.errorType]);
-    this.container.append(title);
+    errorPage.append(img);
+    errorPage.append(title);
+    this.container.append(errorPage);
+
     return this.container;
   }
 }
-
