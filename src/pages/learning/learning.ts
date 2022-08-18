@@ -202,6 +202,22 @@ class LearningPage extends Page {
     
   }
 
+  private renderMiniGamesDropdown(className:string){
+    const content = createElement('div',`${className}-content`);
+    const miniGameSprint = createElement('div',`${className}-sprint-link`);
+    const miniGameAudioChallenge = createElement('div',`${className}-audio-challenge-link`); 
+    const icon = document.querySelector(`.${className}`) as HTMLDivElement;
+    miniGameSprint.textContent = 'Sprint';
+    miniGameAudioChallenge.textContent = 'Audio Challenge';
+    content.append(miniGameAudioChallenge,miniGameSprint);
+    icon.append(content);
+    
+    icon.addEventListener('click',()=>{
+      icon.classList.toggle("js-clicked");
+
+    })
+  }
+
   static resetPagination(pagButtons:PaginationButtons){
     const buttonFirst = document.querySelector(
       `.${pagButtons.first}`
@@ -242,6 +258,7 @@ class LearningPage extends Page {
           this.renderLastPage(controls.pagButtons);
           this.renderFirstPage(controls.pagButtons);
           this.renderNewGroup(controls.dropdown,controls.pagButtons);
+          this.renderMiniGamesDropdown(controls.miniGamesClass);
       });
     return this.container;
   }

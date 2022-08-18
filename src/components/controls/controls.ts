@@ -100,9 +100,11 @@ class Controls extends Component {
   }
 
   renderIcon(className:string,path:string){
-    const icon = createElement('img',className) as HTMLImageElement;
+    const div = createElement('div',className) as HTMLDivElement;
+    const icon = createElement('img',`${className}-image`) as HTMLImageElement;
     icon.src = path;
-    return icon;
+    div.append(icon);
+    return div;
   }
 
   render(): HTMLElement {
