@@ -1,31 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+$begin_transition: 0.5s;
+$end_transition: 0.4s;
+
 .nav-container{
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 180px;
-    border-right: 1px solid #000000;
+    border-right: 1px solid #a4a4a4;
     height: 100vh;
-    padding: 24px 0px;
+    padding-top: 24px;
     background: #ffffff;
     align-items: center;
+    position: sticky;
+    top: 0;
 
-    a{
-        color: #535350;
-        font-family: sans-serif;
-        padding: 5px 15px;
-        box-sizing: border-box;
-        font-size: 16px;
-        line-height: 24px;
-        text-decoration: none;
-    }
+    .nav-wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
 
-    img{
-        width: 35px;
-        height: 35px;
-        align-self: flex-start;
-        
-        &:hover{
-            cursor: pointer;
+        .nav_button{
+            display: flex;
+            gap: 10px;
+            color: #535350;
+            font-family: sans-serif;
+            padding: 5px 15px;
+            box-sizing: border-box;
+            font-size: 18px;
+            line-height: 26px;
+            text-decoration: none;
+            transition: $end_transition;
+            border-radius: 5px;
+            width: 100%;
+
+            &:hover{
+                color: #767672;
+                background-color: rgb(239, 239, 239);
+                transition: $begin_transition;
+            }
+
+            img{
+                width: 24px;
+                height: 24px;
+            }
         }
     }
 
@@ -36,26 +55,116 @@
         gap: 15px;
 
         .login_button {
-            pad: 8px 45px;
+            font-family: 'Roboto', sans-serif; 
+            padding: 8px 0px;
+            width: 135px;
             text-align: center;
             border: 1px solid #9A9A98;
             border-radius: 4px;
             color: #161613;
             font-style: normal;
             font-weight: 400;
-            font-size: 16px;
+            font-size: 18px;
             line-height: 24px;
             box-sizing: border-box;
+            text-decoration: none;
+
+            transition: $end_transition;
+            &:hover{
+                transition: $begin_transition;
+            }
         }
 
-        // #log_in{
-
-        // }
+        #log_in{
+            &:hover{
+                background-color: rgb(245, 245, 245);
+            }
+        }
 
         #sign_up{
             color: #FFFFFF;
             background: #084777;
-            border: none;
+            border: 1px solid #084777;
+
+            &:hover{
+                background-color: #1967a2;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .nav-container{
+        width: 150px;
+
+        .nav-wrapper{
+            gap: 20px;
+        }
+
+        .login_wrapper{
+            width: 115px;
+
+            .login_button{
+                width: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .nav-container{
+        width: 125px;
+
+        .nav-wrapper{
+            gap: 15px;
+
+            .nav_button{
+                gap: 5px;
+                padding: 5px 5px;
+                font-size: 16px;
+                line-height: 22px;
+                align-items: center;
+            }
+        }
+
+        .login_wrapper{
+            width: 90px;
+            gap: 5px;
+
+            .login_button{
+                width: auto;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .nav-container{
+        padding-top: 15px;
+        width: 85px;
+
+        .nav-wrapper{
+            gap: 5px;
+
+            .nav_button{
+                gap: 3px;
+                padding: 0;
+                font-size: 12px;
+                line-height: 15px;
+                align-items: center;
+            }
+        }
+
+        .login_wrapper{
+            width: 70px;
+
+            .login_button{
+                width: auto;
+                padding: 4px 0px;
+                font-size: 12px;
+                line-height: 18px;
+            }
         }
     }
 }
