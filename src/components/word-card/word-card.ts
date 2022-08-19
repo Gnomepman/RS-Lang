@@ -6,9 +6,11 @@ import { createElement } from "../utils/utils";
 import "./word-card.scss";
 class WordCard extends Component {
   private wordTemplate: Word;
+  isAuthorized: boolean;
   constructor(tagName: string, className: string, word: Word) {
     super(tagName, className);
     this.wordTemplate = word;
+    this.isAuthorized = false;
   }
 
   render() {
@@ -17,7 +19,7 @@ class WordCard extends Component {
     const div = createElement("div", "learning__word-card-container");
     const spanTranslate = createElement(
       "span",
-      "learning__word-card-translate"
+      "learning__word-card-translate-word"
     );
     const spanTranscription = createElement(
       "span",
@@ -71,7 +73,7 @@ class WordCard extends Component {
     div.append(spanTranslate, spanTranscription, imgAudio, audio);
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
-    divButtons.append(buttonLearn, buttonAdd);
+    if (this.isAuthorized) divButtons.append(buttonLearn, buttonAdd);
     this.container.append(
       img,
       spanWord,

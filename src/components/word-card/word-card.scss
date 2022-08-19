@@ -1,16 +1,50 @@
 .learning__word-card{
   display: flex;
   flex-direction: column;
+  background-color: white;
   gap: 15px;
-  border: 2px solid black;
-  width: 431px;
+  padding: 20px;
+  align-items: center;
+  border-radius: 16px;
+  width: 300px;
+  height: 550px;
+  font-size: 16px;
+  box-shadow: 0px 8px 18px rgba(44, 39, 56, 0.05), 0px 16px 30px rgba(44, 39, 56, 0.05);
 }
 .learning__word-card-img{
-  width: 200px;
+  width: 307px;
+  aspect-ratio: 3 / 2;
   height: auto;
+  border-radius: 16px;
 }
 .learning__word-card-audio-img{
   width: 34px;
   height: 34px;
   cursor: pointer;
+}
+.learning__word-card-word{
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.learning__word-card-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.learning__word-card-meaning,
+.learning__word-card-translate{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #1103AD;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.learning__word-card-translate{
+  border: 1px solid #1E9E1C;
 }
