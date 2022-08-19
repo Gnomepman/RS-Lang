@@ -6,9 +6,7 @@
   align-items: center;
   width: 80%;
   height: 50px;
-  background-color: antiquewhite;
-  left: 50%;
-  transform: translateX(-15%);
+  left: 21%;
   background-color: hsla(311, 0%, 100%, 1);
   background-image:
   radial-gradient(at 92% 23%, #084777 0px, transparent 50%),
@@ -81,8 +79,9 @@
   position: relative;
 
   &.js-clicked > .pagination__groups-content {
-    display: flex;
+    opacity: 1;
     flex-direction: column;
+    transition-duration: 1s;
     gap: 10px;
   }
 }
@@ -101,14 +100,20 @@
 }
 
 .controls__mini-games.js-clicked > .controls__mini-games-content {
-  display: flex;
+  opacity: 1;
   flex-direction: column;
+  transition-duration: 1s;
   gap: 10px;
+}
+
+.controls__mini-games{
+  position: relative;
 }
 
 .pagination__groups-content,
 .controls__mini-games-content {
-  display: none;
+  display: flex;
+  opacity: 0;
   position: absolute;
   left: 0;
   bottom: 40px;
