@@ -1,6 +1,6 @@
 .controls {
   bottom: 1%;
-  position: fixed;
+  position: sticky;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -8,7 +8,7 @@
   height: 50px;
   background-color: antiquewhite;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-15%);
   background-color: hsla(311, 0%, 100%, 1);
   background-image:
   radial-gradient(at 92% 23%, #084777 0px, transparent 50%),

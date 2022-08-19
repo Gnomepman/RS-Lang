@@ -13,8 +13,10 @@ class LearningPage extends Page {
     MainTitle: "Learning2 Page",
   };
   static currentGroup = 1;
+  static divWrapper:HTMLDivElement;
   constructor(id: string) {
     super(id);
+    LearningPage.divWrapper = createElement('div',"learning__wrapper") as HTMLDivElement;
   }
 
   async renderNewGroup(dropdown:DropdownClasses,pagButtons:PaginationButtons){
@@ -66,7 +68,7 @@ class LearningPage extends Page {
       div.append(wordCard.render());
     });
     console.log('1');
-    this.container.insertAdjacentElement("afterbegin", div);
+    LearningPage.divWrapper.insertAdjacentElement("afterbegin", div);
   }
 
   
@@ -103,8 +105,6 @@ class LearningPage extends Page {
         buttonFirst.disabled = false;
       }
       // remove div with class .learning and append new div with new words
-      const current = document.querySelector(".learning") as HTMLDivElement;
-      current.remove();
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
       spanPage.textContent = pageCurrent.toString(10);
     });
@@ -249,10 +249,11 @@ class LearningPage extends Page {
 
   render() {
     const controls = new Controls("div", "controls");
-    console.log("begin:");
+
     this.renderCardWords(1, 1)
       .then(() => {
-        this.container.append(controls.render()),
+        LearningPage.divWrapper.append(controls.render()),
+        this.container.insertAdjacentElement('afterbegin',LearningPage.divWrapper);
           this.renderNextPage(controls.pagButtons);
           this.renderPrevPage(controls.pagButtons);
           this.renderLastPage(controls.pagButtons);
