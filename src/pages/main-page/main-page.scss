@@ -119,6 +119,8 @@ $margin_top_beetwen_section: 60px;
         flex-direction: column;
         width: 100%;
         gap: 40px;
+        background: url("../../assets/path-line.svg") 99%;
+        background-repeat: no-repeat;
 
         .benefit{
             width: 400px;
@@ -135,11 +137,11 @@ $margin_top_beetwen_section: 60px;
                 margin: 0;
             }
 
-            &:nth-child(2n) {
+            &:nth-child(2n+1) {
                 align-self: flex-start;
             }
     
-            &:nth-child(2n+1) {
+            &:nth-child(2n) {
                 align-self: flex-end;
             }
 
