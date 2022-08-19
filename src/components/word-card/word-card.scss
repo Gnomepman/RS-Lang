@@ -4,6 +4,7 @@
   background-color: white;
   gap: 15px;
   padding: 20px;
+  font-family: 'Roboto', sans-serif; 
   align-items: center;
   border-radius: 16px;
   width: 300px;
@@ -27,6 +28,11 @@
   font-weight: bold;
 }
 
+.learning__word-card-translate-word{
+  display: inline-block;
+  max-width: 130px;
+}
+
 .learning__word-card-container{
   display: flex;
   width: 100%;
@@ -42,7 +48,7 @@
   padding: 10px;
   border: 1px solid #1103AD;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .learning__word-card-translate{

@@ -81,10 +81,10 @@ class Controls extends Component {
     ) as HTMLButtonElement;
     const page = createElement("span", `${className}__page`) as HTMLSpanElement;
 
-    buttonNext.textContent = ">";
-    buttonPrev.textContent = "<";
-    buttonFirst.textContent = "<<";
-    buttonLast.textContent = ">>";
+    buttonNext.innerHTML = "&#5125;";
+    buttonPrev.innerHTML = "&#5130;";
+    buttonFirst.innerHTML = "&#5130;&#5130;";
+    buttonLast.innerHTML = "&#5125;&#5125;";
     page.textContent = "1";
 
     buttonPrev.disabled = true;

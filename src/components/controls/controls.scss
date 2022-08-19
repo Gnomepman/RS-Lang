@@ -1,4 +1,4 @@
-.controls{
+.controls {
   bottom: 0;
   position: fixed;
   display: flex;
@@ -10,31 +10,89 @@
   gap: 15px;
 }
 
+.pagination {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
 
-.pagination__groups{
+.pagination__next,
+.pagination__prev,
+.pagination__last,
+.pagination__first,
+.pagination__page {
+  font-size: 20px;
+  line-height: 20px;
+  border-radius: 4px;
+}
+
+.pagination__next,
+.pagination__prev,
+.pagination__last,
+.pagination__first {
+  cursor: pointer;
+  background-image: linear-gradient(
+    to right,
+    #084777 0%,
+    #546673 51%,
+    #084777 100%
+  );
+  width: 40px;
+  height: 30px;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  display: block;
+  border: none;
+
+  &:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &:disabled{
+    background-image:none;
+    background-color:gray;
+    cursor: auto;
+  }
+}
+
+.pagination__page{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: #084777;
+  text-align: center;
+  color: white;
+  line-height: 40px;
+}
+
+.pagination__groups {
   position: relative;
 
-  &.js-clicked > .pagination__groups-content{
+  &.js-clicked > .pagination__groups-content {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 }
 
-.pagination__groups{
+.pagination__groups {
   border: 1px solid black;
   padding: 10px;
   cursor: pointer;
 }
 
-.controls__mini-games.js-clicked > .controls__mini-games-content{
+.controls__mini-games.js-clicked > .controls__mini-games-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .pagination__groups-content,
-.controls__mini-games-content{
+.controls__mini-games-content {
   display: none;
   position: absolute;
   bottom: 40px;
@@ -42,21 +100,21 @@
   width: 100px;
 }
 
-.controls__mini-games-content{
+.controls__mini-games-content {
   width: auto;
 }
 
-.pagination__groups-group{
+.pagination__groups-group {
   border: 1px solid black;
   cursor: pointer;
 }
 
 .controls__home-image,
-.controls__mini-games-image{
+.controls__mini-games-image {
   width: 30px;
   height: auto;
 }
 .controls__mini-games-audio-challenge-link,
-.controls__mini-games-sprint-link{
+.controls__mini-games-sprint-link {
   border: 1px solid black;
 }
