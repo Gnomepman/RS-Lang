@@ -139,12 +139,18 @@
   height: auto;
   cursor: pointer;
 }
-.controls__mini-games-audio-challenge-link,
-.controls__mini-games-sprint-link {
+.controls__mini-games-audio-challenge-image,
+.controls__mini-games-sprint-image {
   border: 1px solid black;
   background-color: white;
-  padding: 5px;
   cursor: pointer;
+  width: 200px;
+  height: auto;
+
+  &:hover{
+    border: 2px solid #00B03C;
+    transition: 0.1s;
+  }
 }
 
 div[data-group="1"]{

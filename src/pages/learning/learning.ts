@@ -7,6 +7,8 @@ import Controls, {
 } from "../../components/controls/controls";
 import { API_URL } from "../../components/api/types";
 import { createElement } from "../../components/utils/utils";
+import sprint_icon from "../../assets/sprint.svg";
+import audio_challenge_icon from "../../assets/audio_challenge.svg";
 
 class LearningPage extends Page {
   static TextObject = {
@@ -204,12 +206,18 @@ class LearningPage extends Page {
 
   private renderMiniGamesDropdown(className:string){
     const content = createElement('div',`${className}-content`);
-    const miniGameSprint = createElement('div',`${className}-sprint-link`);
-    const miniGameAudioChallenge = createElement('div',`${className}-audio-challenge-link`); 
+    const linkSprint = createElement('a',`${className}-sprint-link`) as HTMLLinkElement;
+    const linkAudioChallenge = createElement('a',`${className}-audio-challenge-link`) as HTMLLinkElement;
+    const miniGameSprint = createElement('img',`${className}-sprint-image`) as HTMLImageElement;
+    const miniGameAudioChallenge = createElement('img',`${className}-audio-challenge-image`) as HTMLImageElement; 
     const icon = document.querySelector(`.${className}`) as HTMLDivElement;
-    miniGameSprint.textContent = 'Sprint';
-    miniGameAudioChallenge.textContent = 'Audio Challenge';
-    content.append(miniGameAudioChallenge,miniGameSprint);
+    linkSprint.href = "index.html#sprint";
+    linkAudioChallenge.href = "index.html#audio-challenge";
+    miniGameSprint.src = sprint_icon;
+    miniGameAudioChallenge.src = audio_challenge_icon;
+    linkSprint.append(miniGameSprint);
+    linkAudioChallenge.append(miniGameAudioChallenge);
+    content.append(linkAudioChallenge,linkSprint);
     icon.append(content);
     
     icon.addEventListener('click',()=>{
