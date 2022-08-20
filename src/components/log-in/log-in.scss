@@ -1,0 +1,29 @@
+.log-in{
+  position: absolute;
+  width: 1192px;
+  height: auto;
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  background-color: white;
+  z-index: 1;
+}
+
+.log-in__form{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.log-in__title-title{
+  font-family: "Silkscreen", cursive;
+  font-size: 30px;
+}
+
+.log-in__title-subtitle{
+  font-size: 24px;
+}
+
+.log-in__image{
+  width: 50%;
+  height: auto;
+}
