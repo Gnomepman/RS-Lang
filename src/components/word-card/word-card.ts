@@ -25,8 +25,17 @@ class WordCard extends Component {
       "span",
       "learning__word-card-transcription"
     );
+    const buttonPlay = createElement("button", "learning__word-card-button-play") as HTMLButtonElement;
     const imgAudio = createElement("img", "learning__word-card-audio-img");
     const audio = createElement("audio", "learning__word-card-audio");
+    const audioTranslate = createElement(
+      "audio",
+      "learning__word-card-audio-translate"
+    );
+    const audioMeaning = createElement(
+      "audio",
+      "learning__word-card-audio-meaning"
+    );
     const divMeaning = createElement("div", "learning__word-card-meaning");
     const spanMeaning = createElement(
       "span",
@@ -58,6 +67,8 @@ class WordCard extends Component {
     spanTranscription.textContent = `${this.wordTemplate.transcription}`;
     (imgAudio as HTMLImageElement).src = `${play_icon}`;
     (audio as HTMLAudioElement).src = `${API_URL}/${this.wordTemplate.audio}`;
+    (audioMeaning as HTMLAudioElement).src = `${API_URL}/${this.wordTemplate.audioMeaning}`;
+    (audioTranslate as HTMLAudioElement).src = `${API_URL}/${this.wordTemplate.audioExample}`;
     spanMeaning.innerHTML = this.wordTemplate.textMeaning;
     spanMeaningEx.innerHTML = this.wordTemplate.textExample;
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
@@ -66,11 +77,23 @@ class WordCard extends Component {
     buttonAdd.textContent = "Добавить";
     buttonLearn.textContent = "Не изучено";
 
-    imgAudio.addEventListener("click", () => {
+    buttonPlay.onclick = ()=>{
+      buttonPlay.classList.add('js-clicked');
       (audio as HTMLAudioElement).play();
-    });
-
-    div.append(spanTranslate, spanTranscription, imgAudio, audio);
+      buttonPlay.disabled = true;
+    }
+    audio.onended = ()=> (audioMeaning as HTMLAudioElement).play();
+    audioMeaning.onended = ()=> (audioTranslate as HTMLAudioElement).play();
+    audioTranslate.onended = () => {buttonPlay.disabled = false; buttonPlay.classList.remove('js-clicked');}
+    buttonPlay.append(imgAudio);
+    div.append(
+      spanTranslate,
+      spanTranscription,
+      buttonPlay,
+      audio,
+      audioMeaning,
+      audioTranslate
+    );
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
     if (this.isAuthorized) divButtons.append(buttonLearn, buttonAdd);

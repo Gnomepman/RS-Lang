@@ -18,11 +18,55 @@
   height: auto;
   border-radius: 16px;
 }
-.learning__word-card-audio-img{
+.learning__word-card-audio-img,
+.learning__word-card-button-play{
+  padding: 0;
+  margin: 0;
   width: 34px;
   height: 34px;
-  cursor: pointer;
+
+
 }
+
+.learning__word-card-button-play{
+  border-radius: 50%;
+  border: none;
+  position: relative;
+  cursor: pointer;
+    
+  &::after{
+    content: "";
+    display: block;
+    border: 2px solid #00B03C;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  &.js-clicked::after  {
+    animation-duration: 1s;
+    animation-name: playing;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes playing {
+  from{
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  to{
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+
 .learning__word-card-word{
   font-size: 28px;
   font-weight: bold;
