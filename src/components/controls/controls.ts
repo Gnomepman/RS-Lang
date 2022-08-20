@@ -1,7 +1,7 @@
 import Component from "../templates/component";
 import { createElement } from "../utils/utils";
-import home_icon from '../../assets/home.svg';
-import miniGames_icon from '../../assets/mini-games.svg';
+import home_icon from "../../assets/home.svg";
+import miniGames_icon from "../../assets/mini-games.svg";
 import "./controls.scss";
 
 export type PaginationButtons = {
@@ -22,7 +22,8 @@ class Controls extends Component {
   currentPage: number;
   pagButtons: PaginationButtons;
   dropdown: DropdownClasses;
-  miniGamesClass:string;
+  miniGamesClass: string;
+  private controlsWrapper: HTMLDivElement;
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.currentPage = 1;
@@ -39,6 +40,10 @@ class Controls extends Component {
       group: "",
     };
     this.miniGamesClass = "";
+    this.controlsWrapper = createElement(
+      "div",
+      "controls-wrapper"
+    ) as HTMLDivElement;
   }
   renderDropdown(className: string): HTMLElement {
     const dropdown = createElement("div", `${className}`);
@@ -99,30 +104,33 @@ class Controls extends Component {
     return div;
   }
 
-  renderIcon(className:string,path:string){
-    const div = createElement('div',className) as HTMLDivElement;
-    const icon = createElement('img',`${className}-image`) as HTMLImageElement;
+  renderIcon(className: string, path: string) {
+    const div = createElement("div", className) as HTMLDivElement;
+    const icon = createElement("img", `${className}-image`) as HTMLImageElement;
     icon.src = path;
     div.append(icon);
     return div;
   }
 
-  renderHomeLink(className:string,path:string){
-    const a = createElement('a',className) as HTMLLinkElement;
-    const icon = createElement('img',`${className}-image`) as HTMLImageElement;
+  renderHomeLink(className: string, path: string) {
+    const a = createElement("a", className) as HTMLLinkElement;
+    const icon = createElement("img", `${className}-image`) as HTMLImageElement;
     icon.src = path;
-    a.href = 'index.html#main-page';
+    a.href = "index.html#main-page";
     a.append(icon);
     return a;
   }
 
   render(): HTMLElement {
     this.miniGamesClass = "controls__mini-games";
-    this.container.append(
-      this.renderHomeLink('controls__home',home_icon),
-      this.renderIcon( this.miniGamesClass,miniGames_icon),
-      this.renderPagination("pagination"),
+    this.controlsWrapper.append(
+      this.renderHomeLink("controls__home", home_icon),
+      this.renderIcon(this.miniGamesClass, miniGames_icon),
       this.renderDropdown("pagination__groups")
+    );
+    this.container.append(
+      this.controlsWrapper,
+      this.renderPagination("pagination")
     );
     return this.container;
   }

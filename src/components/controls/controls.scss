@@ -15,6 +15,24 @@
   background-repeat: repeat-y;
   border-radius: 10px;
   box-shadow: 0px 8px 7px 1px rgba(34, 60, 80, 0.2);
+
+  @media (max-width:750px) {
+    flex-direction: column;
+    gap:10px;
+    box-sizing: border-box;
+    padding: 10px;
+    height:auto;
+  }
+}
+
+.controls-wrapper{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  @media (max-width:750px) {
+    order: 2;
+  }
 }
 
 .pagination {
