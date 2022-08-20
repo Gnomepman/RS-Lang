@@ -31,7 +31,8 @@ class LearningPage extends Page {
       if (
         (e.target as HTMLDivElement).classList.contains(dropdown.group)
       ) {
-        const prevGroup = div.innerText;
+        const prevGroup = div.childNodes[0].textContent;
+        console.log('prevGroup',prevGroup);
         const prevGroupId: number = +(div.getAttribute(
           "data-group"
         ) as string);
