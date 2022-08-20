@@ -8,10 +8,10 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(194, 193, 190,0.5);
-  transform: translateX(-100%);
+  transform: scale(0);
 
   &.js-show{
-    transform: translateX(0%);
+    transform: scale(1);
     transition: 0.3s;
   }
 }

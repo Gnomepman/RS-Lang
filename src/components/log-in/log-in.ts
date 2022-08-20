@@ -97,6 +97,7 @@ class LogIn extends Component {
 
   render(): HTMLElement {
     const classNameLogin = "log-in";
+    
     const divLogin = createElement("div",classNameLogin);
     const divContainer = createElement(
       "div",
@@ -138,7 +139,7 @@ class LogIn extends Component {
       this.renderRegistrationLink(`${classNameLogin}__registration`)
     );
     divLogin.append(form, img);
-    this.container.append(divLogin);
+    this.container.replaceChildren(divLogin);
     return this.container;
   }
 }

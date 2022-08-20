@@ -36,8 +36,8 @@ export default class Nav_menu extends Component {
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper")
     login_form.innerHTML = `
-        <a href="#" class="login_button" id="log_in">Log in</a>
-        <a href="#" class="login_button" id="sign_up">Sign up</a>
+        <button class="login_button" id="log_in">Log in</button>
+        <button class="login_button" id="sign_up">Sign up</button>
     `
     this.renderNavButtons();
     this.container.append(login_form);
