@@ -96,45 +96,49 @@ class LogIn extends Component {
   }
 
   render(): HTMLElement {
-    const divLogin = createElement(
+    const classNameLogin = "log-in";
+    const divLogin = createElement("div",classNameLogin);
+    const divContainer = createElement(
       "div",
-      `${this.container.className}__container`
+      `${classNameLogin}__container`
     );
-    const form = createElement("form", `${this.container.className}__form`);
+    const form = createElement("form", `${classNameLogin}__form`);
     const img = createElement(
       "img",
-      `${this.container.className}__image`
+      `${classNameLogin}__image`
     ) as HTMLImageElement;
+
     img.src = log_in_img;
-    divLogin.append(
+    divContainer.append(
       this.renderCheckBox(
-        `${this.container.className}__remember-me`,
+        `${classNameLogin}__remember-me`,
         "Remember me"
       ),
-      this.renderButton(`${this.container.className}__button-log-in`, "Log In")
+      this.renderButton(`${classNameLogin}__button-log-in`, "Log In")
     );
     form.append(
       this.renderTitle(
-        `${this.container.className}__title`,
+        `${classNameLogin}__title`,
         "RSLANG",
         "Welcome to RSLANG"
       ),
       this.renderField(
-        `${this.container.className}__user`,
+        `${classNameLogin}__user`,
         "Username",
         "Enter your name"
       ),
       this.renderField(
-        `${this.container.className}__password`,
+        `${classNameLogin}__password`,
         "Password",
         "Enter password",
         8,
         "password"
       ),
-      divLogin,
-      this.renderRegistrationLink(`${this.container.className}__registration`)
+      divContainer,
+      this.renderRegistrationLink(`${classNameLogin}__registration`)
     );
-    this.container.append(form, img);
+    divLogin.append(form, img);
+    this.container.append(divLogin);
     return this.container;
   }
 }

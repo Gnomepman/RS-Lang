@@ -1,3 +1,21 @@
+.modal-window-login{
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(194, 193, 190,0.5);
+  transform: translateX(-100%);
+
+  &.js-show{
+    transform: translateX(0%);
+    transition: 0.3s;
+  }
+}
+
 .log-in{
   width: 1192px;
   height: auto;
@@ -89,6 +107,7 @@
   border-radius: 4px;
   color: white;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .log-in__registration{

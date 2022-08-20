@@ -25,6 +25,13 @@ export default class Nav_menu extends Component {
     this.container.append(nav_buttons_wrapper);
   }
 
+  showModal(className:string){
+    const modalWindow = document.querySelector(`.${className}`) as HTMLDivElement;
+    const link = document.querySelector("#log_in") as HTMLLinkElement;
+    link.onclick = () => {modalWindow.classList.add("js-show");console.log("click");}
+
+  }
+
   render() {
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper")
