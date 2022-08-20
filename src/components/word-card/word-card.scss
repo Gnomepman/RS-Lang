@@ -1,16 +1,100 @@
 .learning__word-card{
   display: flex;
   flex-direction: column;
+  background-color: white;
   gap: 15px;
-  border: 2px solid black;
-  width: 431px;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif; 
+  align-items: center;
+  border-radius: 16px;
+  width: 300px;
+  height: 550px;
+  font-size: 16px;
+  box-shadow: 0px 8px 18px rgba(44, 39, 56, 0.05), 0px 16px 30px rgba(44, 39, 56, 0.05);
 }
 .learning__word-card-img{
-  width: 200px;
+  width: 307px;
+  aspect-ratio: 3 / 2;
   height: auto;
+  border-radius: 16px;
 }
-.learning__word-card-audio-img{
+.learning__word-card-audio-img,
+.learning__word-card-button-play{
+  padding: 0;
+  margin: 0;
   width: 34px;
   height: 34px;
+
+
+}
+
+.learning__word-card-button-play{
+  border-radius: 50%;
+  border: none;
+  position: relative;
   cursor: pointer;
+    
+  &::after{
+    content: "";
+    display: block;
+    border: 2px solid #00B03C;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  &.js-clicked::after  {
+    animation-duration: 1s;
+    animation-name: playing;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes playing {
+  from{
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  to{
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+
+.learning__word-card-word{
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.learning__word-card-translate-word{
+  display: inline-block;
+  max-width: 130px;
+}
+
+.learning__word-card-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.learning__word-card-meaning,
+.learning__word-card-translate{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #1103AD;
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
+.learning__word-card-translate{
+  border: 1px solid #1E9E1C;
 }
