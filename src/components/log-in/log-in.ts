@@ -76,7 +76,7 @@ class LogIn extends Component {
     ) as HTMLLabelElement;
 
     checkbox.type = "checkbox";
-    label.textContent = "Запомнить";
+    label.textContent = text;
 
     div.append(checkbox, label);
     return div;
@@ -85,10 +85,10 @@ class LogIn extends Component {
   renderRegistrationLink(className: string): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
     const span = createElement("span", `${className}-span`);
-    const spanLink = createElement("a", `${className}-link`) as HTMLLinkElement;
+    const spanLink = createElement("span", `${className}-link`) as HTMLLinkElement;
 
-    span.textContent = "Ещё не зарегистрированы?";
-    spanLink.innerText = "Регистрация";
+    span.textContent = "Not registered yet?";
+    spanLink.innerText = "Register";
 
     div.append(span, spanLink);
 
@@ -108,26 +108,26 @@ class LogIn extends Component {
     img.src = log_in_img;
     divLogin.append(
       this.renderCheckBox(
-        `${this.container.className}__container`,
-        "Запомни меня"
+        `${this.container.className}__remember-me`,
+        "Remember me"
       ),
-      this.renderButton(`${this.container.className}__button-log-in`, "Войти")
+      this.renderButton(`${this.container.className}__button-log-in`, "Log In")
     );
     form.append(
       this.renderTitle(
         `${this.container.className}__title`,
         "RSLANG",
-        "Добро пожаловать в RSLANG"
+        "Welcome to RSLANG"
       ),
       this.renderField(
         `${this.container.className}__user`,
-        "Имя пользователя",
-        "Введите ваше имя"
+        "Username",
+        "Enter your name"
       ),
       this.renderField(
         `${this.container.className}__password`,
-        "Пароль",
-        "Введите пароль",
+        "Password",
+        "Enter password",
         8,
         "password"
       ),

@@ -1,5 +1,4 @@
 .log-in{
-  position: absolute;
   width: 1192px;
   height: auto;
   display: flex;
@@ -12,15 +11,93 @@
   display: flex;
   flex-direction: column;
   width: 50%;
+  gap: 15px;
+  justify-content: center;  
+  align-items: center;
+  padding: 20px 65px;
+  box-sizing: border-box;
+}
+
+.log-in__title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .log-in__title-title{
   font-family: "Silkscreen", cursive;
-  font-size: 30px;
+  font-size: 56px;
+  padding: 0;
+  margin: 0;
+  color: #084777;
 }
 
 .log-in__title-subtitle{
   font-size: 24px;
+}
+
+.log-in__title-title,
+.log-in__title-subtitle{
+  text-align: center;
+}
+
+.log-in__user,
+.log-in__password{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 6px;
+}
+
+.log-in__user-input,
+.log-in__password-input{
+  width: 100%;
+  height: 50px;
+  border: 1px solid #084777;
+  border-radius: 5px;
+  font-size: 22px;
+}
+
+.log-in__user-title,
+.log-in__password-title{
+  font-size: 20px;
+  color: #084777;
+}
+
+.log-in__container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.log-in__remember-me{
+  display: flex;
+  gap: 10px;
+}
+
+.log-in__remember-me-label{
+  font-size: 20px;
+  color:#084777;
+}
+
+.log-in__button-log-in{
+  width: 40%;
+  height: 44px;
+  background-color: #084777;
+  border-radius: 4px;
+  color: white;
+  font-size: 20px;
+}
+
+.log-in__registration{
+  display:flex;
+  gap: 10px;
+}
+
+.log-in__registration-link{
+  color: #07406F;
 }
 
 .log-in__image{

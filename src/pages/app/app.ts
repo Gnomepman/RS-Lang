@@ -6,13 +6,11 @@ import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
 import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
-import LogIn from "../../components/log-in/log-in";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
   private static defaultPageId: string = "current-page";
   private nav_menu: Nav_menu;
-  private logInForm: LogIn;
   private static footer: Footer;
 
   //render new page depending on id
@@ -63,7 +61,6 @@ export default class App {
   //Init "nav-menu" with tag-name and class-name
   constructor() {
     this.nav_menu = new Nav_menu("nav", "nav-container");
-    this.logInForm = new LogIn('div','log-in');
     App.footer = new Footer("footer", "footer-container");
   }
 
@@ -71,7 +68,7 @@ export default class App {
   //What happens here?
   //To the <body> we append nav_menu and render page "main-page"
   run() {
-    App.container.append(this.nav_menu.render(),this.logInForm.render());
+    App.container.append(this.nav_menu.render());
     window.location.hash = '';
     App.renderNewPage("main-page");
     this.enableRouteChange();
