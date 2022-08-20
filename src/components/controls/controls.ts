@@ -107,10 +107,19 @@ class Controls extends Component {
     return div;
   }
 
+  renderHomeLink(className:string,path:string){
+    const a = createElement('a',className) as HTMLLinkElement;
+    const icon = createElement('img',`${className}-image`) as HTMLImageElement;
+    icon.src = path;
+    a.href = 'index.html#main-page';
+    a.append(icon);
+    return a;
+  }
+
   render(): HTMLElement {
     this.miniGamesClass = "controls__mini-games";
     this.container.append(
-      this.renderIcon('controls__home',home_icon),
+      this.renderHomeLink('controls__home',home_icon),
       this.renderIcon( this.miniGamesClass,miniGames_icon),
       this.renderPagination("pagination"),
       this.renderDropdown("pagination__groups")
