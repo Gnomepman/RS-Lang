@@ -1,6 +1,10 @@
 import Page from '../../components/templates/page';
 import './main-page.scss'
 import humans_picture from '../../assets/humans_background.png'
+import book from '../../assets/text_book.png'
+import games from '../../assets/games.png'
+import statistics from '../../assets/statistics.png'
+import free from '../../assets/free.png'
 import danya from '../../assets/developer_danya.jpg'
 import andrey from '../../assets/developer_andrey.jpg'
 import azizbek from '../../assets/developer_azizbek.jpg'
@@ -34,22 +38,22 @@ export default class MainPage extends Page {
         <h2 class="section_title">What do we offer?</h2>
         <div class="benefits_enum">
             <div class="benefit">
-                <img src="${humans_picture}" alt="" class="benefit_icon">
+                <img src="${book}" alt="" class="benefit_icon">
                 <h3 class="benefit_title">Textbook</h3>
                 <p class="benefit_description">The electronic textbook with six sections. Each section has 30 pages of 20 words. In total – 4000 of most common English words. Each word has the translation, thematic image, pronunciation of the word (separately and in a sentence)</p>
             </div>
             <div class="benefit">
-                <img src="${humans_picture}" alt="" class="benefit_icon">
+                <img src="${games}" alt="" class="benefit_icon">
                 <h3 class="benefit_title">Games</h3>
                 <p class="benefit_description">Traditional learning is boring. So we offer better way to memorize words - by playing games “audiocall” and “sprint”. Play wherever you want: at home, in a bus, on a go etc. </p>
             </div>
             <div class="benefit">
-                <img src="${humans_picture}" alt="" class="benefit_icon">
+                <img src="${statistics}" alt="" class="benefit_icon">
                 <h3 class="benefit_title">Statistics</h3>
                 <p class="benefit_description">All the progress of training can be viewed in statistics section. We do not collect any personal data, just that which will be useful for you learning.</p>
             </div>
             <div class="benefit">
-                <img src="${humans_picture}" alt="" class="benefit_icon">
+                <img src="${free}" alt="" class="benefit_icon">
                 <h3 class="benefit_title">All for free</h3>
                 <p class="benefit_description">An access to the RSLang app is completely free. We charge our users nothing because we feel our mission to make learning new languages easier and more accessible</p>
             </div>
