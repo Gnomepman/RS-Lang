@@ -6,7 +6,7 @@ import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
 import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
-import AccessForm from "../../components/log-in/log-in";
+import AccessForm from "../../components/access-form/access-form";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements

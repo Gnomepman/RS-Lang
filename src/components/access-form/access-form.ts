@@ -164,7 +164,7 @@ class AccessForm extends Component {
 
 
 
-    divLogin.append(formLogIn, img);
+    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
     return divLogin;
   }
 
@@ -215,7 +215,7 @@ class AccessForm extends Component {
         "Log In"
       )
     );
-    divLogin.append(formLogIn, img);
+    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
     return divLogin;
   }
 
@@ -233,6 +233,15 @@ class AccessForm extends Component {
           `auth-form auth-form_${classNameRegistration}`
         )
       );
+  }
+
+  private renderCloseButton(className:string):HTMLButtonElement{
+    const button= createElement("button",className) as HTMLButtonElement;
+    button.onclick = () => {
+      if (this.container.classList.contains("js-show")) this.container.classList.remove("js-show");
+    }
+
+    return button;
   }
 
   render(): HTMLElement {
