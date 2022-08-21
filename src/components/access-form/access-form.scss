@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   width: 50%;
-  gap: 15px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
   padding: 20px 65px;
@@ -75,6 +75,7 @@
   border-radius: 5px;
   font-size: 22px;
   padding-left: 40px;
+  box-sizing: border-box;
 
 }
 
@@ -128,6 +129,15 @@
   color: white;
   font-size: 20px;
   cursor: pointer;
+  transition: 0.4s;
+
+  &:hover{
+    background-color: #1967a2;
+  }
+}
+
+.auth-form__button_registration{
+  width: 100%;
 }
 
 .link-to-form {
@@ -138,6 +148,10 @@
 .link-to-form__link {
   color: #07406f;
   cursor: pointer;
+
+  &:hover{
+    text-decoration: underline;
+  }
 }
 
 .auth-form__image {
