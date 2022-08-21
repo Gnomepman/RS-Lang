@@ -62,9 +62,10 @@ export default class App {
 
   //Init "nav-menu" with tag-name and class-name
   constructor() {
-    this.nav_menu = new Nav_menu("nav", "nav-container");
-    App.footer = new Footer("footer", "footer-container");
     App.modalWindow = new LogIn("div","modal-window-login");
+    this.nav_menu = new Nav_menu("nav", "nav-container",App.modalWindow);
+    App.footer = new Footer("footer", "footer-container");
+    
   }
 
   //This method is called right when app starts.
@@ -74,7 +75,8 @@ export default class App {
     App.container.append(this.nav_menu.render());
     window.location.hash = '';
     App.renderNewPage("main-page");
-    this.nav_menu.showModal("modal-window-login");
+    this.nav_menu.showModal("modal-window-login","#log_in","log-in");
+    this.nav_menu.showModal("modal-window-login","#sign_up","registration");
     this.enableRouteChange();
   }
 }

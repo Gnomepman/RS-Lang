@@ -70,11 +70,11 @@ class LogIn extends Component {
     const classNameTempElem = className.split("_")[1];
     const checkbox = createElement(
       "input",
-      `${classNameTempBlock}-checkbox ${classNameTempBlock}-checkbox_log-in`
+      `${classNameTempBlock}-checkbox ${classNameTempBlock}-checkbox_${classNameTempElem}`
     ) as HTMLInputElement;
     const label = createElement(
       "label",
-      `${classNameTempBlock}-label ${classNameTempBlock}-label_log-in`
+      `${classNameTempBlock}-label ${classNameTempBlock}-label_${classNameTempElem}`
     ) as HTMLLabelElement;
 
     checkbox.type = "checkbox";
@@ -146,15 +146,60 @@ class LogIn extends Component {
   }
 
   renderRegistrationForm(className:string){
+    const divLogin = createElement("div",className) as HTMLDivElement;
+    const classNameTempBlock = className.split(" ")[0];
+    const classNameTempElem = className.split("_")[1];
+
+    const formLogIn = createElement("form", `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`);
+    const img = createElement(
+      "img",
+      `${classNameTempBlock}__image`
+    ) as HTMLImageElement;
+
+    img.src = log_in_img;
+
+    formLogIn.append(
+      this.renderTitle(
+        `${classNameTempBlock}__title`,
+        "RSLANG",
+        "Welcome to RSLANG"
+      ),
+      this.renderField(
+        `field field_user`,
+        "Username",
+        "Enter your name"
+      ),this.renderField(
+        `field field_e-mail`,
+        "E-Mail",
+        "Enter your e-mail",
+        undefined,
+        "e-mail"
+      ),
+      this.renderField(
+        `field field_password`,
+        "Password",
+        "Enter password",
+        8,
+        "password"
+      ),
+      this.renderButton(`${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`, "Register"),
+      this.renderLinkToForm(`link-to-form link-to-form_log-in`,"Already registered?","Log In")
+    );
+    divLogin.append(formLogIn, img);
+    return divLogin;
+  }
+
+  renderForm(form:string){
+    const classNameLogin = "log-in";
+    const classNameRegistration = "registration";
+
+    if (form === classNameLogin) this.container.replaceChildren(this.renderLogInForm(`auth-form auth-form_${classNameLogin}`));
+    if (form === classNameRegistration ) this.container.replaceChildren(this.renderRegistrationForm(`auth-form auth-form_${classNameRegistration}`));
 
   }
-  
 
   render(): HTMLElement {
-    const classNameLogin = "log-in";
 
-    
-    this.container.replaceChildren(this.renderLogInForm(`auth-form auth-form_${classNameLogin}`));
     return this.container;
   }
 }

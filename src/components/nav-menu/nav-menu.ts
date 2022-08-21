@@ -5,11 +5,14 @@ import book from '../../assets/icon_book.svg'
 import chart from '../../assets/icon_chart.svg'
 import home from '../../assets/icon_home.svg'
 import medal from '../../assets/icon_medal.svg'
+import LogIn from '../log-in/log-in';
 
 export default class Nav_menu extends Component {
   //this.container = <nav class="nav-container">
-  constructor(tagName: string, className: string) {
+  authForm: LogIn;
+  constructor(tagName: string, className: string, authForm: LogIn) {
     super(tagName, className);
+    this.authForm = authForm;
   }
 
   renderNavButtons() {
@@ -25,11 +28,12 @@ export default class Nav_menu extends Component {
     this.container.append(nav_buttons_wrapper);
   }
 
-  showModal(className:string){
+  showModal(className:string,linkSelector:string,form:string){
     const modalWindow = document.querySelector(`.${className}`) as HTMLDivElement;
-    const link = document.querySelector("#log_in") as HTMLLinkElement;
-    link.onclick = () => {modalWindow.classList.add("js-show");console.log("click");}
-
+    const link = document.querySelector(linkSelector) as HTMLLinkElement;
+    link.onclick = () => {
+      this.authForm.renderForm(form);
+      modalWindow.classList.add("js-show");}
   }
 
   render() {
