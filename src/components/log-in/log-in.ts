@@ -8,7 +8,7 @@ class LogIn extends Component {
     super(tagName, className);
   }
 
-  renderTitle(
+  private renderTitle(
     className: string,
     title: string,
     subtitle: string
@@ -25,7 +25,7 @@ class LogIn extends Component {
     return div;
   }
 
-  renderField(
+  private renderField(
     className: string,
     title: string,
     placeholder: string,
@@ -34,6 +34,7 @@ class LogIn extends Component {
   ): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
     const classNameTemp = className.split(" ")[0];
+    const classNameElem = className.split("_")[1];
     const labelTitle = createElement(
       "label",
       `${classNameTemp}__title`
@@ -49,7 +50,7 @@ class LogIn extends Component {
     input.type = type;
     if (minlength) input.setAttribute("minlength", minlength.toString(10));
 
-    input.id = `${classNameTemp}-input`;
+    input.id = `${classNameElem}-input`;
     labelTitle.setAttribute("for", input.id);
 
     div.append(labelTitle, input);
@@ -57,14 +58,14 @@ class LogIn extends Component {
     return div;
   }
 
-  renderButton(className: string, text: string): HTMLButtonElement {
+  private renderButton(className: string, text: string): HTMLButtonElement {
     const button = createElement("button", className) as HTMLButtonElement;
     button.textContent = text;
     button.type = "submit";
     return button;
   }
 
-  renderCheckBox(className: string, text: string): HTMLDivElement {
+  private renderCheckBox(className: string, text: string): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
@@ -84,29 +85,45 @@ class LogIn extends Component {
     return div;
   }
 
-  renderLinkToForm(className: string,text1:string,text2:string): HTMLDivElement {
+  private renderLinkToForm(
+    className: string,
+    text1: string,
+    text2: string
+  ): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
     const classNameTemp = className.split(" ")[0];
-    const span = createElement("span", `${classNameTemp}__span`);
-    const spanLink = createElement("span", `${classNameTemp}__link`) as HTMLLinkElement;
+    const classNameElem = className.split("_")[1];
+    const span = createElement(
+      "span",
+      `${classNameTemp}__span ${classNameTemp}__span_${classNameElem}`
+    );
+    const spanLink = createElement(
+      "span",
+      `${classNameTemp}__link ${classNameTemp}__link_${classNameElem}`
+    ) as HTMLLinkElement;
 
     span.textContent = text1;
     spanLink.innerText = text2;
+
+    spanLink.onclick = () => this.renderForm(classNameElem);
 
     div.append(span, spanLink);
 
     return div;
   }
 
-  renderLogInForm(className:string):HTMLDivElement{
-    const divLogin = createElement("div",className) as HTMLDivElement;
+  private renderLogInForm(className: string): HTMLDivElement {
+    const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
     const divContainer = createElement(
       "div",
       `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`
     );
-    const formLogIn = createElement("form", `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`);
+    const formLogIn = createElement(
+      "form",
+      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
+    );
     const img = createElement(
       "img",
       `${classNameTempBlock}__image`
@@ -118,7 +135,10 @@ class LogIn extends Component {
         `${classNameTempBlock}__remember-me ${classNameTempBlock}__remember-me_${classNameTempElem}`,
         "Remember me"
       ),
-      this.renderButton(`${classNameTempBlock}__button ${classNameTempBlock}__button_log-in`, "Log In")
+      this.renderButton(
+        `${classNameTempBlock}__button ${classNameTempBlock}__button_log-in`,
+        "Log In"
+      )
     );
     formLogIn.append(
       this.renderTitle(
@@ -126,11 +146,7 @@ class LogIn extends Component {
         "RSLANG",
         "Welcome to RSLANG"
       ),
-      this.renderField(
-        `field field_user`,
-        "Username",
-        "Enter your name"
-      ),
+      this.renderField(`field field_user`, "Username", "Enter your name"),
       this.renderField(
         `field field_password`,
         "Password",
@@ -139,18 +155,28 @@ class LogIn extends Component {
         "password"
       ),
       divContainer,
-      this.renderLinkToForm(`link-to-form link-to-form_registration`,"Not registered yet?","Register")
+      this.renderLinkToForm(
+        `link-to-form link-to-form_registration`,
+        "Not registered yet?",
+        "Register"
+      )
     );
+
+
+
     divLogin.append(formLogIn, img);
     return divLogin;
   }
 
-  renderRegistrationForm(className:string){
-    const divLogin = createElement("div",className) as HTMLDivElement;
+  private renderRegistrationForm(className: string) {
+    const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
 
-    const formLogIn = createElement("form", `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`);
+    const formLogIn = createElement(
+      "form",
+      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
+    );
     const img = createElement(
       "img",
       `${classNameTempBlock}__image`
@@ -164,11 +190,8 @@ class LogIn extends Component {
         "RSLANG",
         "Welcome to RSLANG"
       ),
+      this.renderField(`field field_user`, "Username", "Enter your name"),
       this.renderField(
-        `field field_user`,
-        "Username",
-        "Enter your name"
-      ),this.renderField(
         `field field_e-mail`,
         "E-Mail",
         "Enter your e-mail",
@@ -182,24 +205,37 @@ class LogIn extends Component {
         8,
         "password"
       ),
-      this.renderButton(`${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`, "Register"),
-      this.renderLinkToForm(`link-to-form link-to-form_log-in`,"Already registered?","Log In")
+      this.renderButton(
+        `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
+        "Register"
+      ),
+      this.renderLinkToForm(
+        `link-to-form link-to-form_log-in`,
+        "Already registered?",
+        "Log In"
+      )
     );
     divLogin.append(formLogIn, img);
     return divLogin;
   }
 
-  renderForm(form:string){
+  renderForm(form: string) {
     const classNameLogin = "log-in";
     const classNameRegistration = "registration";
 
-    if (form === classNameLogin) this.container.replaceChildren(this.renderLogInForm(`auth-form auth-form_${classNameLogin}`));
-    if (form === classNameRegistration ) this.container.replaceChildren(this.renderRegistrationForm(`auth-form auth-form_${classNameRegistration}`));
-
+    if (form === classNameLogin)
+      this.container.replaceChildren(
+        this.renderLogInForm(`auth-form auth-form_${classNameLogin}`)
+      );
+    if (form === classNameRegistration)
+      this.container.replaceChildren(
+        this.renderRegistrationForm(
+          `auth-form auth-form_${classNameRegistration}`
+        )
+      );
   }
 
   render(): HTMLElement {
-
     return this.container;
   }
 }
