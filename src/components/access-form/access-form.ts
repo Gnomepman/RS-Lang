@@ -37,11 +37,11 @@ class AccessForm extends Component {
     const classNameElem = className.split("_")[1];
     const labelTitle = createElement(
       "label",
-      `${classNameTemp}__title`
+      `${classNameTemp}__title ${classNameTemp}__title_${classNameElem}`
     ) as HTMLLabelElement;
     const input = createElement(
       "input",
-      `${classNameTemp}__input`
+      `${classNameTemp}__input ${classNameTemp}__input_${classNameElem}`
     ) as HTMLInputElement;
 
     labelTitle.textContent = title;

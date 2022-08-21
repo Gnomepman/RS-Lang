@@ -74,7 +74,29 @@
   border: 1px solid #084777;
   border-radius: 5px;
   font-size: 22px;
+  padding-left: 40px;
+
 }
+
+.field__input_user{
+  background: no-repeat url("../../assets/user_icon.svg");
+}
+
+.field__input_password{
+  background: no-repeat url("../../assets/password_icon.svg");
+}
+
+.field__input_e-mail{
+  background: no-repeat url("../../assets/mail_icon.svg");
+}
+
+.field__input_user,
+.field__input_password,
+.field__input_e-mail{
+  background-size: 30px 30px;
+  background-position: 5px 10px;
+}
+
 
 .field__title {
   font-size: 20px;
@@ -130,6 +152,7 @@
   right: 0;
   padding: 0;
   cursor: pointer;
+  margin: 5px;
 
   &::after,
   &::before {
