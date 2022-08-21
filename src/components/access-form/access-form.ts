@@ -116,6 +116,10 @@ class AccessForm extends Component {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
+    const divData = createElement(
+      "div",
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+    ) as HTMLDivElement;
     const divContainer = createElement(
       "div",
       `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`
@@ -141,11 +145,6 @@ class AccessForm extends Component {
       )
     );
     formLogIn.append(
-      this.renderTitle(
-        `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
-      ),
       this.renderField(`field field_user`, "Username", "Enter your name"),
       this.renderField(
         `field field_password`,
@@ -154,7 +153,16 @@ class AccessForm extends Component {
         8,
         "password"
       ),
-      divContainer,
+      divContainer
+    );
+    formLogIn.id = "form1";
+    divData.append(
+      this.renderTitle(
+        `${classNameTempBlock}__title`,
+        "RSLANG",
+        "Welcome to RSLANG"
+      ),
+      formLogIn,
       this.renderLinkToForm(
         `link-to-form link-to-form_registration`,
         "Not registered yet?",
@@ -162,9 +170,7 @@ class AccessForm extends Component {
       )
     );
 
-
-
-    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
+    divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
 
@@ -172,7 +178,10 @@ class AccessForm extends Component {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
-
+    const divData = createElement(
+      "div",
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+    ) as HTMLDivElement;
     const formLogIn = createElement(
       "form",
       `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
@@ -185,11 +194,6 @@ class AccessForm extends Component {
     img.src = log_in_img;
 
     formLogIn.append(
-      this.renderTitle(
-        `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
-      ),
       this.renderField(`field field_user`, "Username", "Enter your name"),
       this.renderField(
         `field field_e-mail`,
@@ -208,14 +212,22 @@ class AccessForm extends Component {
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
         "Sign Up"
+      )
+    );
+    divData.append(
+      this.renderTitle(
+        `${classNameTempBlock}__title`,
+        "RSLANG",
+        "Welcome to RSLANG"
       ),
+      formLogIn,
       this.renderLinkToForm(
         `link-to-form link-to-form_log-in`,
         "Already registered?",
         "Log In"
       )
     );
-    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
+    divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
 
@@ -235,11 +247,12 @@ class AccessForm extends Component {
       );
   }
 
-  private renderCloseButton(className:string):HTMLButtonElement{
-    const button= createElement("button",className) as HTMLButtonElement;
+  private renderCloseButton(className: string): HTMLButtonElement {
+    const button = createElement("button", className) as HTMLButtonElement;
     button.onclick = () => {
-      if (this.container.classList.contains("js-show")) this.container.classList.remove("js-show");
-    }
+      if (this.container.classList.contains("js-show"))
+        this.container.classList.remove("js-show");
+    };
 
     return button;
   }

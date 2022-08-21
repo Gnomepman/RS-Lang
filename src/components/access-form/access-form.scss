@@ -16,6 +16,17 @@
   }
 }
 
+.auth-form__wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 500%;
+  padding: 20px 65px;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
 .auth-form {
   width: 85%;
   height: auto;
@@ -29,11 +40,11 @@
 .auth-form__form {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   gap: 20px;
   justify-content: center;
   align-items: center;
-  padding: 20px 65px;
+
   box-sizing: border-box;
 }
 

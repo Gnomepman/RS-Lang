@@ -33,7 +33,16 @@ export default class Nav_menu extends Component {
     const link = document.querySelector(linkSelector) as HTMLLinkElement;
     link.onclick = () => {
       this.authForm.renderForm(form);
-      modalWindow.classList.add("js-show");}
+      modalWindow.classList.add("js-show");
+      const formt = document.querySelector("#form1") as HTMLFormElement;
+      console.log("form",formt);
+      formt.onsubmit = (e)=>{
+        console.log("submit");
+        const data = new FormData(formt);
+        data.forEach((a)=>console.log("a",a));
+      }
+      
+    }
   }
 
   render() {
