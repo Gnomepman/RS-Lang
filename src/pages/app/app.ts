@@ -6,14 +6,14 @@ import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
 import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
-import LogIn from "../../components/log-in/log-in";
+import AccessForm from "../../components/log-in/log-in";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
   private static defaultPageId: string = "current-page";
   private nav_menu: Nav_menu;
   private static footer: Footer;
-  private static modalWindow: LogIn;
+  private static modalWindow: AccessForm;
 
   //render new page depending on id
   static renderNewPage(idPage: string) {
@@ -62,7 +62,7 @@ export default class App {
 
   //Init "nav-menu" with tag-name and class-name
   constructor() {
-    App.modalWindow = new LogIn("div","modal-window-login");
+    App.modalWindow = new AccessForm("div","modal-window-login");
     this.nav_menu = new Nav_menu("nav", "nav-container",App.modalWindow);
     App.footer = new Footer("footer", "footer-container");
     

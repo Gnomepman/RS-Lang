@@ -1,9 +1,9 @@
 import Component from "../templates/component";
 import { createElement } from "../utils/utils";
 import log_in_img from "../../assets/log-in-img.svg";
-import "./log-in.scss";
+import "./access-form.scss";
 
-class LogIn extends Component {
+class AccessForm extends Component {
   constructor(tagName: string, className: string) {
     super(tagName, className);
   }
@@ -240,4 +240,4 @@ class LogIn extends Component {
   }
 }
 
-export default LogIn;
+export default AccessForm;

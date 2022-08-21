@@ -5,12 +5,12 @@ import book from '../../assets/icon_book.svg'
 import chart from '../../assets/icon_chart.svg'
 import home from '../../assets/icon_home.svg'
 import medal from '../../assets/icon_medal.svg'
-import LogIn from '../log-in/log-in';
+import AccessForm from '../log-in/log-in';
 
 export default class Nav_menu extends Component {
   //this.container = <nav class="nav-container">
-  authForm: LogIn;
-  constructor(tagName: string, className: string, authForm: LogIn) {
+  authForm: AccessForm;
+  constructor(tagName: string, className: string, authForm: AccessForm) {
     super(tagName, className);
     this.authForm = authForm;
   }
