@@ -8,6 +8,15 @@ $margin_top_beetwen_section: 60px;
     padding: 5px 10px;
     background-color: $color;
     border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+
+    @media screen and (max-width: 1024px) {
+        height: 20px;
+        font-size: 14px;
+        padding: 3px 5px;
+    }
 }
 
 .section_title{
@@ -16,7 +25,6 @@ $margin_top_beetwen_section: 60px;
     margin-bottom: 40px;
     font-weight: 400;
     font-size: 50px;
-    line-height: 32px;
     font-family: 'Roboto', sans-serif; 
 }
 
@@ -25,7 +33,6 @@ $margin_top_beetwen_section: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-
     background-color: hsla(311, 0%, 100%, 1);
     background-image:
     radial-gradient(at 92% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
@@ -119,8 +126,9 @@ $margin_top_beetwen_section: 60px;
         flex-direction: column;
         width: 100%;
         gap: 40px;
-        background: url("../../assets/path-line.svg") 99%;
-        background-repeat: no-repeat;
+        // background-size: auto 100%;
+        // background: url("../../assets/path-line.svg") 99%;
+        // background-repeat: no-repeat;
 
         .benefit{
             width: 400px;
@@ -146,6 +154,8 @@ $margin_top_beetwen_section: 60px;
             }
 
             img{
+                // https://codepen.io/sosuke/pen/Pjoqqp
+                filter: invert(66%) sepia(81%) saturate(320%) hue-rotate(129deg) brightness(91%) contrast(99%);
                 width: 80px;
                 height: 80px;
             }
@@ -178,6 +188,11 @@ $margin_top_beetwen_section: 60px;
 
     h2{
         margin-bottom: 20px;
+    }
+
+    iframe{
+        width: 960px;
+        height: 500px;
     }
 }
 
@@ -252,6 +267,416 @@ $margin_top_beetwen_section: 60px;
 
             &_text{
                 padding: 20px 0;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .section_title{
+        margin-bottom: 30px;
+        font-size: 40px;
+    }
+
+    .description_wrapper{
+        gap: 30px;
+        padding: 0;
+        margin-top: $margin_top_beetwen_section - 20px;
+
+        .description{
+            width: 360px;
+
+            &_logo{
+                font-size: 60px;
+            }
+
+            &_title{
+                margin-top: 30px;
+                font-size: 40px;
+                line-height: normal;
+            }
+
+            &_desc{
+                margin-top: 20px;
+                font-size: 20px;
+                line-height: normal;
+            }
+
+            &_button{
+                margin-top: 20px;
+                font-size: 22px;
+                line-height: normal;
+                padding: 15px 20px;
+            }
+        }
+
+        img{
+            width: 400px;
+        }
+    }
+
+    .benefits_wrapper{
+        width: 800px;
+        margin-top: $margin_top_beetwen_section - 20px;
+
+        .benefits{
+            &_title{
+                margin-bottom: 20px;
+                font-size: 40px;
+                line-height: auto;
+            }
+        }
+
+        .benefits_enum {
+            gap: 25px;
+
+            .benefit{
+                width: 330px;
+                padding: 20px 10px;
+
+                img{
+                    width: 65px;
+                    height: 65px;
+                }
+
+                &_title{
+                    font-size: 40px;
+                    line-height: normal;
+                    margin-top: 15px;
+                }
+
+                &_description{
+                    font-size: 18px;
+                    line-height: 28px;
+                    margin-top: 14px;
+                }
+            }
+        }
+    }
+
+    .video{
+        margin-top: $margin_top_beetwen_section - 20px;
+    
+        iframe{
+            width: 760px;
+            height: 400px;
+        }
+    }
+
+    .developers{
+        margin-top: $margin_top_beetwen_section - 20px;
+
+        &_wrapper{
+            width: 800px;
+            // display: flex;
+            // flex-direction: column;
+            gap: 40px;
+
+            .developer{
+                gap: 30px;
+                height: 290px;
+
+                &_image{
+                    min-width: 290px;
+                }
+
+                &_name{
+                    margin: 0;
+                    font-size: 30px;
+                    line-height: normal;
+                }
+
+                &_short_desc{
+                    margin-top: 15px;
+                    font-size: 20px;
+                    line-height: 28px;
+                    padding-right: 20px;
+                }
+
+                &_text{
+                    padding: 10px 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .section_title{
+        margin-bottom: 25px;
+        font-size: 35px;
+    }
+
+    .description_wrapper{
+        gap: 20px;
+        padding: 0;
+        margin-top: $margin_top_beetwen_section - 30px;
+
+        .description{
+            width: 280px;
+            gap: 15px;
+            *{
+                margin: 0 !important;
+            }
+
+            &_logo{
+                font-size: 50px;
+            }
+
+            &_title{
+                font-size: 30px;
+                line-height: normal;
+            }
+
+            &_desc{
+                font-size: 18px;
+                line-height: normal;
+            }
+
+            &_button{
+                font-size: 20px;
+                line-height: normal;
+                padding: 13px 18px;
+            }
+        }
+
+        img{
+            width: 330px;
+            height: 260px;
+        }
+    }
+
+    .benefits_wrapper{
+        width: 600px;
+        margin-top: $margin_top_beetwen_section - 30px;
+
+        .benefits{
+            &_title{
+                margin-bottom: 15px;
+                font-size: 30px;
+            }
+        }
+
+        .benefits_enum {
+            gap: 15px;
+
+            .benefit{
+                width: 280px;
+                padding: 20px 10px;
+
+                img{
+                    width: 50px;
+                    height: 50px;
+                }
+
+                &_title{
+                    font-size: 25px;
+                    line-height: normal;
+                    margin-top: 13px;
+                }
+
+                &_description{
+                    font-size: 17px;
+                    line-height: 25px;
+                    margin-top: 12px;
+                }
+            }
+        }
+    }
+
+    .video{
+        margin-top: $margin_top_beetwen_section - 40px;
+    
+        iframe{
+            width: 600px;
+            height: 320px;
+        }
+    }
+
+    .developers{
+        margin-top: $margin_top_beetwen_section - 40px;
+
+        &_wrapper{
+            width: 600px;
+            gap: 20px;
+
+            .developer{
+                gap: 30px;
+                height: 200px;
+
+                &_image{
+                    min-width: 220px;
+                }
+
+                &_name{
+                    margin: 0;
+                    font-size: 25px;
+                    line-height: normal;
+                }
+
+                &_short_desc{
+                    margin-top: 10px;
+                    font-size: 15px;
+                    line-height: 20px;
+                    padding-right: 15px;
+                }
+
+                &_text{
+                    padding: 10px 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    $width320: 220px;
+    .section_title{
+        width: $width320;
+        margin-bottom: 15px;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .description_wrapper{
+        flex-direction: column;
+        gap: 20px;
+        padding: 0;
+        margin-top: $margin_top_beetwen_section - 40px;
+
+        .description{
+            width: $width320;
+            gap: 15px;
+            align-items: center;
+            text-align: center;
+
+            *{
+                margin: 0 !important;
+            }
+
+            &_logo{
+                font-size: 50px;
+            }
+
+            &_title{
+                font-size: 30px;
+                line-height: normal;
+            }
+
+            &_desc{
+                font-size: 18px;
+                line-height: normal;
+            }
+
+            &_button{
+                font-size: 20px;
+                line-height: normal;
+                padding: 13px 18px;
+            }
+        }
+
+        img{
+            display: none;
+            // width: 330px;
+            // height: 260px;
+        }
+    }
+
+    .benefits_wrapper{
+        width: $width320;
+        margin-top: $margin_top_beetwen_section - 40px;
+
+        .benefits{
+            width: auto;
+            &_title{
+                margin-bottom: 15px;
+                font-size: 30px;
+            }
+        }
+
+        .benefits_enum {
+            gap: 15px;
+
+            .benefit{
+                width: $width320 - 15px;
+                padding: 10px 5px;
+
+                img{
+                    width: 30px;
+                    height: 30px;
+                }
+
+                &_title{
+                    font-size: 20px;
+                    line-height: normal;
+                    margin-top: 10px;
+                }
+
+                &_description{
+                    font-size: 15px;
+                    line-height: 19px;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    .video{
+        margin-top: $margin_top_beetwen_section - 40px;
+    
+        iframe{
+            // width: $width320;
+            width: 95%;
+            height: 200px;
+            // min-width: $wid;
+            // height: 60%;
+        }
+    }
+
+    .developers{
+        margin-top: $margin_top_beetwen_section - 40px;
+
+        &_wrapper{
+            width: $width320;
+            gap: 20px;
+
+            .developer{
+                gap: 10px;
+                height: auto;
+                flex-direction: column;
+                border-radius: 20px;
+
+                &_image{
+                    width: $width320;
+                    height: 190px;
+                    border-radius: 20px 20px 0 0 ;
+                }
+
+                &_name{
+                    margin: 0;
+                    font-size: 25px;
+                    line-height: normal;
+                }
+
+                &_short_desc{
+                    margin-top: 10px;
+                    font-size: 15px;
+                    line-height: 20px;
+                    // padding-right: 15px;
+                    padding: 0 10px;
+                    text-align: center;
+                }
+
+                &_text{
+                    padding: 0 0 10px 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                &_role{
+                    gap: 5px;
+                }
             }
         }
     }

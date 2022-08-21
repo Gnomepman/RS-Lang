@@ -64,7 +64,7 @@ export default class MainPage extends Page {
     const video_section = this.createDivBlock("video");
     video_section.innerHTML = `
       <h2 class="section_title">How does it work?</h2>
-      <iframe width="960" height="500" <iframe width="560" height="315" src="https://www.youtube.com/embed/yK0P1Bk8Cx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe <iframe width="560" height="315" src="https://www.youtube.com/embed/yK0P1Bk8Cx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     `
 
     const developer_section = this.createDivBlock("developers");
