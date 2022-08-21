@@ -33,14 +33,14 @@ class LogIn extends Component {
     type = "text"
   ): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
+    const classNameTemp = className.split(" ")[0];
     const labelTitle = createElement(
       "label",
-      `${className}-title`
+      `${classNameTemp}__title`
     ) as HTMLLabelElement;
-    const id = className.split("__")[1];
     const input = createElement(
       "input",
-      `${className}-input`
+      `${classNameTemp}__input`
     ) as HTMLInputElement;
 
     labelTitle.textContent = title;
@@ -49,7 +49,7 @@ class LogIn extends Component {
     input.type = type;
     if (minlength) input.setAttribute("minlength", minlength.toString(10));
 
-    input.id = `${id}-input`;
+    input.id = `${classNameTemp}-input`;
     labelTitle.setAttribute("for", input.id);
 
     div.append(labelTitle, input);
@@ -82,64 +82,73 @@ class LogIn extends Component {
     return div;
   }
 
-  renderRegistrationLink(className: string): HTMLDivElement {
+  renderLinkToForm(className: string,text1:string,text2:string): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
-    const span = createElement("span", `${className}-span`);
-    const spanLink = createElement("span", `${className}-link`) as HTMLLinkElement;
+    const classNameTemp = className.split(" ")[0];
+    const span = createElement("span", `${classNameTemp}__span`);
+    const spanLink = createElement("span", `${classNameTemp}__link`) as HTMLLinkElement;
 
-    span.textContent = "Not registered yet?";
-    spanLink.innerText = "Register";
+    span.textContent = text1;
+    spanLink.innerText = text2;
 
     div.append(span, spanLink);
 
     return div;
   }
 
-  render(): HTMLElement {
-    const classNameLogin = "log-in";
-    
-    const divLogin = createElement("div",classNameLogin);
+  renderLogInForm(className:string):HTMLDivElement{
+    const divLogin = createElement("div",className) as HTMLDivElement;
     const divContainer = createElement(
       "div",
-      `${classNameLogin}__container`
+      `${className}__container`
     );
-    const form = createElement("form", `${classNameLogin}__form`);
+    const formLogIn = createElement("form", `${className}__form`);
     const img = createElement(
       "img",
-      `${classNameLogin}__image`
+      `${className}__image`
     ) as HTMLImageElement;
 
     img.src = log_in_img;
     divContainer.append(
       this.renderCheckBox(
-        `${classNameLogin}__remember-me`,
+        `${className}__remember-me`,
         "Remember me"
       ),
-      this.renderButton(`${classNameLogin}__button-log-in`, "Log In")
+      this.renderButton(`${className}__button ${className}__button_log-in`, "Log In")
     );
-    form.append(
+    formLogIn.append(
       this.renderTitle(
-        `${classNameLogin}__title`,
+        `${className}__title`,
         "RSLANG",
         "Welcome to RSLANG"
       ),
       this.renderField(
-        `${classNameLogin}__user`,
+        `field field_user`,
         "Username",
         "Enter your name"
       ),
       this.renderField(
-        `${classNameLogin}__password`,
+        `field field_password`,
         "Password",
         "Enter password",
         8,
         "password"
       ),
       divContainer,
-      this.renderRegistrationLink(`${classNameLogin}__registration`)
+      this.renderLinkToForm(`link-to-form link-to-form_registration`,"Not registered yet?","Register")
     );
-    divLogin.append(form, img);
-    this.container.replaceChildren(divLogin);
+    divLogin.append(formLogIn, img);
+    return divLogin;
+  }
+
+
+  
+
+  render(): HTMLElement {
+    const classNameLogin = "log-in";
+
+    
+    this.container.replaceChildren(this.renderLogInForm(classNameLogin));
     return this.container;
   }
 }
