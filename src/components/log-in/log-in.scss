@@ -16,7 +16,7 @@
   }
 }
 
-.log-in{
+.auth-form{
   width: 1192px;
   height: auto;
   display: flex;
@@ -25,7 +25,7 @@
   z-index: 1;
 }
 
-.log-in__form{
+.auth-form__form{
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -36,13 +36,13 @@
   box-sizing: border-box;
 }
 
-.log-in__title{
+.auth-form__title{
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.log-in__title-title{
+.auth-form__title-title{
   font-family: "Silkscreen", cursive;
   font-size: 56px;
   padding: 0;
@@ -50,12 +50,12 @@
   color: #084777;
 }
 
-.log-in__title-subtitle{
+.auth-form__title-subtitle{
   font-size: 24px;
 }
 
-.log-in__title-title,
-.log-in__title-subtitle{
+.auth-form__title-title,
+.auth-form__title-subtitle{
   text-align: center;
 }
 
@@ -80,24 +80,24 @@
   color: #084777;
 }
 
-.log-in__container{
+.auth-form__container{
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
 }
 
-.log-in__remember-me{
+.auth-form__remember-me{
   display: flex;
   gap: 10px;
 }
 
-.log-in__remember-me-label{
+.auth-form__remember-me-label{
   font-size: 20px;
   color:#084777;
 }
 
-.log-in__button{
+.auth-form__button{
   width: 40%;
   height: 44px;
   background-color: #084777;
@@ -116,7 +116,7 @@
   color: #07406F;
 }
 
-.log-in__image{
+.auth-form__image{
   width: 50%;
   height: auto;
 }

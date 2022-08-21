@@ -66,13 +66,15 @@ class LogIn extends Component {
 
   renderCheckBox(className: string, text: string): HTMLDivElement {
     const div = createElement("div", className) as HTMLDivElement;
+    const classNameTempBlock = className.split(" ")[0];
+    const classNameTempElem = className.split("_")[1];
     const checkbox = createElement(
       "input",
-      `${className}-checkbox`
+      `${classNameTempBlock}-checkbox ${classNameTempBlock}-checkbox_log-in`
     ) as HTMLInputElement;
     const label = createElement(
       "label",
-      `${className}-label`
+      `${classNameTempBlock}-label ${classNameTempBlock}-label_log-in`
     ) as HTMLLabelElement;
 
     checkbox.type = "checkbox";
@@ -98,27 +100,29 @@ class LogIn extends Component {
 
   renderLogInForm(className:string):HTMLDivElement{
     const divLogin = createElement("div",className) as HTMLDivElement;
+    const classNameTempBlock = className.split(" ")[0];
+    const classNameTempElem = className.split("_")[1];
     const divContainer = createElement(
       "div",
-      `${className}__container`
+      `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`
     );
-    const formLogIn = createElement("form", `${className}__form`);
+    const formLogIn = createElement("form", `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`);
     const img = createElement(
       "img",
-      `${className}__image`
+      `${classNameTempBlock}__image`
     ) as HTMLImageElement;
 
     img.src = log_in_img;
     divContainer.append(
       this.renderCheckBox(
-        `${className}__remember-me`,
+        `${classNameTempBlock}__remember-me ${classNameTempBlock}__remember-me_${classNameTempElem}`,
         "Remember me"
       ),
-      this.renderButton(`${className}__button ${className}__button_log-in`, "Log In")
+      this.renderButton(`${classNameTempBlock}__button ${classNameTempBlock}__button_log-in`, "Log In")
     );
     formLogIn.append(
       this.renderTitle(
-        `${className}__title`,
+        `${classNameTempBlock}__title`,
         "RSLANG",
         "Welcome to RSLANG"
       ),
@@ -141,14 +145,16 @@ class LogIn extends Component {
     return divLogin;
   }
 
+  renderRegistrationForm(className:string){
 
+  }
   
 
   render(): HTMLElement {
     const classNameLogin = "log-in";
 
     
-    this.container.replaceChildren(this.renderLogInForm(classNameLogin));
+    this.container.replaceChildren(this.renderLogInForm(`auth-form auth-form_${classNameLogin}`));
     return this.container;
   }
 }
