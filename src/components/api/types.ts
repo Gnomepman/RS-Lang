@@ -15,6 +15,21 @@ type Word = {
   textExampleTranslate: "string";
 };
 
-export const API_URL = 'https://rs-lang-test.herokuapp.com';
+type User = {
+  name: "string";
+  email?: "string";
+  password: "string";
+};
 
+type SignInResponse = {
+  message: "string";
+  token: "string";
+  refreshToken: "string";
+  userId: "string";
+  name: "string";
+};
+
+const API_URL = "https://rs-lang-test.herokuapp.com";
+
+export { API_URL, User, SignInResponse};
 export default Word;
