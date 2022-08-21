@@ -158,7 +158,7 @@ class AccessForm extends Component {
       this.renderLinkToForm(
         `link-to-form link-to-form_registration`,
         "Not registered yet?",
-        "Register"
+        "Sign Up"
       )
     );
 
@@ -207,7 +207,7 @@ class AccessForm extends Component {
       ),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
-        "Register"
+        "Sign Up"
       ),
       this.renderLinkToForm(
         `link-to-form link-to-form_log-in`,
