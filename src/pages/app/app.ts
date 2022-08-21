@@ -6,12 +6,14 @@ import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
 import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
+import AccessForm from "../../components/access-form/access-form";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
   private static defaultPageId: string = "current-page";
   private nav_menu: Nav_menu;
   private static footer: Footer;
+  private static modalWindow: AccessForm;
 
   //render new page depending on id
   static renderNewPage(idPage: string) {
@@ -44,7 +46,7 @@ export default class App {
       pageHTML.id = App.defaultPageId;
       //to the rendered page we append a <footer>. In future this has to be moved to switch above
       //because <footer> does not have to be added for mini-games
-      pageHTML.append(App.footer.render());
+      pageHTML.append(App.footer.render(),App.modalWindow.render());
       App.container.append(pageHTML);
     }
   }
@@ -60,8 +62,10 @@ export default class App {
 
   //Init "nav-menu" with tag-name and class-name
   constructor() {
-    this.nav_menu = new Nav_menu("nav", "nav-container");
+    App.modalWindow = new AccessForm("div","modal-window-login");
+    this.nav_menu = new Nav_menu("nav", "nav-container",App.modalWindow);
     App.footer = new Footer("footer", "footer-container");
+    
   }
 
   //This method is called right when app starts.
@@ -71,6 +75,8 @@ export default class App {
     App.container.append(this.nav_menu.render());
     window.location.hash = '';
     App.renderNewPage("main-page");
+    this.nav_menu.showModal("modal-window-login","#log_in","log-in");
+    this.nav_menu.showModal("modal-window-login","#sign_up","registration");
     this.enableRouteChange();
   }
 }

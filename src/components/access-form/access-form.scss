@@ -1,0 +1,190 @@
+.modal-window-login {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(194, 193, 190, 0.5);
+  transform: scale(0);
+
+  &.js-show {
+    transform: scale(1);
+    transition: 0.3s;
+  }
+}
+
+.auth-form {
+  width: 85%;
+  height: auto;
+  display: flex;
+  font-family: "Roboto", sans-serif;
+  background-color: white;
+  z-index: 1;
+  position: relative;
+}
+
+.auth-form__form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 65px;
+  box-sizing: border-box;
+}
+
+.auth-form__title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form__title-title {
+  font-family: "Silkscreen", cursive;
+  font-size: 56px;
+  padding: 0;
+  margin: 0;
+  color: #084777;
+}
+
+.auth-form__title-subtitle {
+  font-size: 24px;
+}
+
+.auth-form__title-title,
+.auth-form__title-subtitle {
+  text-align: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 6px;
+}
+
+.field__input {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #084777;
+  border-radius: 5px;
+  font-size: 22px;
+  padding-left: 40px;
+  box-sizing: border-box;
+
+}
+
+.field__input_user{
+  background: no-repeat url("../../assets/user_icon.svg");
+}
+
+.field__input_password{
+  background: no-repeat url("../../assets/password_icon.svg");
+}
+
+.field__input_e-mail{
+  background: no-repeat url("../../assets/mail_icon.svg");
+}
+
+.field__input_user,
+.field__input_password,
+.field__input_e-mail{
+  background-size: 30px 30px;
+  background-position: 5px 10px;
+}
+
+
+.field__title {
+  font-size: 20px;
+  color: #084777;
+}
+
+.auth-form__container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-form__remember-me {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-form__remember-me-label {
+  font-size: 20px;
+  color: #084777;
+}
+
+.auth-form__button {
+  width: 40%;
+  height: 44px;
+  background-color: #084777;
+  border-radius: 4px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.4s;
+
+  &:hover{
+    background-color: #1967a2;
+  }
+}
+
+.auth-form__button_registration{
+  width: 100%;
+}
+
+.link-to-form {
+  display: flex;
+  gap: 10px;
+}
+
+.link-to-form__link {
+  color: #07406f;
+  cursor: pointer;
+
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+.auth-form__image {
+  width: 50%;
+  height: auto;
+}
+
+.button-close {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 0;
+  padding: 0;
+  cursor: pointer;
+  margin: 5px;
+
+  &::after,
+  &::before {
+    content: "";
+    width: 100%;
+    border: 2px solid #07406f;
+    position: absolute;
+  }
+
+  &::after {
+    top: 48%;
+    left: -1px;
+    transform: rotate(0.38turn);
+  }
+
+  &::before {
+    bottom: 44%;
+    left: -1px;
+    transform: rotate(-0.38turn);
+  }
+}
