@@ -2,7 +2,7 @@ import Word, { SignInResponse, User } from "./types";
 
 enum ApiLinks{
   Words = 'words',
-  User = "user",
+  User = "users",
   SignIn = "signin"
 }
 
@@ -22,7 +22,7 @@ class Api{
     return data;
   }
 
-  async createUser(user:User):Promise<User>{
+  async createUser(user:User):Promise<User | number>{
     const request = `${this.apiUrl}/${ApiLinks.User}`;
     const response = await fetch(request,{
       method: "POST",
@@ -32,8 +32,11 @@ class Api{
       },
       body: JSON.stringify(user)
     });
-    const data:User = await response.json();
-    return data;
+    if (response.ok){
+      const data:User = await response.json();
+      return data;
+    }
+    return response.status;
   }
 
   async signIn(user:User):Promise<SignInResponse>{

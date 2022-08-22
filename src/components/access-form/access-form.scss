@@ -90,7 +90,7 @@
 
 }
 
-.field__input_user{
+.field__input_name{
   background: no-repeat url("../../assets/user_icon.svg");
 }
 
@@ -98,17 +98,16 @@
   background: no-repeat url("../../assets/password_icon.svg");
 }
 
-.field__input_e-mail{
+.field__input_email{
   background: no-repeat url("../../assets/mail_icon.svg");
 }
 
-.field__input_user,
+.field__input_name,
 .field__input_password,
-.field__input_e-mail{
+.field__input_email{
   background-size: 30px 30px;
   background-position: 5px 10px;
 }
-
 
 .field__title {
   font-size: 20px;
@@ -162,6 +161,15 @@
 
   &:hover{
     text-decoration: underline;
+  }
+}
+
+.error{
+  display: none;
+  color: red;
+
+  &.js-error{
+    display: inline-block;
   }
 }
 
