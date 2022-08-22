@@ -267,6 +267,10 @@ class AccessForm extends Component {
         console.log("417");
         AccessForm.showError("error","User with this email already exist");
       }
+      if (response === 422) {
+        AccessForm.showError("error","Incorrect e-mail or password");
+      }
+      if (typeof response === "object") location.reload();
     } catch (error) {
       console.log("error",error);
     } 
