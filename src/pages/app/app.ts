@@ -5,6 +5,7 @@ import Nav_menu from "../../components/nav-menu/nav-menu";
 import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
+import Choose_game from '../choose-games/choose-game'
 import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
 import AccessForm from "../../components/access-form/access-form";
 
@@ -34,6 +35,9 @@ export default class App {
         break;
       case PageIds.LearningPage:
         page = new LearningPage(idPage);
+        break;
+      case PageIds.MiniGamesPage:
+        page = new Choose_game(idPage);
         break;
       default:
         page = new ErrorPage(idPage, ErrorTypes.Error_404);
