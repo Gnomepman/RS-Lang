@@ -5,7 +5,9 @@ import book from '../../assets/icon_book.svg'
 import chart from '../../assets/icon_chart.svg'
 import home from '../../assets/icon_home.svg'
 import medal from '../../assets/icon_medal.svg'
+import user from '../../assets/user_signin_icon.svg'
 import AccessForm from '../access-form/access-form';
+import { SignInResponse } from '../api/types';
 
 export default class Nav_menu extends Component {
   //this.container = <nav class="nav-container">
@@ -31,27 +33,44 @@ export default class Nav_menu extends Component {
   showModal(className:string,linkSelector:string,form:string){
     const modalWindow = document.querySelector(`.${className}`) as HTMLDivElement;
     const link = document.querySelector(linkSelector) as HTMLLinkElement;
-    link.onclick = () => {
-      this.authForm.renderForm(form);
-      modalWindow.classList.add("js-show");
-      const formt = document.querySelector("#form1") as HTMLFormElement;
-      console.log("form",formt);
-      formt.onsubmit = (e)=>{
-        console.log("submit");
-        const data = new FormData(formt);
-        data.forEach((a)=>console.log("a",a));
+    if (link){
+      link.onclick = () => {
+        this.authForm.renderForm(form);
+        modalWindow.classList.add("js-show");
       }
-      
+    }
+  }
+
+  logOut(selectorButton:string){
+    const button = document.querySelector(`.${selectorButton}`) as HTMLButtonElement;
+    if (button){
+      button.onclick = ()=> {
+        localStorage.removeItem("user");
+        location.reload();
+      }
     }
   }
 
   render() {
     const login_form = document.createElement("div");
-    login_form.classList.add("login_wrapper")
-    login_form.innerHTML = `
-        <button class="login_button" id="log_in">Log in</button>
-        <button class="login_button" id="sign_up">Sign up</button>
-    `
+    login_form.classList.add("login_wrapper");
+    let signedInUser:SignInResponse;
+    if (localStorage.getItem("user")) {
+      signedInUser = JSON.parse(localStorage.getItem("user") as string);
+      login_form.innerHTML = `
+      <div class="account">
+        <img class="account__image" src="${user}" alt="">
+        <span class="account__message">${signedInUser.name}</span>
+        <button class="auth-form__button auth-form__button_account">
+          Log out
+        </button>
+      </div>
+      `;
+    }else{
+      login_form.innerHTML = `
+          <button class="login_button" id="log_in">Log in</button>
+          <button class="login_button" id="sign_up">Sign up</button>
+    `}
     this.renderNavButtons();
     this.container.append(login_form);
     return this.container;

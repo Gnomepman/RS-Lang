@@ -2,6 +2,8 @@ import Component from "../templates/component";
 import { createElement } from "../utils/utils";
 import log_in_img from "../../assets/log-in-img.svg";
 import "./access-form.scss";
+import Api from "../api/api";
+import { API_URL, User } from "../api/types";
 
 class AccessForm extends Component {
   constructor(tagName: string, className: string) {
@@ -50,9 +52,13 @@ class AccessForm extends Component {
     input.type = type;
     if (minlength) input.setAttribute("minlength", minlength.toString(10));
 
+    input.name = `${classNameElem}`;
     input.id = `${classNameElem}-input`;
     labelTitle.setAttribute("for", input.id);
-
+    if (classNameElem === "email") {
+      input.oninput = () =>
+        AccessForm.showError("error", "", "field__input_email");
+    }
     div.append(labelTitle, input);
 
     return div;
@@ -145,7 +151,13 @@ class AccessForm extends Component {
       )
     );
     formLogIn.append(
-      this.renderField(`field field_user`, "Username", "Enter your name"),
+      this.renderField(
+        `field field_email`,
+        "E-mail",
+        "Enter your e-mail",
+        undefined,
+        "email"
+      ),
       this.renderField(
         `field field_password`,
         "Password",
@@ -153,9 +165,9 @@ class AccessForm extends Component {
         8,
         "password"
       ),
+      this.renderSpanError("error"),
       divContainer
     );
-    formLogIn.id = "form1";
     divData.append(
       this.renderTitle(
         `${classNameTempBlock}__title`,
@@ -169,9 +181,31 @@ class AccessForm extends Component {
         "Sign Up"
       )
     );
-
+    formLogIn.setAttribute("method","POST");
+    formLogIn.addEventListener("submit", this.logIn);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
+  }
+
+  private renderSpanError(className: string): HTMLSpanElement {
+    const span = createElement("span", className) as HTMLSpanElement;
+    return span;
+  }
+
+  static showError(spanSelector: string, text: string, inputError?: string) {
+    const span = document.querySelector(`.${spanSelector}`) as HTMLSpanElement;
+    const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
+    if (text) {
+      span.textContent = text;
+      console.log("showError");
+      span.classList.add("js-error");
+      input.classList.add("js-error");
+    } else {
+      if (span.classList.contains("js-error")) {
+        span.classList.remove("js-error");
+        input.classList.remove("js-error");
+      }
+    }
   }
 
   private renderRegistrationForm(className: string) {
@@ -182,7 +216,7 @@ class AccessForm extends Component {
       "div",
       `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
     ) as HTMLDivElement;
-    const formLogIn = createElement(
+    const formRegistration = createElement(
       "form",
       `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
     );
@@ -193,14 +227,14 @@ class AccessForm extends Component {
 
     img.src = log_in_img;
 
-    formLogIn.append(
-      this.renderField(`field field_user`, "Username", "Enter your name"),
+    formRegistration.append(
+      this.renderField(`field field_name`, "Username", "Enter your name"),
       this.renderField(
-        `field field_e-mail`,
+        `field field_email`,
         "E-Mail",
         "Enter your e-mail",
         undefined,
-        "e-mail"
+        "email"
       ),
       this.renderField(
         `field field_password`,
@@ -209,6 +243,7 @@ class AccessForm extends Component {
         8,
         "password"
       ),
+      this.renderSpanError("error"),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
         "Sign Up"
@@ -220,15 +255,72 @@ class AccessForm extends Component {
         "RSLANG",
         "Welcome to RSLANG"
       ),
-      formLogIn,
+      formRegistration,
       this.renderLinkToForm(
         `link-to-form link-to-form_log-in`,
         "Already registered?",
         "Log In"
       )
     );
+    formRegistration.addEventListener("submit", this.signUp);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
+  }
+
+  async signUp(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const dataFromForm = new FormData(form);
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const api = new Api(API_URL);
+    try {
+      const response = await api.createUser(dataObj);
+      console.log("response", response);
+      if (response === 417) {
+        AccessForm.showError(
+          "error",
+          "User with this email already exist",
+          "field__input_email"
+        );
+      }
+      if (response === 422) {
+        AccessForm.showError(
+          "error",
+          "Incorrect e-mail or password",
+          "field__input_email"
+        );
+      }
+      if (typeof response === "object") location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async logIn(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const dataFromForm = new FormData(form);
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const api = new Api(API_URL);
+    try {
+      console.log("dataObj", dataObj);
+      const response = await api.signIn(dataObj);
+      console.log("response", response);
+      if (typeof response === "object") {
+        const objToString = JSON.stringify(response);
+        localStorage.setItem("user",objToString);
+        location.reload();
+      }
+      if (response === 404) {
+        AccessForm.showError(
+          "error",
+          "User with this email doesn't exist",
+          "field__input_email"
+        );
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   renderForm(form: string) {

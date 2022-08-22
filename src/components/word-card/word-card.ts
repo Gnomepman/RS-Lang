@@ -74,8 +74,8 @@ class WordCard extends Component {
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
 
-    buttonAdd.textContent = "Добавить";
-    buttonLearn.textContent = "Не изучено";
+    buttonAdd.textContent = "Add to hard";
+    buttonLearn.textContent = "Not studied";
 
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');
@@ -96,7 +96,7 @@ class WordCard extends Component {
     );
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
-    if (this.isAuthorized) divButtons.append(buttonLearn, buttonAdd);
+    if (localStorage.getItem("user")) divButtons.append(buttonLearn, buttonAdd);
     this.container.append(
       img,
       spanWord,
