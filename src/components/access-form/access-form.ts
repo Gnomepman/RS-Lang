@@ -181,6 +181,7 @@ class AccessForm extends Component {
         "Sign Up"
       )
     );
+    formLogIn.setAttribute("method","POST");
     formLogIn.addEventListener("submit", this.logIn);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;

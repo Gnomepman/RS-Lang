@@ -76,6 +76,7 @@ export default class App {
     App.renderNewPage("main-page");
     this.nav_menu.showModal("modal-window-login", "#log_in", "log-in");
     this.nav_menu.showModal("modal-window-login", "#sign_up", "registration");
+    this.nav_menu.logOut("auth-form__button_account");
     this.enableRouteChange();
   }
 }

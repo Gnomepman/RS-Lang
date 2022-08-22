@@ -41,6 +41,16 @@ export default class Nav_menu extends Component {
     }
   }
 
+  logOut(selectorButton:string){
+    const button = document.querySelector(`.${selectorButton}`) as HTMLButtonElement;
+    if (button){
+      button.onclick = ()=> {
+        localStorage.removeItem("user");
+        location.reload();
+      }
+    }
+  }
+
   render() {
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper");
