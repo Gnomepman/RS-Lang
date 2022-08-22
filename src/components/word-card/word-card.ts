@@ -1,9 +1,10 @@
-import Word, { API_URL } from "../api/types";
+import Word, { API_URL, SignInResponse, User, WordAttributes } from "../api/types";
 import Component from "../templates/component";
 import play_icon from "../../assets/play.svg";
 import { createElement } from "../utils/utils";
 
 import "./word-card.scss";
+import Api from "../api/api";
 class WordCard extends Component {
   private wordTemplate: Word;
   isAuthorized: boolean;
@@ -61,6 +62,7 @@ class WordCard extends Component {
     );
     const buttonAdd = createElement("button", "learning__word-card-button-add");
 
+    this.container.id = `${this.wordTemplate.id}`;
     (img as HTMLImageElement).src = `${API_URL}/${this.wordTemplate.image}`;
     spanWord.textContent = `${this.wordTemplate.word}`;
     spanTranslate.textContent = `${this.wordTemplate.wordTranslate}`;
@@ -76,6 +78,26 @@ class WordCard extends Component {
 
     buttonAdd.textContent = "Add to hard";
     buttonLearn.textContent = "Not studied";
+
+    buttonAdd.onclick = async()=>{ 
+      const api = new Api(API_URL);
+      
+      if (!buttonAdd.classList.contains("js-added")){
+        const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
+        const response = await api.addToHardWordsOfUser(
+          user.userId,
+          this.container.id,
+          user.token,
+          { difficulty: "hard", optional: {} }
+        );
+        buttonAdd.classList.add("js-added");
+        buttonAdd.textContent = "Added";
+        console.log("response",response);
+      } else {
+        buttonAdd.classList.remove("js-added");
+        buttonAdd.textContent = "Add to hard";
+      }
+    }
 
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');
@@ -105,7 +127,7 @@ class WordCard extends Component {
       divTranslate,
       divButtons
     );
-
+    
     return this.container;
   }
 }
