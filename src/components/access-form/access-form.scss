@@ -96,10 +96,18 @@
 
 .field__input_password{
   background: no-repeat url("../../assets/password_icon.svg");
+
+  &:invalid{
+    border: 1px solid red;
+  }
 }
 
 .field__input_email{
   background: no-repeat url("../../assets/mail_icon.svg");
+
+  &.js-error, &:invalid{
+    border: 1px solid red;
+  }
 }
 
 .field__input_name,

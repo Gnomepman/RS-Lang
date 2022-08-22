@@ -56,7 +56,7 @@ class AccessForm extends Component {
     input.id = `${classNameElem}-input`;
     labelTitle.setAttribute("for", input.id);
     if (classNameElem === "email") {
-      input.oninput = ()=> AccessForm.showError("error","");
+      input.oninput = () => AccessForm.showError("error", "","field__input_email");
     }
     div.append(labelTitle, input);
 
@@ -177,19 +177,24 @@ class AccessForm extends Component {
     return divLogin;
   }
 
-  private renderSpanError(className:string):HTMLSpanElement{
-    const span = createElement("span",className) as HTMLSpanElement;
+  private renderSpanError(className: string): HTMLSpanElement {
+    const span = createElement("span", className) as HTMLSpanElement;
     return span;
-  } 
+  }
 
-  static showError(spanSelector:string,text:string){
+  static showError(spanSelector: string, text: string, inputError?: string) {
     const span = document.querySelector(`.${spanSelector}`) as HTMLSpanElement;
-    if (text){
+    const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
+    if (text) {
       span.textContent = text;
       console.log("showError");
       span.classList.add("js-error");
-    }else{
-      if (span.classList.contains("js-error")) span.classList.remove("js-error");
+      input.classList.add("js-error");
+    } else {
+      if (span.classList.contains("js-error")) {
+        span.classList.remove("js-error");
+        input.classList.remove("js-error");
+      }
     }
   }
 
@@ -219,7 +224,7 @@ class AccessForm extends Component {
         "E-Mail",
         "Enter your e-mail",
         undefined,
-        "e-mail"
+        "email"
       ),
       this.renderField(
         `field field_password`,
@@ -228,8 +233,7 @@ class AccessForm extends Component {
         8,
         "password"
       ),
-    this.renderSpanError("error")
-      ,
+      this.renderSpanError("error"),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
         "Sign Up"
@@ -248,32 +252,40 @@ class AccessForm extends Component {
         "Log In"
       )
     );
-    formLogIn.addEventListener("submit",this.signUp);
+    formLogIn.addEventListener("submit", this.signUp);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
 
-  async signUp(event:SubmitEvent){
+  async signUp(event: SubmitEvent) {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const dataFromForm = new FormData(form);
-    const dataObj:User =Object.fromEntries(dataFromForm) as User;
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
     const api = new Api(API_URL);
     console.log(dataObj);
     try {
       const response = await api.createUser(dataObj);
-      console.log("response",response);
+      console.log("response", response);
       if (response === 417) {
         console.log("417");
-        AccessForm.showError("error","User with this email already exist");
+        AccessForm.showError(
+          "error",
+          "User with this email already exist",
+          "field__input_email"
+        );
       }
       if (response === 422) {
-        AccessForm.showError("error","Incorrect e-mail or password");
+        AccessForm.showError(
+          "error",
+          "Incorrect e-mail or password",
+          "field__input_email"
+        );
       }
       if (typeof response === "object") location.reload();
     } catch (error) {
-      console.log("error",error);
-    } 
+      console.log("error", error);
+    }
   }
 
   renderForm(form: string) {
