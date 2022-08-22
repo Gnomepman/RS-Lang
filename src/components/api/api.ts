@@ -39,7 +39,7 @@ class Api{
     return response.status;
   }
 
-  async signIn(user:User):Promise<SignInResponse>{
+  async signIn(user:User):Promise<SignInResponse | number>{
     const request = `${this.apiUrl}/${ApiLinks.SignIn}`;
     const response = await fetch(request, {
     method: 'POST',
@@ -49,8 +49,11 @@ class Api{
     },
     body: JSON.stringify(user)
   });
+  if (response.ok){
     const data:SignInResponse = await response.json();
     return data;
+  }
+  return response.status;
   }
 
 }

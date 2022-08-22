@@ -93,6 +93,27 @@ $end_transition: 0.4s;
     }
 }
 
+.account{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #084777;
+    padding: 10px;
+    gap: 15px;
+
+    .account__message{
+        font-family: "Silkscreen", cursive;
+        font-size: 18px;
+    }
+
+    .auth-form__button_account{
+        width: 100%;
+        font-size: 12px;
+    }
+    
+}
+
+
+
 @media screen and (max-width: 1440px) {
     .nav-container{
         width: 150px;

@@ -56,7 +56,8 @@ class AccessForm extends Component {
     input.id = `${classNameElem}-input`;
     labelTitle.setAttribute("for", input.id);
     if (classNameElem === "email") {
-      input.oninput = () => AccessForm.showError("error", "","field__input_email");
+      input.oninput = () =>
+        AccessForm.showError("error", "", "field__input_email");
     }
     div.append(labelTitle, input);
 
@@ -150,7 +151,13 @@ class AccessForm extends Component {
       )
     );
     formLogIn.append(
-      this.renderField(`field field_user`, "Username", "Enter your name"),
+      this.renderField(
+        `field field_email`,
+        "E-mail",
+        "Enter your e-mail",
+        undefined,
+        "email"
+      ),
       this.renderField(
         `field field_password`,
         "Password",
@@ -158,6 +165,7 @@ class AccessForm extends Component {
         8,
         "password"
       ),
+      this.renderSpanError("error"),
       divContainer
     );
     divData.append(
@@ -173,6 +181,7 @@ class AccessForm extends Component {
         "Sign Up"
       )
     );
+    formLogIn.addEventListener("submit", this.logIn);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
@@ -206,7 +215,7 @@ class AccessForm extends Component {
       "div",
       `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
     ) as HTMLDivElement;
-    const formLogIn = createElement(
+    const formRegistration = createElement(
       "form",
       `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
     );
@@ -217,7 +226,7 @@ class AccessForm extends Component {
 
     img.src = log_in_img;
 
-    formLogIn.append(
+    formRegistration.append(
       this.renderField(`field field_name`, "Username", "Enter your name"),
       this.renderField(
         `field field_email`,
@@ -245,14 +254,14 @@ class AccessForm extends Component {
         "RSLANG",
         "Welcome to RSLANG"
       ),
-      formLogIn,
+      formRegistration,
       this.renderLinkToForm(
         `link-to-form link-to-form_log-in`,
         "Already registered?",
         "Log In"
       )
     );
-    formLogIn.addEventListener("submit", this.signUp);
+    formRegistration.addEventListener("submit", this.signUp);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
@@ -263,12 +272,10 @@ class AccessForm extends Component {
     const dataFromForm = new FormData(form);
     const dataObj: User = Object.fromEntries(dataFromForm) as User;
     const api = new Api(API_URL);
-    console.log(dataObj);
     try {
       const response = await api.createUser(dataObj);
       console.log("response", response);
       if (response === 417) {
-        console.log("417");
         AccessForm.showError(
           "error",
           "User with this email already exist",
@@ -283,6 +290,33 @@ class AccessForm extends Component {
         );
       }
       if (typeof response === "object") location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async logIn(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const dataFromForm = new FormData(form);
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const api = new Api(API_URL);
+    try {
+      console.log("dataObj", dataObj);
+      const response = await api.signIn(dataObj);
+      console.log("response", response);
+      if (typeof response === "object") {
+        const objToString = JSON.stringify(response);
+        localStorage.setItem("user",objToString);
+        location.reload();
+      }
+      if (response === 404) {
+        AccessForm.showError(
+          "error",
+          "User with this email doesn't exist",
+          "field__input_email"
+        );
+      }
     } catch (error) {
       console.log("error", error);
     }
