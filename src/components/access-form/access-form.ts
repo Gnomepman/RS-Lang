@@ -305,8 +305,10 @@ class AccessForm extends Component {
     try {
       console.log("dataObj", dataObj);
       const response = await api.signIn(dataObj);
-      console.log("response", response);
       if (typeof response === "object") {
+        const currentTime = Date.now();
+        response["created"] = currentTime.toString(10);
+        console.log("response", response);
         const objToString = JSON.stringify(response);
         localStorage.setItem("user",objToString);
         location.reload();

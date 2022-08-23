@@ -81,18 +81,23 @@ class WordCard extends Component {
 
     buttonAdd.onclick = async()=>{ 
       const api = new Api(API_URL);
-      
+      const user: SignInResponse = JSON.parse(
+        localStorage.getItem("user") as string
+      );
+      console.log("userAddWord",user)
       if (!buttonAdd.classList.contains("js-added")){
-        const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
         const response = await api.addToHardWordsOfUser(
           user.userId,
           this.container.id,
           user.token,
           { difficulty: "hard", optional: {} }
         );
-        buttonAdd.classList.add("js-added");
-        buttonAdd.textContent = "Added";
-        console.log("response",response);
+        if (typeof response == "object"){
+          buttonAdd.classList .add("js-added");
+          buttonAdd.textContent = "Added";
+          console.log("response",response);
+          
+        }
       } else {
         buttonAdd.classList.remove("js-added");
         buttonAdd.textContent = "Add to hard";

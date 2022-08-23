@@ -27,6 +27,7 @@ type SignInResponse = {
   refreshToken: string;
   userId: string;
   name: string;
+  [key:string]:string
 };
 
 type WordAttributes = {

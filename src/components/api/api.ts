@@ -2,9 +2,12 @@ import Word, { SignInResponse, User, WordAttributes } from "./types";
 
 enum ApiLinks {
   Words = "words",
-  User = "users",
+  Users = "users",
   SignIn = "signin",
+  Tokens = "tokens",
 }
+
+const TOKEN_EXPIRE_TIME = 4;
 
 class Api {
   private apiUrl: string;
@@ -25,7 +28,7 @@ class Api {
   }
 
   async createUser(user: User): Promise<User | number> {
-    const request = `${this.apiUrl}/${ApiLinks.User}`;
+    const request = `${this.apiUrl}/${ApiLinks.Users}`;
     const response = await fetch(request, {
       method: "POST",
       headers: {
@@ -57,19 +60,21 @@ class Api {
     }
     return response.status;
   }
-
+  // add word to user's hard words
   async addToHardWordsOfUser(
     userId: string,
     wordId: string,
     token: string,
     options: WordAttributes
   ): Promise<WordAttributes | number> {
-    const request = `${this.apiUrl}/${ApiLinks.User}/${userId}/${ApiLinks.Words}/${wordId}`;
+    // check if token did'nt expire
+    await this.checkToken();
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}/${wordId}`;
     const response = await fetch(request, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Accept": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(options),
@@ -79,6 +84,41 @@ class Api {
       return data;
     }
     return response.status;
+  }
+
+  async refreshToken(userId: string, refreshToken: string) {
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Tokens}`;
+    const response = await fetch(request, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+        Accept: "application/json",
+      },
+    });
+    if (response.ok) {
+      const tokens: Pick<SignInResponse, "token" | "refreshToken"> = await response.json();
+      const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
+      user.token = tokens.token;
+      user.refreshToken = tokens.refreshToken;
+      const data = JSON.stringify(user);
+      localStorage.setItem("user", data);
+    }
+    if (response.status === 401) {
+      localStorage.removeItem("user");
+      location.reload();
+    }
+  }
+  // check if token expired, then get new, if refresh token expired - reload page to new log in
+  private async checkToken() {
+    let user: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    const currentTime = Date.now();
+    const creationTime = +user["created"];
+    const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
+    if (lifeTime >= TOKEN_EXPIRE_TIME) {
+      await this.refreshToken(user.userId, user.refreshToken);
+    }
   }
 }
 
