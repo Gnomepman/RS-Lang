@@ -16,6 +16,17 @@
   }
 }
 
+.auth-form__wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 500%;
+  padding: 20px 65px;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
 .auth-form {
   width: 85%;
   height: auto;
@@ -29,11 +40,11 @@
 .auth-form__form {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   gap: 20px;
   justify-content: center;
   align-items: center;
-  padding: 20px 65px;
+
   box-sizing: border-box;
 }
 
@@ -79,25 +90,32 @@
 
 }
 
-.field__input_user{
+.field__input_name{
   background: no-repeat url("../../assets/user_icon.svg");
 }
 
 .field__input_password{
   background: no-repeat url("../../assets/password_icon.svg");
+
+  &:invalid{
+    border: 1px solid red;
+  }
 }
 
-.field__input_e-mail{
+.field__input_email{
   background: no-repeat url("../../assets/mail_icon.svg");
+
+  &.js-error, &:invalid{
+    border: 1px solid red;
+  }
 }
 
-.field__input_user,
+.field__input_name,
 .field__input_password,
-.field__input_e-mail{
+.field__input_email{
   background-size: 30px 30px;
   background-position: 5px 10px;
 }
-
 
 .field__title {
   font-size: 20px;
@@ -151,6 +169,15 @@
 
   &:hover{
     text-decoration: underline;
+  }
+}
+
+.error{
+  display: none;
+  color: red;
+
+  &.js-error{
+    display: inline-block;
   }
 }
 

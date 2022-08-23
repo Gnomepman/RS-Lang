@@ -3,9 +3,14 @@ import Api from "../../components/api/api";
 import "./learning.scss";
 import WordCard from "../../components/word-card/word-card";
 import Controls, {
-  PaginationButtons,DropdownClasses
+  PaginationButtons,
+  DropdownClasses,
 } from "../../components/controls/controls";
-import { API_URL } from "../../components/api/types";
+import {
+  API_URL,
+  SavedWords,
+  SignInResponse,
+} from "../../components/api/types";
 import { createElement } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint.svg";
 import audio_challenge_icon from "../../assets/audio_challenge.svg";
@@ -15,27 +20,31 @@ class LearningPage extends Page {
     MainTitle: "Learning2 Page",
   };
   static currentGroup = 1;
-  static divWrapper:HTMLDivElement;
+  static divWrapper: HTMLDivElement;
   constructor(id: string) {
     super(id);
-    LearningPage.divWrapper = createElement('div',"learning__wrapper") as HTMLDivElement;
+    LearningPage.divWrapper = createElement(
+      "div",
+      "learning__wrapper"
+    ) as HTMLDivElement;
   }
 
-  async renderNewGroup(dropdown:DropdownClasses,pagButtons:PaginationButtons){
+  async renderNewGroup(
+    dropdown: DropdownClasses,
+    pagButtons: PaginationButtons
+  ) {
     const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
-    const content = document.querySelector(`.${dropdown.content}`) as HTMLDialogElement;
+    const content = document.querySelector(
+      `.${dropdown.content}`
+    ) as HTMLDialogElement;
 
     div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
-      
-      if (
-        (e.target as HTMLDivElement).classList.contains(dropdown.group)
-      ) {
+
+      if ((e.target as HTMLDivElement).classList.contains(dropdown.group)) {
         const prevGroup = div.childNodes[0].textContent;
-        console.log('prevGroup',prevGroup);
-        const prevGroupId: number = +(div.getAttribute(
-          "data-group"
-        ) as string);
+        console.log("prevGroup", prevGroup);
+        const prevGroupId: number = +(div.getAttribute("data-group") as string);
         const clickedGroupId: string = (
           e.target as HTMLDivElement
         ).getAttribute("data-group") as string;
@@ -45,11 +54,18 @@ class LearningPage extends Page {
         newGroup.textContent = prevGroup;
         div.childNodes[0].textContent = clickedGroup;
         div.setAttribute("data-group", clickedGroupId);
-        const groups = document.querySelectorAll(`.${dropdown.group}`) as NodeListOf<HTMLDivElement>;
-        if (prevGroupId === 1) content.insertAdjacentElement("afterbegin", newGroup);
+        const groups = document.querySelectorAll(
+          `.${dropdown.group}`
+        ) as NodeListOf<HTMLDivElement>;
+        if (prevGroupId === 1)
+          content.insertAdjacentElement("afterbegin", newGroup);
         else if (prevGroupId === 6)
           content.insertAdjacentElement("beforeend", newGroup);
-        else groups[prevGroupId - 1].insertAdjacentElement("beforebegin", newGroup);
+        else
+          groups[prevGroupId - 1].insertAdjacentElement(
+            "beforebegin",
+            newGroup
+          );
         (e.target as HTMLDivElement).remove();
         LearningPage.currentGroup = +clickedGroupId;
         await this.renderCardWords(1, LearningPage.currentGroup);
@@ -58,23 +74,49 @@ class LearningPage extends Page {
     });
   }
 
+  static isAddedToHard(
+    userWords: SavedWords[],
+    wordId: string
+  ): SavedWords | undefined {
+    const result = userWords.find((i) => i.wordId === wordId);
+    return result;
+  }
+
   // Render words from needed page and group
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
     const words = await api.getWords(page, group);
+    let user: SignInResponse;
+    let userWords: SavedWords[] | number;
+    if (localStorage.getItem("user")) {
+      user = JSON.parse(localStorage.getItem("user") as string);
+      userWords = await api.getAllUserWords(user.userId, user.token);
+    }
+
     const div = document.createElement("div");
     const current = document.querySelector(".learning") as HTMLDivElement;
+    let wordCard: WordCard;
     if (current) current.remove();
     div.className = "learning";
     words.forEach((word) => {
-      const wordCard = new WordCard("div", "learning__word-card", word);
+      if (userWords && Array.isArray(userWords)) {
+        if (LearningPage.isAddedToHard(userWords, word.id)) {
+          wordCard = new WordCard(
+            "div",
+            "learning__word-card",
+            word,
+            "js-added"
+          );
+        } else {
+          wordCard = new WordCard("div", "learning__word-card", word, "");
+        }
+      } else {
+        wordCard = new WordCard("div", "learning__word-card", word, "");
+      }
       div.append(wordCard.render());
     });
-    console.log('1');
     LearningPage.divWrapper.insertAdjacentElement("afterbegin", div);
   }
-
-  
 
   // Render next page after click on button next page
   async renderNextPage(pagButtons: PaginationButtons) {
@@ -149,8 +191,10 @@ class LearningPage extends Page {
     });
   }
 
-  async renderLastPage(pagButtons: PaginationButtons){
-    const buttonLast = document.querySelector(`.${pagButtons.last}`) as HTMLButtonElement;
+  async renderLastPage(pagButtons: PaginationButtons) {
+    const buttonLast = document.querySelector(
+      `.${pagButtons.last}`
+    ) as HTMLButtonElement;
     const buttonNext = document.querySelector(
       `.${pagButtons.next}`
     ) as HTMLButtonElement;
@@ -160,7 +204,7 @@ class LearningPage extends Page {
     const buttonPrev = document.querySelector(
       `.${pagButtons.prev}`
     ) as HTMLButtonElement;
-    buttonLast.addEventListener('click',async ()=>{
+    buttonLast.addEventListener("click", async () => {
       const spanPage = document.querySelector(
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
@@ -173,14 +217,14 @@ class LearningPage extends Page {
         buttonFirst.disabled = false;
       }
       await this.renderCardWords(30, LearningPage.currentGroup);
-    })
+    });
   }
 
-  async renderFirstPage(pagButtons: PaginationButtons){
+  async renderFirstPage(pagButtons: PaginationButtons) {
     const buttonFirst = document.querySelector(
       `.${pagButtons.first}`
     ) as HTMLButtonElement;
-    buttonFirst.addEventListener('click',async ()=>{
+    buttonFirst.addEventListener("click", async () => {
       const buttonNext = document.querySelector(
         `.${pagButtons.next}`
       ) as HTMLButtonElement;
@@ -201,16 +245,27 @@ class LearningPage extends Page {
         buttonLast.disabled = false;
       }
       await this.renderCardWords(1, LearningPage.currentGroup);
-    })
-    
+    });
   }
 
-  private renderMiniGamesDropdown(className:string){
-    const content = createElement('div',`${className}-content`);
-    const linkSprint = createElement('a',`${className}-sprint-link`) as HTMLLinkElement;
-    const linkAudioChallenge = createElement('a',`${className}-audio-challenge-link`) as HTMLLinkElement;
-    const miniGameSprint = createElement('img',`${className}-sprint-image`) as HTMLImageElement;
-    const miniGameAudioChallenge = createElement('img',`${className}-audio-challenge-image`) as HTMLImageElement; 
+  private renderMiniGamesDropdown(className: string) {
+    const content = createElement("div", `${className}-content`);
+    const linkSprint = createElement(
+      "a",
+      `${className}-sprint-link`
+    ) as HTMLLinkElement;
+    const linkAudioChallenge = createElement(
+      "a",
+      `${className}-audio-challenge-link`
+    ) as HTMLLinkElement;
+    const miniGameSprint = createElement(
+      "img",
+      `${className}-sprint-image`
+    ) as HTMLImageElement;
+    const miniGameAudioChallenge = createElement(
+      "img",
+      `${className}-audio-challenge-image`
+    ) as HTMLImageElement;
     const icon = document.querySelector(`.${className}`) as HTMLDivElement;
     linkSprint.href = "index.html#sprint";
     linkAudioChallenge.href = "index.html#audio-challenge";
@@ -218,58 +273,58 @@ class LearningPage extends Page {
     miniGameAudioChallenge.src = audio_challenge_icon;
     linkSprint.append(miniGameSprint);
     linkAudioChallenge.append(miniGameAudioChallenge);
-    content.append(linkAudioChallenge,linkSprint);
+    content.append(linkAudioChallenge, linkSprint);
     icon.append(content);
-    
-    icon.addEventListener('click',()=>{
-      icon.classList.toggle("js-clicked");
 
-    })
+    icon.addEventListener("click", () => {
+      icon.classList.toggle("js-clicked");
+    });
   }
 
-  static resetPagination(pagButtons:PaginationButtons){
+  static resetPagination(pagButtons: PaginationButtons) {
     const buttonFirst = document.querySelector(
       `.${pagButtons.first}`
     ) as HTMLButtonElement;
-      const buttonNext = document.querySelector(
-        `.${pagButtons.next}`
-      ) as HTMLButtonElement;
-      const buttonPrev = document.querySelector(
-        `.${pagButtons.prev}`
-      ) as HTMLButtonElement;
-      const buttonLast = document.querySelector(
-        `.${pagButtons.last}`
-      ) as HTMLButtonElement;
-      const spanPage = document.querySelector(
-        `.${pagButtons.page}`
-      ) as HTMLSpanElement;
+    const buttonNext = document.querySelector(
+      `.${pagButtons.next}`
+    ) as HTMLButtonElement;
+    const buttonPrev = document.querySelector(
+      `.${pagButtons.prev}`
+    ) as HTMLButtonElement;
+    const buttonLast = document.querySelector(
+      `.${pagButtons.last}`
+    ) as HTMLButtonElement;
+    const spanPage = document.querySelector(
+      `.${pagButtons.page}`
+    ) as HTMLSpanElement;
 
-      spanPage.textContent = `1`;
-      if (buttonNext.disabled){
-        buttonNext.disabled = false;
-        buttonLast.disabled = false
-      }
-      if (!buttonPrev.disabled){
-        buttonPrev.disabled = true;
-        buttonFirst.disabled = true
-      }
-
+    spanPage.textContent = `1`;
+    if (buttonNext.disabled) {
+      buttonNext.disabled = false;
+      buttonLast.disabled = false;
+    }
+    if (!buttonPrev.disabled) {
+      buttonPrev.disabled = true;
+      buttonFirst.disabled = true;
+    }
   }
 
   render() {
     const controls = new Controls("div", "controls");
 
-    this.renderCardWords(1, 1)
-      .then(() => {
-        LearningPage.divWrapper.append(controls.render()),
-        this.container.insertAdjacentElement('afterbegin',LearningPage.divWrapper);
-          this.renderNextPage(controls.pagButtons);
-          this.renderPrevPage(controls.pagButtons);
-          this.renderLastPage(controls.pagButtons);
-          this.renderFirstPage(controls.pagButtons);
-          this.renderNewGroup(controls.dropdown,controls.pagButtons);
-          this.renderMiniGamesDropdown(controls.miniGamesClass);
-      });
+    this.renderCardWords(1, 1).then(() => {
+      LearningPage.divWrapper.append(controls.render()),
+        this.container.insertAdjacentElement(
+          "afterbegin",
+          LearningPage.divWrapper
+        );
+      this.renderNextPage(controls.pagButtons);
+      this.renderPrevPage(controls.pagButtons);
+      this.renderLastPage(controls.pagButtons);
+      this.renderFirstPage(controls.pagButtons);
+      this.renderNewGroup(controls.dropdown, controls.pagButtons);
+      this.renderMiniGamesDropdown(controls.miniGamesClass);
+    });
     return this.container;
   }
 }

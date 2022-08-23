@@ -2,6 +2,8 @@ import Component from "../templates/component";
 import { createElement } from "../utils/utils";
 import log_in_img from "../../assets/log-in-img.svg";
 import "./access-form.scss";
+import Api from "../api/api";
+import { API_URL, User } from "../api/types";
 
 class AccessForm extends Component {
   constructor(tagName: string, className: string) {
@@ -50,9 +52,13 @@ class AccessForm extends Component {
     input.type = type;
     if (minlength) input.setAttribute("minlength", minlength.toString(10));
 
+    input.name = `${classNameElem}`;
     input.id = `${classNameElem}-input`;
     labelTitle.setAttribute("for", input.id);
-
+    if (classNameElem === "email") {
+      input.oninput = () =>
+        AccessForm.showError("error", "", "field__input_email");
+    }
     div.append(labelTitle, input);
 
     return div;
@@ -112,10 +118,16 @@ class AccessForm extends Component {
     return div;
   }
 
+
+  //render form for Log In
   private renderLogInForm(className: string): HTMLDivElement {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
+    const divData = createElement(
+      "div",
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+    ) as HTMLDivElement;
     const divContainer = createElement(
       "div",
       `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`
@@ -141,12 +153,13 @@ class AccessForm extends Component {
       )
     );
     formLogIn.append(
-      this.renderTitle(
-        `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
+      this.renderField(
+        `field field_email`,
+        "E-mail",
+        "Enter your e-mail",
+        undefined,
+        "email"
       ),
-      this.renderField(`field field_user`, "Username", "Enter your name"),
       this.renderField(
         `field field_password`,
         "Password",
@@ -154,26 +167,61 @@ class AccessForm extends Component {
         8,
         "password"
       ),
-      divContainer,
+      this.renderSpanError("error"),
+      divContainer
+    );
+    divData.append(
+      this.renderTitle(
+        `${classNameTempBlock}__title`,
+        "RSLANG",
+        "Welcome to RSLANG"
+      ),
+      formLogIn,
       this.renderLinkToForm(
         `link-to-form link-to-form_registration`,
         "Not registered yet?",
         "Sign Up"
       )
     );
-
-
-
-    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
+    formLogIn.setAttribute("method","POST");
+    // listener for Log In method
+    formLogIn.addEventListener("submit", this.logIn);
+    divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
 
+  // render error message for errors in e-mail or password
+  private renderSpanError(className: string): HTMLSpanElement {
+    const span = createElement("span", className) as HTMLSpanElement;
+    return span;
+  }
+
+  //show error with text or hide message with blank text
+  static showError(spanSelector: string, text: string, inputError?: string) {
+    const span = document.querySelector(`.${spanSelector}`) as HTMLSpanElement;
+    const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
+    if (text) {
+      span.textContent = text;
+      console.log("showError");
+      span.classList.add("js-error");
+      input.classList.add("js-error");
+    } else {
+      if (span.classList.contains("js-error")) {
+        span.classList.remove("js-error");
+        input.classList.remove("js-error");
+      }
+    }
+  }
+  //render registration form
   private renderRegistrationForm(className: string) {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
     const classNameTempElem = className.split("_")[1];
-
-    const formLogIn = createElement(
+    const divData = createElement(
+      "div",
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+    ) as HTMLDivElement;
+    const formRegistration = createElement(
       "form",
       `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
     );
@@ -184,19 +232,14 @@ class AccessForm extends Component {
 
     img.src = log_in_img;
 
-    formLogIn.append(
-      this.renderTitle(
-        `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
-      ),
-      this.renderField(`field field_user`, "Username", "Enter your name"),
+    formRegistration.append(
+      this.renderField(`field field_name`, "Username", "Enter your name"),
       this.renderField(
-        `field field_e-mail`,
+        `field field_email`,
         "E-Mail",
         "Enter your e-mail",
         undefined,
-        "e-mail"
+        "email"
       ),
       this.renderField(
         `field field_password`,
@@ -205,18 +248,89 @@ class AccessForm extends Component {
         8,
         "password"
       ),
+      this.renderSpanError("error"),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
         "Sign Up"
+      )
+    );
+    divData.append(
+      this.renderTitle(
+        `${classNameTempBlock}__title`,
+        "RSLANG",
+        "Welcome to RSLANG"
       ),
+      formRegistration,
       this.renderLinkToForm(
         `link-to-form link-to-form_log-in`,
         "Already registered?",
         "Log In"
       )
     );
-    divLogin.append(formLogIn, img,this.renderCloseButton("button-close"));
+    // listener for sign Up method
+    formRegistration.addEventListener("submit", this.signUp);
+    divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
+  }
+  // sign Up, create user, if wrong email or password - show error message
+  async signUp(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const dataFromForm = new FormData(form);
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const api = new Api(API_URL);
+    try {
+      const response = await api.createUser(dataObj);
+      console.log("response", response);
+      // if user with this email exist
+      if (response === 417) {
+        AccessForm.showError(
+          "error",
+          "User with this email already exist",
+          "field__input_email"
+        );
+      }
+      //if incorrect password
+      if (response === 422) {
+        AccessForm.showError(
+          "error",
+          "Incorrect e-mail or password",
+          "field__input_email"
+        );
+      }
+      // if creating user successful - reload page
+      if (typeof response === "object") location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // log in, show error - if e-mail donn't exist
+  async logIn(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const dataFromForm = new FormData(form);
+    const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const api = new Api(API_URL);
+    try {
+      const response = await api.signIn(dataObj);
+      if (typeof response === "object") {
+        // save creation time for token
+        const currentTime = Date.now();
+        response["created"] = currentTime.toString(10);
+        const objToString = JSON.stringify(response);
+        localStorage.setItem("user",objToString);
+        location.reload();
+      }
+      if (response === 404) {
+        AccessForm.showError(
+          "error",
+          "User with this email doesn't exist",
+          "field__input_email"
+        );
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   renderForm(form: string) {
@@ -235,11 +349,12 @@ class AccessForm extends Component {
       );
   }
 
-  private renderCloseButton(className:string):HTMLButtonElement{
-    const button= createElement("button",className) as HTMLButtonElement;
+  private renderCloseButton(className: string): HTMLButtonElement {
+    const button = createElement("button", className) as HTMLButtonElement;
     button.onclick = () => {
-      if (this.container.classList.contains("js-show")) this.container.classList.remove("js-show");
-    }
+      if (this.container.classList.contains("js-show"))
+        this.container.classList.remove("js-show");
+    };
 
     return button;
   }

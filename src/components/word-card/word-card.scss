@@ -98,3 +98,48 @@
 .learning__word-card-translate{
   border: 1px solid #1E9E1C;
 }
+
+.learning__word-card-buttons{
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+.learning__word-card-button-learn{
+  width: 50%;
+  height: 40px;
+  padding: 8px 18px;
+  background-color: white;
+  border: 1px solid black;
+  transition: 0.3s;
+
+  &:hover{
+    background-color: antiquewhite;
+  }
+}
+
+.learning__word-card-button-add{
+  width: 50%;
+  background-color: #084777;
+  border: none;
+  color: white;
+  transition: 0.3s;
+
+  &:hover{
+    background-color: #1967a2;
+  }
+
+  &.js-added{
+    background-color: #DC34DF;
+    color: white;
+  }
+}
+
+.learning__word-card-button-add,
+.learning__word-card-button-learn{
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
