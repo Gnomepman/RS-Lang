@@ -1,4 +1,4 @@
-import Word, { SignInResponse, User, WordAttributes } from "./types";
+import Word, { SavedWords, SignInResponse, User, WordAttributes } from "./types";
 
 enum ApiLinks {
   Words = "words",
@@ -61,7 +61,7 @@ class Api {
     return response.status;
   }
   // add word to user's hard words
-  async addToHardWordsOfUser(
+  async addToUserHardWords(
     userId: string,
     wordId: string,
     token: string,
@@ -120,6 +120,23 @@ class Api {
       await this.refreshToken(user.userId, user.refreshToken);
     }
   }
+
+  async getAllUserWords(userId:string,token:string):Promise<SavedWords[] | number>{
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}`;
+    const response = await fetch(request, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+    if (response.ok){ 
+      const data:SavedWords[] = await response.json();
+      return data;
+    }
+    return response.status;
+  }
+
 }
 
 export default Api;

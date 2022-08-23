@@ -7,11 +7,11 @@ import "./word-card.scss";
 import Api from "../api/api";
 class WordCard extends Component {
   private wordTemplate: Word;
-  isAuthorized: boolean;
-  constructor(tagName: string, className: string, word: Word) {
+  private isAdded:string;
+  constructor(tagName: string, className: string, word: Word, isAdded:string) {
     super(tagName, className);
     this.wordTemplate = word;
-    this.isAuthorized = false;
+    this.isAdded = isAdded;
   }
 
   render() {
@@ -79,14 +79,18 @@ class WordCard extends Component {
     buttonAdd.textContent = "Add to hard";
     buttonLearn.textContent = "Not studied";
 
+    if (this.isAdded){
+      buttonAdd.classList.add("js-added");
+      buttonAdd.textContent = "Added";
+    }
+    // add to hard words
     buttonAdd.onclick = async()=>{ 
       const api = new Api(API_URL);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem("user") as string
       );
-      console.log("userAddWord",user)
       if (!buttonAdd.classList.contains("js-added")){
-        const response = await api.addToHardWordsOfUser(
+        const response = await api.addToUserHardWords(
           user.userId,
           this.container.id,
           user.token,
@@ -95,15 +99,13 @@ class WordCard extends Component {
         if (typeof response == "object"){
           buttonAdd.classList .add("js-added");
           buttonAdd.textContent = "Added";
-          console.log("response",response);
-          
         }
       } else {
         buttonAdd.classList.remove("js-added");
         buttonAdd.textContent = "Add to hard";
       }
     }
-
+    // play audio
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');
       (audio as HTMLAudioElement).play();
@@ -123,6 +125,7 @@ class WordCard extends Component {
     );
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
+    // check if user logged in
     if (localStorage.getItem("user")) divButtons.append(buttonLearn, buttonAdd);
     this.container.append(
       img,

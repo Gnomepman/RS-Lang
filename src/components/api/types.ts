@@ -35,7 +35,13 @@ type WordAttributes = {
   optional?: {};
 };
 
+type SavedWords ={
+  difficulty: string;
+  id: string;
+  wordId: string;
+}
+
 const API_URL = "https://rs-lang-test.herokuapp.com";
 
-export { API_URL, User, SignInResponse, WordAttributes };
+export { API_URL, User, SignInResponse, WordAttributes, SavedWords};
 export default Word;
