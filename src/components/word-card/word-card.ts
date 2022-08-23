@@ -77,20 +77,24 @@ class WordCard extends Component {
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
 
     buttonAdd.textContent = "Add to hard";
-    buttonLearn.textContent = "Not studied";
+    buttonLearn.textContent = "Not learned";
     // if word added to hard, add class
     if (this.isAdded){
       buttonAdd.classList.add("js-added");
       buttonAdd.textContent = "Added";
     }
     // add to hard words
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    console.log("user",user);
     buttonAdd.onclick = async()=>{ 
       const api = new Api(API_URL);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem("user") as string
       );
       if (!buttonAdd.classList.contains("js-added")){
-        const response = await api.addToUserHardWords(
+        const response = await api.addToUserWords(
           user.userId,
           this.container.id,
           user.token,
@@ -100,11 +104,26 @@ class WordCard extends Component {
           buttonAdd.classList .add("js-added");
           buttonAdd.textContent = "Added";
         }
-      } else {
-        buttonAdd.classList.remove("js-added");
-        buttonAdd.textContent = "Add to hard";
       }
     }
+    // buttonLearn.onclick = async()=>{
+    //   const api = new Api(API_URL);
+    //   const user: SignInResponse = JSON.parse(
+    //     localStorage.getItem("user") as string
+    //   );
+    //   if (!buttonLearn.classList.contains("js-learned")){
+    //     const response = await api.addToUserWords(
+    //       user.userId,
+    //       this.container.id,
+    //       user.token,
+    //       { difficulty: "learned", optional: {} }
+    //     );
+    //     if (typeof response == "object"){
+    //       buttonLearn.classList .add("js-learned");
+    //       buttonLearn.textContent = "Added";
+    //     }
+    //   }
+    // }
     // play audio
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');

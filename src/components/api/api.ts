@@ -61,7 +61,7 @@ class Api {
     return response.status;
   }
   // add word to user's hard words
-  async addToUserHardWords(
+  async addToUserWords(
     userId: string,
     wordId: string,
     token: string,
@@ -116,6 +116,7 @@ class Api {
     const currentTime = Date.now();
     const creationTime = +user["created"];
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
+    console.log("lifeTime",lifeTime);
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
       await this.refreshToken(user.userId, user.refreshToken);
     }
