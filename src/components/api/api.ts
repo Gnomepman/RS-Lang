@@ -85,7 +85,7 @@ class Api {
     }
     return response.status;
   }
-
+  //refresh token
   async refreshToken(userId: string, refreshToken: string) {
     const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Tokens}`;
     const response = await fetch(request, {
@@ -120,8 +120,9 @@ class Api {
       await this.refreshToken(user.userId, user.refreshToken);
     }
   }
-
+  // get all user's words
   async getAllUserWords(userId:string,token:string):Promise<SavedWords[] | number>{
+    await this.checkToken();
     const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}`;
     const response = await fetch(request, {
       method: "GET",

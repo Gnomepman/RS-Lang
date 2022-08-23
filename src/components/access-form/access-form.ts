@@ -118,6 +118,8 @@ class AccessForm extends Component {
     return div;
   }
 
+
+  //render form for Log In
   private renderLogInForm(className: string): HTMLDivElement {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
@@ -182,16 +184,19 @@ class AccessForm extends Component {
       )
     );
     formLogIn.setAttribute("method","POST");
+    // listener for Log In method
     formLogIn.addEventListener("submit", this.logIn);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
 
+  // render error message for errors in e-mail or password
   private renderSpanError(className: string): HTMLSpanElement {
     const span = createElement("span", className) as HTMLSpanElement;
     return span;
   }
 
+  //show error with text or hide message with blank text
   static showError(spanSelector: string, text: string, inputError?: string) {
     const span = document.querySelector(`.${spanSelector}`) as HTMLSpanElement;
     const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
@@ -207,7 +212,7 @@ class AccessForm extends Component {
       }
     }
   }
-
+  //render registration form
   private renderRegistrationForm(className: string) {
     const divLogin = createElement("div", className) as HTMLDivElement;
     const classNameTempBlock = className.split(" ")[0];
@@ -262,11 +267,12 @@ class AccessForm extends Component {
         "Log In"
       )
     );
+    // listener for sign Up method
     formRegistration.addEventListener("submit", this.signUp);
     divLogin.append(divData, img, this.renderCloseButton("button-close"));
     return divLogin;
   }
-
+  // sign Up, create user, if wrong email or password - show error message
   async signUp(event: SubmitEvent) {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
@@ -276,6 +282,7 @@ class AccessForm extends Component {
     try {
       const response = await api.createUser(dataObj);
       console.log("response", response);
+      // if user with this email exist
       if (response === 417) {
         AccessForm.showError(
           "error",
@@ -283,6 +290,7 @@ class AccessForm extends Component {
           "field__input_email"
         );
       }
+      //if incorrect password
       if (response === 422) {
         AccessForm.showError(
           "error",
@@ -290,12 +298,13 @@ class AccessForm extends Component {
           "field__input_email"
         );
       }
+      // if creating user successful - reload page
       if (typeof response === "object") location.reload();
     } catch (error) {
       console.log(error);
     }
   }
-
+  // log in, show error - if e-mail donn't exist
   async logIn(event: SubmitEvent) {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
@@ -303,12 +312,11 @@ class AccessForm extends Component {
     const dataObj: User = Object.fromEntries(dataFromForm) as User;
     const api = new Api(API_URL);
     try {
-      console.log("dataObj", dataObj);
       const response = await api.signIn(dataObj);
       if (typeof response === "object") {
+        // save creation time for token
         const currentTime = Date.now();
         response["created"] = currentTime.toString(10);
-        console.log("response", response);
         const objToString = JSON.stringify(response);
         localStorage.setItem("user",objToString);
         location.reload();

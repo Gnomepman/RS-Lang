@@ -13,7 +13,7 @@ class WordCard extends Component {
     this.wordTemplate = word;
     this.isAdded = isAdded;
   }
-
+  //render word
   render() {
     const img = createElement("img", "learning__word-card-img");
     const spanWord = createElement("span", "learning__word-card-word");
@@ -78,7 +78,7 @@ class WordCard extends Component {
 
     buttonAdd.textContent = "Add to hard";
     buttonLearn.textContent = "Not studied";
-
+    // if word added to hard, add class
     if (this.isAdded){
       buttonAdd.classList.add("js-added");
       buttonAdd.textContent = "Added";
