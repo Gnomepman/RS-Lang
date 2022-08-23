@@ -202,7 +202,6 @@ class AccessForm extends Component {
     const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
     if (text) {
       span.textContent = text;
-      console.log("showError");
       span.classList.add("js-error");
       input.classList.add("js-error");
     } else {
@@ -281,7 +280,6 @@ class AccessForm extends Component {
     const api = new Api(API_URL);
     try {
       const response = await api.createUser(dataObj);
-      console.log("response", response);
       // if user with this email exist
       if (response === 417) {
         AccessForm.showError(
