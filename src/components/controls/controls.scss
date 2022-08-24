@@ -130,6 +130,7 @@
 }
 
 .controls__mini-games.js-clicked > .controls__mini-games-content {
+  display: flex;
   opacity: 1;
   flex-direction: column;
   transition-duration: 1s;
@@ -145,15 +146,10 @@
 
 .pagination__groups-content,
 .controls__mini-games-content {
-  display: flex;
   opacity: 0;
   position: absolute;
   left: 0;
 
-}
-
-.controls__mini-games-content {
-  width: auto;
 }
 
 .controls__home-image,
