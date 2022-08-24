@@ -13,7 +13,9 @@ type Word = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  userWord?:{}
+  userWord?:{
+    difficulty:string;
+  }
 };
 
 type AggregatedWord = Omit<Word,"id"> & {_id:string};

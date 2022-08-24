@@ -13,9 +13,11 @@ enum ApiLinks {
   Tokens = "tokens",
   AggregatedWords = "aggregatedWords",
   Filter = "filter",
+  WordPerPage = "wordsPerPage",
 }
 
 const TOKEN_EXPIRE_TIME = 4;
+const MAX_WORDS_PER_PAGE = 20;
 
 class Api {
   private apiUrl: string;
@@ -97,26 +99,28 @@ class Api {
     return response.status;
   }
 
-  async updateUserWord(userId: string,
+  async updateUserWord(
+    userId: string,
     wordId: string,
     token: string,
-    options: WordAttributes): Promise<WordAttributes | number> {
-      await this.checkToken();
-      const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}/${wordId}`;
-      const response = await fetch(request, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(options),
-      });
-      if (response.ok) {
-        const data: WordAttributes = await response.json();
-        return data;
-      }
-      return response.status;
+    options: WordAttributes
+  ): Promise<WordAttributes | number> {
+    await this.checkToken();
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}/${wordId}`;
+    const response = await fetch(request, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(options),
+    });
+    if (response.ok) {
+      const data: WordAttributes = await response.json();
+      return data;
+    }
+    return response.status;
   }
 
   //refresh token
@@ -129,12 +133,16 @@ class Api {
         Accept: "application/json",
       },
     });
+    console.log("from refreshToken");
     if (response.ok) {
       const tokens: Pick<SignInResponse, "token" | "refreshToken"> =
         await response.json();
+      console.log("from refreshToken tokens", tokens);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem("user") as string
       );
+      const currentTime = Date.now();
+      user["created"] = currentTime.toString(10);
       user.token = tokens.token;
       user.refreshToken = tokens.refreshToken;
       const data = JSON.stringify(user);
@@ -146,7 +154,6 @@ class Api {
     }
   }
 
-
   // check if token expired, then get new, if refresh token expired - reload page to new log in
   private async checkToken() {
     let user: SignInResponse = JSON.parse(
@@ -157,6 +164,7 @@ class Api {
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
     console.log("lifeTime", lifeTime);
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
+      console.log(" call refreshToken");
       await this.refreshToken(user.userId, user.refreshToken);
     }
   }
@@ -186,18 +194,14 @@ class Api {
     token: string,
     page: number,
     group: number,
-    difficulty: string
-  ):Promise<AggregatedWords[] | number> {
+    difficulty :string
+  ): Promise<AggregatedWords[] | number> {
     await this.checkToken();
     const filter = {
-      $and: [
-        { page: page - 1},
-        { group: group - 1},
-        { "userWord.difficulty": `${difficulty}` },
-      ],
+      $and: [{ page: page - 1 }, { group: group - 1 },{ "userWord.difficulty": `${difficulty}`}]
     };
     const string = JSON.stringify(filter);
-    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.AggregatedWords}?${ApiLinks.Filter}=${string}`;
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=${MAX_WORDS_PER_PAGE}&${ApiLinks.Filter}=${string}`;
     const response = await fetch(request, {
       method: "GET",
       headers: {
@@ -206,7 +210,7 @@ class Api {
       },
     });
     if (response.ok) {
-      const data:AggregatedWords[] = await response.json();
+      const data: AggregatedWords[] = await response.json();
       return data;
     }
     return response.status;

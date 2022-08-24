@@ -104,7 +104,7 @@ class WordCard extends Component {
 
     // add to hard words
 
-    const addToWords = async (
+    const addWord = async (
       target: MouseEvent,
       classToAdd: string,
       text1: string,
@@ -118,6 +118,7 @@ class WordCard extends Component {
         localStorage.getItem("user") as string
       );
       const button = target.currentTarget as HTMLButtonElement;
+      console.log("from add button",button);
       if (!button.classList.contains(classToAdd)){
         const response = await api.addToUserWords(
           user.userId,
@@ -125,15 +126,17 @@ class WordCard extends Component {
           user.token,
           { difficulty: difficulty, optional: {} }
         );
+        console.log(`response add to ${difficulty}`,response)
         if (typeof response == "object"){
           changeButton(button,classToAdd,text1).add();
         }
         if (response === 417){
-          const response = await api.updateUserWord(user.userId,
+          const responseFromAdd = await api.updateUserWord(user.userId,
             this.container.id,
             user.token,
             { difficulty: difficulty, optional: {} });
-          if (typeof response == "object"){
+            console.log(`response update to ${difficulty}`,responseFromAdd)
+          if (typeof responseFromAdd == "object"){
             if (buttonToChange.classList.contains(classToRemove)){
               changeButton(buttonLearn,classToRemove,text2).remove();
             }
@@ -144,7 +147,7 @@ class WordCard extends Component {
     };
 
     buttonAdd.onclick = async (e) => {
-      await addToWords(
+      await addWord(
         e,
         "js-added",
         "Added",
@@ -156,7 +159,7 @@ class WordCard extends Component {
     };
     
     buttonLearn.onclick = async(e)=>{
-      await addToWords(
+      await addWord(
         e,
         "js-learned",
         "Learned",
@@ -166,35 +169,7 @@ class WordCard extends Component {
         buttonAdd
       );
      }
-    // {
-    //   const api = new Api(API_URL);
-    //   const user: SignInResponse = JSON.parse(
-    //     localStorage.getItem("user") as string
-    //   );
-    //   if (!buttonLearn.classList.contains("js-learned")){
-    //     const response = await api.addToUserWords(
-    //       user.userId,
-    //       this.container.id,
-    //       user.token,
-    //       { difficulty: "learned", optional: {} }
-    //     );
-    //     if (typeof response == "object"){
-    //       changeButton(buttonLearn,"js-learned","Learned").add();
-    //     }
-    //     if (response === 417){
-    //       const response = await api.updateUserWord(user.userId,
-    //         this.container.id,
-    //         user.token,
-    //         { difficulty: "learned", optional: {} });
-    //       if (typeof response == "object"){
-    //         if (buttonAdd.classList.contains("js-added")){
-    //           changeButton(buttonAdd,"js-added","Add to hard").remove();
-    //         }
-    //         changeButton(buttonLearn,"js-learned","Learned").add();
-    //       }
-    //     }
-    //   }
-    // }
+
     // play audio
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');

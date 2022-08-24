@@ -78,10 +78,10 @@ class LearningPage extends Page {
   }
 
   static isAdded(
-    words: AggregatedWords[],
+    words: AggregatedWord[],
     wordId: string
   ): AggregatedWord | undefined {
-    const result = words[0].paginatedResults.find((i) => i._id === wordId);
+    const result = words.find((i) => i._id === wordId);
     return result;
   }
 
@@ -92,13 +92,16 @@ class LearningPage extends Page {
     let user: SignInResponse;
     let hardWords: AggregatedWords[] | number;
     let learnedWords: AggregatedWords[] | number;
+    let userWords: AggregatedWord[];
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
       hardWords = await api.getAggregatedWords(user.userId,user.token,page,group,"hard");
-      learnedWords =  await api.getAggregatedWords(user.userId,user.token,page,group,"learned");
+      learnedWords = await api.getAggregatedWords(user.userId,user.token,page,group,"learned");
+      if ((Array.isArray(hardWords))&&(Array.isArray(learnedWords))){
+        userWords = [...hardWords[0].paginatedResults,...learnedWords[0].paginatedResults];
+      }
+      
       console.log("user",user);
-      console.log("aggrwords",hardWords);
-      console.log("learnedWords",learnedWords);
     }
 
     const div = document.createElement("div");
@@ -107,15 +110,31 @@ class LearningPage extends Page {
     if (current) current.remove();
     div.className = "learning";
     words.forEach((word) => {
-      if (hardWords && Array.isArray(hardWords)) {
-        if (LearningPage.isAdded(hardWords, word.id)) {
-          wordCard = new WordCard(
-            "div",
-            "learning__word-card",
-            word,
-            "js-added",
-            ""
-          );
+      // if user added to hard words or learned
+      if (userWords && Array.isArray(userWords)) {
+        // if word added to hard words or learned
+        if (LearningPage.isAdded(userWords, word.id)) {
+          const difficulty = LearningPage.isAdded(userWords, word.id);
+          //if difficulty of word is hard
+          if (difficulty?.userWord?.difficulty === "hard"){
+            wordCard = new WordCard(
+              "div",
+              "learning__word-card",
+              word,
+              "js-added",
+              ""
+            );
+          }
+          //if difficulty of word is learned
+          if (difficulty?.userWord?.difficulty === "learned"){
+            wordCard = new WordCard(
+              "div",
+              "learning__word-card",
+              word,
+              "",
+              "js-learned"
+            );
+          }
         } else {
           wordCard = new WordCard("div", "learning__word-card", word, "","");
         }
