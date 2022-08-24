@@ -14,12 +14,12 @@ export default class Choose_game extends Page {
       choose_game_wrapper.innerHTML = `
       <h2>Choose a game and practice words</h2>
       <div class="choose_games">
-      <a href="#INSERT_HERE_NAME_OF_THE_GAME" class="game">
+      <a href="#sprint" class="game">
           <img src="${sprint}" alt="">
           <h3>Sprint</h3>
           <p>Teaches you how to quickly translate into your native language</p>
       </a>
-      <a href="#INSERT_HERE_NAME_OF_THE_GAME" class="game">
+      <a href="#audio-challenge" class="game">
           <img src="${audio_call}" alt="">
           <h3>Audio call</h3>
           <p>Improves listening comprehension</p>
