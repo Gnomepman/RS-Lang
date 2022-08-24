@@ -77,7 +77,7 @@ class LearningPage extends Page {
     });
   }
 
-  static isAddedToHard(
+  static isAdded(
     words: AggregatedWords[],
     wordId: string
   ): AggregatedWord | undefined {
@@ -90,14 +90,15 @@ class LearningPage extends Page {
     const api = new Api(`${API_URL}`);
     const words = await api.getWords(page, group);
     let user: SignInResponse;
-    let userWords: SavedWords[] | number;
     let hardWords: AggregatedWords[] | number;
+    let learnedWords: AggregatedWords[] | number;
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
       hardWords = await api.getAggregatedWords(user.userId,user.token,page,group,"hard");
-      userWords = await api.getAllUserWords(user.userId, user.token);
+      learnedWords =  await api.getAggregatedWords(user.userId,user.token,page,group,"learned");
       console.log("user",user);
       console.log("aggrwords",hardWords);
+      console.log("learnedWords",learnedWords);
     }
 
     const div = document.createElement("div");
@@ -107,18 +108,19 @@ class LearningPage extends Page {
     div.className = "learning";
     words.forEach((word) => {
       if (hardWords && Array.isArray(hardWords)) {
-        if (LearningPage.isAddedToHard(hardWords, word.id)) {
+        if (LearningPage.isAdded(hardWords, word.id)) {
           wordCard = new WordCard(
             "div",
             "learning__word-card",
             word,
-            "js-added"
+            "js-added",
+            ""
           );
         } else {
-          wordCard = new WordCard("div", "learning__word-card", word, "");
+          wordCard = new WordCard("div", "learning__word-card", word, "","");
         }
       } else {
-        wordCard = new WordCard("div", "learning__word-card", word, "");
+        wordCard = new WordCard("div", "learning__word-card", word, "","");
       }
       div.append(wordCard.render());
     });

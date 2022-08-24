@@ -8,10 +8,12 @@ import Api from "../api/api";
 class WordCard extends Component {
   private wordTemplate: Word;
   private isAdded:string;
-  constructor(tagName: string, className: string, word: Word, isAdded:string) {
+  private isLearned:string;
+  constructor(tagName: string, className: string, word: Word, isAdded:string,isLearned:string) {
     super(tagName, className);
     this.wordTemplate = word;
     this.isAdded = isAdded;
+    this.isLearned = isLearned;
   }
   //render word
   render() {
@@ -83,26 +85,88 @@ class WordCard extends Component {
       buttonAdd.classList.add("js-added");
       buttonAdd.textContent = "Added";
     }
+    if (this.isLearned){
+      buttonLearn.classList.add("js-learned");
+      buttonLearn.textContent = "Learned";
+    }
+    const changeButton = (button:HTMLElement,className:string,text:string) =>{
+      return {
+        add(){
+          button.classList.add(className);
+          button.textContent = text;
+        },
+        remove(){
+          button.classList.remove(className);
+          button.textContent = text;
+        }
+      }
+    }
+
     // add to hard words
-    buttonAdd.onclick = async()=>{ 
+
+    const addToWords = async (
+      target: MouseEvent,
+      classToAdd: string,
+      text1: string,
+      difficulty: string,
+      classToRemove: string,
+      text2: string,
+      buttonToChange: HTMLElement
+    ) => {
       const api = new Api(API_URL);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem("user") as string
       );
-      if (!buttonAdd.classList.contains("js-added")){
+      const button = target.currentTarget as HTMLButtonElement;
+      if (!button.classList.contains(classToAdd)){
         const response = await api.addToUserWords(
           user.userId,
           this.container.id,
           user.token,
-          { difficulty: "hard", optional: {} }
+          { difficulty: difficulty, optional: {} }
         );
         if (typeof response == "object"){
-          buttonAdd.classList .add("js-added");
-          buttonAdd.textContent = "Added";
+          changeButton(button,classToAdd,text1).add();
+        }
+        if (response === 417){
+          const response = await api.updateUserWord(user.userId,
+            this.container.id,
+            user.token,
+            { difficulty: difficulty, optional: {} });
+          if (typeof response == "object"){
+            if (buttonToChange.classList.contains(classToRemove)){
+              changeButton(buttonLearn,classToRemove,text2).remove();
+            }
+            changeButton(button,classToAdd,text1).add();
+          }
         }
       }
-    }
-    // buttonLearn.onclick = async()=>{
+    };
+
+    buttonAdd.onclick = async (e) => {
+      await addToWords(
+        e,
+        "js-added",
+        "Added",
+        "hard",
+        "js-learned",
+        "Not learned",
+        buttonLearn
+      );
+    };
+    
+    buttonLearn.onclick = async(e)=>{
+      await addToWords(
+        e,
+        "js-learned",
+        "Learned",
+        "learned",
+        "js-added",
+        "Add to hard",
+        buttonAdd
+      );
+     }
+    // {
     //   const api = new Api(API_URL);
     //   const user: SignInResponse = JSON.parse(
     //     localStorage.getItem("user") as string
@@ -115,8 +179,19 @@ class WordCard extends Component {
     //       { difficulty: "learned", optional: {} }
     //     );
     //     if (typeof response == "object"){
-    //       buttonLearn.classList .add("js-learned");
-    //       buttonLearn.textContent = "Added";
+    //       changeButton(buttonLearn,"js-learned","Learned").add();
+    //     }
+    //     if (response === 417){
+    //       const response = await api.updateUserWord(user.userId,
+    //         this.container.id,
+    //         user.token,
+    //         { difficulty: "learned", optional: {} });
+    //       if (typeof response == "object"){
+    //         if (buttonAdd.classList.contains("js-added")){
+    //           changeButton(buttonAdd,"js-added","Add to hard").remove();
+    //         }
+    //         changeButton(buttonLearn,"js-learned","Learned").add();
+    //       }
     //     }
     //   }
     // }

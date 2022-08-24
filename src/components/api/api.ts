@@ -87,12 +87,38 @@ class Api {
       },
       body: JSON.stringify(options),
     });
+    if (response.status === 417) {
+      return response.status;
+    }
     if (response.ok) {
       const data: WordAttributes = await response.json();
       return data;
     }
     return response.status;
   }
+
+  async updateUserWord(userId: string,
+    wordId: string,
+    token: string,
+    options: WordAttributes): Promise<WordAttributes | number> {
+      await this.checkToken();
+      const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}/${wordId}`;
+      const response = await fetch(request, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(options),
+      });
+      if (response.ok) {
+        const data: WordAttributes = await response.json();
+        return data;
+      }
+      return response.status;
+  }
+
   //refresh token
   async refreshToken(userId: string, refreshToken: string) {
     const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Tokens}`;
@@ -119,6 +145,8 @@ class Api {
       location.reload();
     }
   }
+
+
   // check if token expired, then get new, if refresh token expired - reload page to new log in
   private async checkToken() {
     let user: SignInResponse = JSON.parse(
