@@ -13,7 +13,10 @@ type Word = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  userWord?:{}
 };
+
+type AggregatedWord = Omit<Word,"id"> & {_id:string};
 
 type User = {
   name: string;
@@ -41,7 +44,16 @@ type SavedWords ={
   wordId: string;
 }
 
+type Count ={
+  count:number
+}
+
+type AggregatedWords = {
+  "paginatedResults":AggregatedWord[],
+  "totalCount":Count[]
+}
+
 const API_URL = "https://rs-lang-test.herokuapp.com";
 
-export { API_URL, User, SignInResponse, WordAttributes, SavedWords};
+export { API_URL, User, SignInResponse, WordAttributes, SavedWords,Count,AggregatedWords,AggregatedWord};
 export default Word;

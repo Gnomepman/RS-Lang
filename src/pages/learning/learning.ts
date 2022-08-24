@@ -7,6 +7,8 @@ import Controls, {
   DropdownClasses,
 } from "../../components/controls/controls";
 import {
+  AggregatedWord,
+  AggregatedWords,
   API_URL,
   SavedWords,
   SignInResponse,
@@ -76,10 +78,10 @@ class LearningPage extends Page {
   }
 
   static isAddedToHard(
-    userWords: SavedWords[],
+    words: AggregatedWords[],
     wordId: string
-  ): SavedWords | undefined {
-    const result = userWords.find((i) => i.wordId === wordId);
+  ): AggregatedWord | undefined {
+    const result = words[0].paginatedResults.find((i) => i._id === wordId);
     return result;
   }
 
@@ -89,9 +91,13 @@ class LearningPage extends Page {
     const words = await api.getWords(page, group);
     let user: SignInResponse;
     let userWords: SavedWords[] | number;
+    let hardWords: AggregatedWords[] | number;
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
+      hardWords = await api.getAggregatedWords(user.userId,user.token,page,group,"hard");
       userWords = await api.getAllUserWords(user.userId, user.token);
+      console.log("user",user);
+      console.log("aggrwords",hardWords);
     }
 
     const div = document.createElement("div");
@@ -100,8 +106,8 @@ class LearningPage extends Page {
     if (current) current.remove();
     div.className = "learning";
     words.forEach((word) => {
-      if (userWords && Array.isArray(userWords)) {
-        if (LearningPage.isAddedToHard(userWords, word.id)) {
+      if (hardWords && Array.isArray(hardWords)) {
+        if (LearningPage.isAddedToHard(hardWords, word.id)) {
           wordCard = new WordCard(
             "div",
             "learning__word-card",

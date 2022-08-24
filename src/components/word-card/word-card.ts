@@ -84,10 +84,6 @@ class WordCard extends Component {
       buttonAdd.textContent = "Added";
     }
     // add to hard words
-    const user: SignInResponse = JSON.parse(
-      localStorage.getItem("user") as string
-    );
-    console.log("user",user);
     buttonAdd.onclick = async()=>{ 
       const api = new Api(API_URL);
       const user: SignInResponse = JSON.parse(
