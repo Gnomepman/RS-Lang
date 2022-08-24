@@ -20,6 +20,7 @@ class LearningPage extends Page {
     MainTitle: "Learning2 Page",
   };
   static currentGroup = 1;
+  static currentPage = 1;
   static divWrapper: HTMLDivElement;
   constructor(id: string) {
     super(id);
@@ -44,6 +45,7 @@ class LearningPage extends Page {
       if ((e.target as HTMLDivElement).classList.contains(dropdown.group)) {
         const prevGroup = div.childNodes[0].textContent;
         const prevGroupId: number = +(div.getAttribute("data-group") as string);
+        LearningPage.currentGroup = prevGroupId;
         const clickedGroupId: string = (
           e.target as HTMLDivElement
         ).getAttribute("data-group") as string;
@@ -138,6 +140,7 @@ class LearningPage extends Page {
       // get current page
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent += 1;
+      LearningPage.currentPage = pageCurrent;
       // if current page 30 - disable buttons next and last
       if (pageCurrent === 30) {
         buttonNext.disabled = true;
@@ -174,6 +177,7 @@ class LearningPage extends Page {
       ) as HTMLSpanElement;
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent -= 1;
+      LearningPage.currentPage = pageCurrent;
       // if current page 1 - disable buttons prev and first
       if (pageCurrent === 1) {
         buttonPrev.disabled = true;
@@ -207,7 +211,7 @@ class LearningPage extends Page {
       const spanPage = document.querySelector(
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
-
+      LearningPage.currentPage = 30;
       spanPage.textContent = `30`;
       buttonLast.disabled = true;
       buttonNext.disabled = true;
@@ -237,6 +241,7 @@ class LearningPage extends Page {
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
       spanPage.textContent = `1`;
+      LearningPage.currentPage = 1;
       buttonPrev.disabled = true;
       buttonFirst.disabled = true;
       if (buttonNext.disabled) {
@@ -246,7 +251,7 @@ class LearningPage extends Page {
       await this.renderCardWords(1, LearningPage.currentGroup);
     });
   }
-
+  //render dropdown for minigame's links
   private renderMiniGamesDropdown(className: string) {
     const content = createElement("div", `${className}-content`);
     const linkSprint = createElement(
@@ -270,13 +275,30 @@ class LearningPage extends Page {
     linkAudioChallenge.href = "index.html#audio-challenge";
     miniGameSprint.src = sprint_icon;
     miniGameAudioChallenge.src = audio_challenge_icon;
-    linkSprint.append(miniGameSprint);
-    linkAudioChallenge.append(miniGameAudioChallenge);
-    content.append(linkAudioChallenge, linkSprint);
-    icon.append(content);
 
     icon.addEventListener("click", () => {
-      icon.classList.toggle("js-clicked");
+
+      if (icon.classList.contains("js-clicked")){
+        content.remove();
+        icon.classList.toggle("js-clicked");
+      } else {
+        // add links to div
+        linkSprint.append(miniGameSprint);
+        linkAudioChallenge.append(miniGameAudioChallenge);
+        content.append(linkAudioChallenge, linkSprint);
+        icon.append(content);
+
+        const linkToAudioChallenge = icon.lastChild?.firstChild as HTMLLinkElement;
+        const linkToSprint = icon.lastChild?.lastChild as HTMLLinkElement;
+        //form href attribute for link
+        linkToAudioChallenge.href =`#audio-challenge/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
+        linkToSprint.href =`#sprint/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
+        icon.classList.toggle("js-clicked");
+      }
+
+
+
+      
     });
   }
 
