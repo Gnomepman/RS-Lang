@@ -1,13 +1,23 @@
-import Word, { SavedWords, SignInResponse, User, WordAttributes } from "./types";
+import Word, {
+  AggregatedWords,
+  SavedWords,
+  SignInResponse,
+  User,
+  WordAttributes,
+} from "./types";
 
 enum ApiLinks {
   Words = "words",
   Users = "users",
   SignIn = "signin",
   Tokens = "tokens",
+  AggregatedWords = "aggregatedWords",
+  Filter = "filter",
+  WordPerPage = "wordsPerPage",
 }
 
 const TOKEN_EXPIRE_TIME = 4;
+const MAX_WORDS_PER_PAGE = 20;
 
 class Api {
   private apiUrl: string;
@@ -61,19 +71,48 @@ class Api {
     return response.status;
   }
   // add word to user's hard words
-  async addToUserHardWords(
-    userId: string,
+  async addToUserWords(
     wordId: string,
-    token: string,
     options: WordAttributes
   ): Promise<WordAttributes | number> {
     // check if token did'nt expire
     await this.checkToken();
-    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}/${wordId}`;
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}/${wordId}`;
     const response = await fetch(request, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(options),
+    });
+    if (response.status === 417) {
+      return response.status;
+    }
+    if (response.ok) {
+      const data: WordAttributes = await response.json();
+      return data;
+    }
+    return response.status;
+  }
+
+  async updateUserWord(
+    wordId: string,
+    options: WordAttributes
+  ): Promise<WordAttributes | number> {
+    await this.checkToken();
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}/${wordId}`;
+    const response = await fetch(request, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -85,19 +124,31 @@ class Api {
     }
     return response.status;
   }
+
   //refresh token
-  async refreshToken(userId: string, refreshToken: string) {
-    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Tokens}`;
+  async refreshToken() {
+    const currentUser: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${currentUser.userId}/${ApiLinks.Tokens}`;
+
     const response = await fetch(request, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${currentUser.refreshToken}`,
         Accept: "application/json",
       },
     });
+    console.log("from refreshToken");
     if (response.ok) {
-      const tokens: Pick<SignInResponse, "token" | "refreshToken"> = await response.json();
-      const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
+      const tokens: Pick<SignInResponse, "token" | "refreshToken"> =
+        await response.json();
+      console.log("from refreshToken tokens", tokens);
+      const user: SignInResponse = JSON.parse(
+        localStorage.getItem("user") as string
+      );
+      const currentTime = Date.now();
+      user["created"] = currentTime.toString(10);
       user.token = tokens.token;
       user.refreshToken = tokens.refreshToken;
       const data = JSON.stringify(user);
@@ -108,36 +159,77 @@ class Api {
       location.reload();
     }
   }
+
   // check if token expired, then get new, if refresh token expired - reload page to new log in
   private async checkToken() {
-    let user: SignInResponse = JSON.parse(
+    const user: SignInResponse = JSON.parse(
       localStorage.getItem("user") as string
     );
     const currentTime = Date.now();
     const creationTime = +user["created"];
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
+    console.log("lifeTime", lifeTime);
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
-      await this.refreshToken(user.userId, user.refreshToken);
+      console.log(" call refreshToken");
+      await this.refreshToken();
     }
   }
   // get all user's words
-  async getAllUserWords(userId:string,token:string):Promise<SavedWords[] | number>{
+  async getAllUserWords(): Promise<SavedWords[] | number> {
     await this.checkToken();
-    const request = `${this.apiUrl}/${ApiLinks.Users}/${userId}/${ApiLinks.Words}`;
+    const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}`;
     const response = await fetch(request, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
         Accept: "application/json",
       },
     });
-    if (response.ok){ 
-      const data:SavedWords[] = await response.json();
+    if (response.ok) {
+      const data: SavedWords[] = await response.json();
       return data;
     }
     return response.status;
   }
-
+  // get words with difficulty from page and group
+  async getAggregatedWords(
+    page: number,
+    group: number,
+    difficulty: string,
+    wordsPerPage = 20
+  ): Promise<AggregatedWords[] | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem("user") as string);
+    const filter = page > 0
+      ? {
+          $and: [
+            { page: page - 1 },
+            { group: group - 1 },
+            { "userWord.difficulty": `${difficulty}` },
+          ],
+        }
+      : {
+          $and: [
+            { group: group - 1 },
+            { "userWord.difficulty": `${difficulty}` },
+          ],
+        };
+    const string = JSON.stringify(filter);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=${wordsPerPage}&${ApiLinks.Filter}=${string}`;
+    const response = await fetch(request, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: "application/json",
+      },
+    });
+    if (response.ok) {
+      const data: AggregatedWords[] = await response.json();
+      return data;
+    }
+    return response.status;
+  }
 }
 
 export default Api;

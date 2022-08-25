@@ -5,7 +5,8 @@ export const enum PageIds {
     MiniGamesPage = 'mini-games-page',
     StatisticsPage = 'statistics-page',
     SprintGame = 'sprint',
-    AudioGame = 'audio-challenge' 
+    AudioGame = 'audio-challenge', 
+    HardWordsPage = 'hard-words-page'
 }
 
 export const enum ErrorTypes {

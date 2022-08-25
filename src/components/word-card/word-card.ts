@@ -8,10 +8,12 @@ import Api from "../api/api";
 class WordCard extends Component {
   private wordTemplate: Word;
   private isAdded:string;
-  constructor(tagName: string, className: string, word: Word, isAdded:string) {
+  private isLearned:string;
+  constructor(tagName: string, className: string, word: Word, isAdded:string,isLearned:string) {
     super(tagName, className);
     this.wordTemplate = word;
     this.isAdded = isAdded;
+    this.isLearned = isLearned;
   }
   //render word
   render() {
@@ -61,6 +63,20 @@ class WordCard extends Component {
       "learning__word-card-button-learn"
     );
     const buttonAdd = createElement("button", "learning__word-card-button-add");
+    const changeButton = (button:HTMLElement,word: HTMLElement,className:string,text:string) =>{
+      return {
+        add(){
+          button.classList.add(className);
+          word.classList.add(className);
+          button.textContent = text;
+        },
+        remove(){
+          button.classList.remove(className);
+          word.classList.remove(className);
+          button.textContent = text;
+        }
+      }
+    }
 
     this.container.id = `${this.wordTemplate.id}`;
     (img as HTMLImageElement).src = `${API_URL}/${this.wordTemplate.image}`;
@@ -77,34 +93,80 @@ class WordCard extends Component {
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
 
     buttonAdd.textContent = "Add to hard";
-    buttonLearn.textContent = "Not studied";
+    buttonLearn.textContent = "Not learned";
     // if word added to hard, add class
     if (this.isAdded){
-      buttonAdd.classList.add("js-added");
-      buttonAdd.textContent = "Added";
+      changeButton(buttonAdd,this.container,"js-added","Added").add();
     }
-    // add to hard words
-    buttonAdd.onclick = async()=>{ 
+    // if word added to learned, add class
+    if (this.isLearned){
+      changeButton(buttonLearn,this.container,"js-learned","Learned").add();
+    }
+    // function for event click add word and update word, if word had been added
+    const addWord = async (
+      target: MouseEvent,
+      classToAdd: string,
+      text1: string,
+      difficulty: string,
+      classToRemove: string,
+      text2: string,
+      buttonToChange: HTMLElement
+    ) => {
       const api = new Api(API_URL);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem("user") as string
       );
-      if (!buttonAdd.classList.contains("js-added")){
-        const response = await api.addToUserHardWords(
-          user.userId,
+      const button = target.currentTarget as HTMLButtonElement;
+      console.log("from add button",button);
+      if (!button.classList.contains(classToAdd)){
+        const response = await api.addToUserWords(
           this.container.id,
-          user.token,
-          { difficulty: "hard", optional: {} }
+          { difficulty: difficulty, optional: {} }
         );
+        console.log(`response add to ${difficulty}`,response)
         if (typeof response == "object"){
-          buttonAdd.classList .add("js-added");
-          buttonAdd.textContent = "Added";
+          changeButton(button,this.container,classToAdd,text1).add();
         }
-      } else {
-        buttonAdd.classList.remove("js-added");
-        buttonAdd.textContent = "Add to hard";
+        if (response === 417){
+          const responseFromAdd = await api.updateUserWord(
+            this.container.id,
+            { difficulty: difficulty, optional: {} });
+            console.log(`response update to ${difficulty}`,responseFromAdd)
+          if (typeof responseFromAdd == "object"){
+            if (buttonToChange.classList.contains(classToRemove)){
+              changeButton(buttonLearn,this.container,classToRemove,text2).remove();
+            }
+            changeButton(button,this.container,classToAdd,text1).add();
+          }
+        }
       }
-    }
+    };
+
+    // add to hard words
+    buttonAdd.onclick = async (e) => {
+      await addWord(
+        e,
+        "js-added",
+        "Added",
+        "hard",
+        "js-learned",
+        "Not learned",
+        buttonLearn
+      );
+    };
+    // add to learned words
+    buttonLearn.onclick = async(e)=>{
+      await addWord(
+        e,
+        "js-learned",
+        "Learned",
+        "learned",
+        "js-added",
+        "Add to hard",
+        buttonAdd
+      );
+     }
+
     // play audio
     buttonPlay.onclick = ()=>{
       buttonPlay.classList.add('js-clicked');

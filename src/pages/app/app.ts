@@ -1,6 +1,7 @@
 import Page from "../../components/templates/page";
 import MainPage from "../main-page/main-page";
 import StatisticsPage from "../statistics/statistics";
+import HardWordsPage from "../hard-words/hard-words";
 import Nav_menu from "../../components/nav-menu/nav-menu";
 import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
@@ -42,6 +43,9 @@ export default class App {
         break;
       case PageIds.SprintGame:
         page = new Sprint_game(idPage);
+        break;
+      case PageIds.HardWordsPage:
+        page = new HardWordsPage(idPage);
         break;
       default:
         if (idPage.match(/sprint\/page\:/)){
