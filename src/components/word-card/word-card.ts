@@ -113,11 +113,9 @@ class WordCard extends Component {
       buttonToChange: HTMLElement
     ) => {
       const api = new Api(API_URL);
-      const user: SignInResponse = JSON.parse(
-        localStorage.getItem("user") as string
-      );
       const button = target.currentTarget as HTMLButtonElement;
       console.log("from add button",button);
+      // if word hadn't been added to hard words
       if (!button.classList.contains(classToAdd)){
         const response = await api.addToUserWords(
           this.container.id,
@@ -139,6 +137,18 @@ class WordCard extends Component {
             changeButton(button,this.container,classToAdd,text1).add();
           }
         }
+      } else {
+        const hardWords1 = await api.getAggregatedWords(1,1,"hard");
+        const response = await api.deleteUserWord(this.container.id);  
+        console.log("hardWords1",hardWords1);
+        if (response === 204){
+          changeButton(button,this.container,classToAdd,text1).remove();
+        }
+        if (location.hash === "#hard-words-page"){
+          this.container.remove();
+        }
+        const hardWords2 = await api.getAggregatedWords(1,1,"hard");
+        console.log("hardWords2",hardWords2);
       }
     };
 

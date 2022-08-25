@@ -143,6 +143,11 @@
     background-color: #DC34DF;
     color: white;
     box-shadow: 0px 0px 10px 4px rgba(224, 55, 227, 0.66);
+    transition: 0.2s;
+
+    &:hover{
+      background-color: #d376d4;
+    }
   }
 }
 
