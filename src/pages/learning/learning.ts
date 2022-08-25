@@ -95,8 +95,8 @@ class LearningPage extends Page {
     let userWords: AggregatedWord[];
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
-      hardWords = await api.getAggregatedWords(user.userId,user.token,page,group,"hard");
-      learnedWords = await api.getAggregatedWords(user.userId,user.token,page,group,"learned");
+      hardWords = await api.getAggregatedWords(page,group,"hard");
+      learnedWords = await api.getAggregatedWords(page,group,"learned");
       if ((Array.isArray(hardWords))&&(Array.isArray(learnedWords))){
         userWords = [...hardWords[0].paginatedResults,...learnedWords[0].paginatedResults];
       }

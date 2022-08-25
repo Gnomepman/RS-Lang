@@ -120,9 +120,7 @@ class WordCard extends Component {
       console.log("from add button",button);
       if (!button.classList.contains(classToAdd)){
         const response = await api.addToUserWords(
-          user.userId,
           this.container.id,
-          user.token,
           { difficulty: difficulty, optional: {} }
         );
         console.log(`response add to ${difficulty}`,response)
@@ -130,9 +128,8 @@ class WordCard extends Component {
           changeButton(button,this.container,classToAdd,text1).add();
         }
         if (response === 417){
-          const responseFromAdd = await api.updateUserWord(user.userId,
+          const responseFromAdd = await api.updateUserWord(
             this.container.id,
-            user.token,
             { difficulty: difficulty, optional: {} });
             console.log(`response update to ${difficulty}`,responseFromAdd)
           if (typeof responseFromAdd == "object"){

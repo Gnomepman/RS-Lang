@@ -18,7 +18,7 @@ type Word = {
   }
 };
 
-type AggregatedWord = Omit<Word,"id"> & {_id:string};
+type AggregatedWord = Omit<Word,"id"> & {_id?:string};
 
 type User = {
   name: string;
