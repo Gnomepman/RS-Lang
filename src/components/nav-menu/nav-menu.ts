@@ -6,6 +6,7 @@ import chart from '../../assets/icon_chart.svg'
 import home from '../../assets/icon_home.svg'
 import medal from '../../assets/icon_medal.svg'
 import user from '../../assets/user_signin_icon.svg'
+import hard_words from '../../assets/hard_words.svg'
 import AccessForm from '../access-form/access-form';
 import { SignInResponse } from '../api/types';
 
@@ -19,7 +20,13 @@ export default class Nav_menu extends Component {
 
   renderNavButtons() {
     let nav_buttons_wrapper = document.createElement('div');
+    const pageHardWords = {
+      id:PageIds.HardWordsPage,
+      text:"Hard Words",
+      icon:hard_words
+    };
     nav_buttons_wrapper.classList.add("nav-wrapper");
+    if (localStorage.getItem("user")) Buttons.push(pageHardWords);
     Buttons.forEach((button) => {
       nav_buttons_wrapper.innerHTML += `
       <a href="#${button.id}" class="nav_button">
