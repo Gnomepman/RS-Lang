@@ -192,7 +192,7 @@ class Api {
     }
     return response.status;
   }
-
+  // get words with difficulty from page and group
   async getAggregatedWords(
     page: number,
     group: number,
