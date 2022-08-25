@@ -3,7 +3,8 @@ export const enum PageIds {
     MainPage = 'main-page',
     LearningPage = 'learning-page',
     MiniGamesPage = 'mini-games-page',
-    StatisticsPage = 'statistics-page'
+    StatisticsPage = 'statistics-page',
+    HardWordsPage = 'hard-words-page'
 }
 
 export const enum ErrorTypes {

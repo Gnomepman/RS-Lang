@@ -84,6 +84,19 @@
   }
 }
 
+.pagination__groups-content,
+.controls__mini-games-content {
+  transform: scale(0);
+  transform-origin:bottom;
+  transform: rotateX(90deg);
+  position: absolute;
+  left:0;
+}
+
+.controls__mini-games-content{
+  left: -180px;
+}
+
 .pagination__page{
   display: inline-block;
   width: 40px;
@@ -97,8 +110,11 @@
 .pagination__groups {
   position: relative;
 
+
   &.js-clicked > .pagination__groups-content {
-    opacity: 1;
+    transform-origin:bottom;
+    transform: scale(1);
+    transform: rotateX(0deg);
     flex-direction: column;
     transition-duration: 1s;
     gap: 10px;
@@ -131,7 +147,9 @@
 
 .controls__mini-games.js-clicked > .controls__mini-games-content {
   display: flex;
-  opacity: 1;
+  transform: scale(1);
+  transform-origin:bottom;
+  transform: rotateX(0deg);
   flex-direction: column;
   transition-duration: 1s;
   gap: 10px;
@@ -144,20 +162,13 @@
   position: relative;
 }
 
-.pagination__groups-content,
-.controls__mini-games-content {
-  opacity: 0;
-  position: absolute;
-  left: 0;
-
-}
-
 .controls__home-image,
 .controls__mini-games-image {
   width: 30px;
   height: auto;
   cursor: pointer;
 }
+
 .controls__mini-games-audio-challenge-image,
 .controls__mini-games-sprint-image {
   border: 1px solid black;

@@ -7,6 +7,8 @@ import Controls, {
   DropdownClasses,
 } from "../../components/controls/controls";
 import {
+  AggregatedWord,
+  AggregatedWords,
   API_URL,
   SavedWords,
   SignInResponse,
@@ -37,14 +39,13 @@ class LearningPage extends Page {
     const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
     const content = document.querySelector(
       `.${dropdown.content}`
-    ) as HTMLDialogElement;
+    ) as HTMLDivElement;
 
     div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
 
       if ((e.target as HTMLDivElement).classList.contains(dropdown.group)) {
         const prevGroup = div.childNodes[0].textContent;
-        console.log("prevGroup", prevGroup);
         const prevGroupId: number = +(div.getAttribute("data-group") as string);
         LearningPage.currentGroup = prevGroupId;
         const clickedGroupId: string = (
@@ -76,11 +77,11 @@ class LearningPage extends Page {
     });
   }
 
-  static isAddedToHard(
-    userWords: SavedWords[],
+  static isAdded(
+    words: AggregatedWord[],
     wordId: string
-  ): SavedWords | undefined {
-    const result = userWords.find((i) => i.wordId === wordId);
+  ): AggregatedWord | undefined {
+    const result = words.find((i) => i._id === wordId);
     return result;
   }
 
@@ -89,10 +90,18 @@ class LearningPage extends Page {
     const api = new Api(`${API_URL}`);
     const words = await api.getWords(page, group);
     let user: SignInResponse;
-    let userWords: SavedWords[] | number;
+    let hardWords: AggregatedWords[] | number;
+    let learnedWords: AggregatedWords[] | number;
+    let userWords: AggregatedWord[];
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
-      userWords = await api.getAllUserWords(user.userId, user.token);
+      hardWords = await api.getAggregatedWords(page,group,"hard");
+      learnedWords = await api.getAggregatedWords(page,group,"learned");
+      if ((Array.isArray(hardWords))&&(Array.isArray(learnedWords))){
+        userWords = [...hardWords[0].paginatedResults,...learnedWords[0].paginatedResults];
+      }
+      
+      console.log("user",user);
     }
 
     const div = document.createElement("div");
@@ -101,19 +110,36 @@ class LearningPage extends Page {
     if (current) current.remove();
     div.className = "learning";
     words.forEach((word) => {
+      // if user added to hard words or learned
       if (userWords && Array.isArray(userWords)) {
-        if (LearningPage.isAddedToHard(userWords, word.id)) {
-          wordCard = new WordCard(
-            "div",
-            "learning__word-card",
-            word,
-            "js-added"
-          );
+        // if word added to hard words or learned
+        if (LearningPage.isAdded(userWords, word.id)) {
+          const difficulty = LearningPage.isAdded(userWords, word.id);
+          //if difficulty of word is hard
+          if (difficulty?.userWord?.difficulty === "hard"){
+            wordCard = new WordCard(
+              "div",
+              "learning__word-card",
+              word,
+              "js-added",
+              ""
+            );
+          }
+          //if difficulty of word is learned
+          if (difficulty?.userWord?.difficulty === "learned"){
+            wordCard = new WordCard(
+              "div",
+              "learning__word-card",
+              word,
+              "",
+              "js-learned"
+            );
+          }
         } else {
-          wordCard = new WordCard("div", "learning__word-card", word, "");
+          wordCard = new WordCard("div", "learning__word-card", word, "","");
         }
       } else {
-        wordCard = new WordCard("div", "learning__word-card", word, "");
+        wordCard = new WordCard("div", "learning__word-card", word, "","");
       }
       div.append(wordCard.render());
     });
@@ -276,30 +302,20 @@ class LearningPage extends Page {
     linkAudioChallenge.href = "index.html#audio-challenge";
     miniGameSprint.src = sprint_icon;
     miniGameAudioChallenge.src = audio_challenge_icon;
-
+    linkSprint.append(miniGameSprint);
+    linkAudioChallenge.append(miniGameAudioChallenge);
+    content.append(linkAudioChallenge, linkSprint);
+    icon.append(content);
+    
     icon.addEventListener("click", () => {
 
-      if (icon.classList.contains("js-clicked")){
-        content.remove();
         icon.classList.toggle("js-clicked");
-      } else {
         // add links to div
-        linkSprint.append(miniGameSprint);
-        linkAudioChallenge.append(miniGameAudioChallenge);
-        content.append(linkAudioChallenge, linkSprint);
-        icon.append(content);
-
         const linkToAudioChallenge = icon.lastChild?.firstChild as HTMLLinkElement;
         const linkToSprint = icon.lastChild?.lastChild as HTMLLinkElement;
         //form href attribute for link
         linkToAudioChallenge.href =`#audio-challenge/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
         linkToSprint.href =`#sprint/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
-        icon.classList.toggle("js-clicked");
-      }
-
-
-
-      
     });
   }
 
