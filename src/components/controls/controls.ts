@@ -56,14 +56,7 @@ class Controls extends Component {
     }
     dropdown.textContent = "Раздел 1";
     dropdown.setAttribute("data-group", "1");
-    dropdown.addEventListener("click",()=>{
-      if (dropdown.classList.contains("js-clicked")){
-        content.remove();
-      } else{
-        dropdown.append(content)
-      }
-
-    });
+    dropdown.append(content)
 
     this.dropdown = {
       div: `${className}`,

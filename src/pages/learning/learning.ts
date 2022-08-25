@@ -39,7 +39,7 @@ class LearningPage extends Page {
     const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
     const content = document.querySelector(
       `.${dropdown.content}`
-    ) as HTMLDialogElement;
+    ) as HTMLDivElement;
 
     div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
@@ -302,30 +302,20 @@ class LearningPage extends Page {
     linkAudioChallenge.href = "index.html#audio-challenge";
     miniGameSprint.src = sprint_icon;
     miniGameAudioChallenge.src = audio_challenge_icon;
-
+    linkSprint.append(miniGameSprint);
+    linkAudioChallenge.append(miniGameAudioChallenge);
+    content.append(linkAudioChallenge, linkSprint);
+    icon.append(content);
+    
     icon.addEventListener("click", () => {
 
-      if (icon.classList.contains("js-clicked")){
-        content.remove();
         icon.classList.toggle("js-clicked");
-      } else {
         // add links to div
-        linkSprint.append(miniGameSprint);
-        linkAudioChallenge.append(miniGameAudioChallenge);
-        content.append(linkAudioChallenge, linkSprint);
-        icon.append(content);
-
         const linkToAudioChallenge = icon.lastChild?.firstChild as HTMLLinkElement;
         const linkToSprint = icon.lastChild?.lastChild as HTMLLinkElement;
         //form href attribute for link
         linkToAudioChallenge.href =`#audio-challenge/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
         linkToSprint.href =`#sprint/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
-        icon.classList.toggle("js-clicked");
-      }
-
-
-
-      
     });
   }
 
