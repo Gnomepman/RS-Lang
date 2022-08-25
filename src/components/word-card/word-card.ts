@@ -63,6 +63,20 @@ class WordCard extends Component {
       "learning__word-card-button-learn"
     );
     const buttonAdd = createElement("button", "learning__word-card-button-add");
+    const changeButton = (button:HTMLElement,word: HTMLElement,className:string,text:string) =>{
+      return {
+        add(){
+          button.classList.add(className);
+          word.classList.add(className);
+          button.textContent = text;
+        },
+        remove(){
+          button.classList.remove(className);
+          word.classList.remove(className);
+          button.textContent = text;
+        }
+      }
+    }
 
     this.container.id = `${this.wordTemplate.id}`;
     (img as HTMLImageElement).src = `${API_URL}/${this.wordTemplate.image}`;
@@ -82,28 +96,13 @@ class WordCard extends Component {
     buttonLearn.textContent = "Not learned";
     // if word added to hard, add class
     if (this.isAdded){
-      buttonAdd.classList.add("js-added");
-      buttonAdd.textContent = "Added";
+      changeButton(buttonAdd,this.container,"js-added","Added").add();
     }
+    // if word added to learned, add class
     if (this.isLearned){
-      buttonLearn.classList.add("js-learned");
-      buttonLearn.textContent = "Learned";
+      changeButton(buttonLearn,this.container,"js-learned","Learned").add();
     }
-    const changeButton = (button:HTMLElement,className:string,text:string) =>{
-      return {
-        add(){
-          button.classList.add(className);
-          button.textContent = text;
-        },
-        remove(){
-          button.classList.remove(className);
-          button.textContent = text;
-        }
-      }
-    }
-
-    // add to hard words
-
+    // function for event click add word and update word, if word had been added
     const addWord = async (
       target: MouseEvent,
       classToAdd: string,
@@ -128,7 +127,7 @@ class WordCard extends Component {
         );
         console.log(`response add to ${difficulty}`,response)
         if (typeof response == "object"){
-          changeButton(button,classToAdd,text1).add();
+          changeButton(button,this.container,classToAdd,text1).add();
         }
         if (response === 417){
           const responseFromAdd = await api.updateUserWord(user.userId,
@@ -138,14 +137,15 @@ class WordCard extends Component {
             console.log(`response update to ${difficulty}`,responseFromAdd)
           if (typeof responseFromAdd == "object"){
             if (buttonToChange.classList.contains(classToRemove)){
-              changeButton(buttonLearn,classToRemove,text2).remove();
+              changeButton(buttonLearn,this.container,classToRemove,text2).remove();
             }
-            changeButton(button,classToAdd,text1).add();
+            changeButton(button,this.container,classToAdd,text1).add();
           }
         }
       }
     };
 
+    // add to hard words
     buttonAdd.onclick = async (e) => {
       await addWord(
         e,
@@ -157,7 +157,7 @@ class WordCard extends Component {
         buttonLearn
       );
     };
-    
+    // add to learned words
     buttonLearn.onclick = async(e)=>{
       await addWord(
         e,
