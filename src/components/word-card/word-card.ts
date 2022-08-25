@@ -121,9 +121,11 @@ class WordCard extends Component {
           this.container.id,
           { difficulty: difficulty, optional: {} }
         );
-        console.log(`response add to ${difficulty}`,response)
         if (typeof response == "object"){
           changeButton(button,this.container,classToAdd,text1).add();
+          if (location.hash === "#hard-words-page"){
+            this.container.remove();
+          }
         }
         if (response === 417){
           const responseFromAdd = await api.updateUserWord(
@@ -133,22 +135,21 @@ class WordCard extends Component {
           if (typeof responseFromAdd == "object"){
             if (buttonToChange.classList.contains(classToRemove)){
               changeButton(buttonLearn,this.container,classToRemove,text2).remove();
+              if (location.hash === "#hard-words-page"){
+                this.container.remove();
+              }
             }
             changeButton(button,this.container,classToAdd,text1).add();
           }
         }
       } else {
-        const hardWords1 = await api.getAggregatedWords(1,1,"hard");
         const response = await api.deleteUserWord(this.container.id);  
-        console.log("hardWords1",hardWords1);
         if (response === 204){
           changeButton(button,this.container,classToAdd,text1).remove();
         }
         if (location.hash === "#hard-words-page"){
           this.container.remove();
         }
-        const hardWords2 = await api.getAggregatedWords(1,1,"hard");
-        console.log("hardWords2",hardWords2);
       }
     };
 
