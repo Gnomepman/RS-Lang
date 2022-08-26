@@ -24,12 +24,15 @@ class LearningPage extends Page {
   static currentGroup = 1;
   static currentPage = 1;
   static divWrapper: HTMLDivElement;
+  static wrapperClass:string;
   constructor(id: string) {
     super(id);
+    LearningPage.wrapperClass = "learning__wrapper";
     LearningPage.divWrapper = createElement(
       "div",
-      "learning__wrapper"
+      LearningPage.wrapperClass
     ) as HTMLDivElement;
+    LearningPage.divWrapper.setAttribute("data-page-group","1");
   }
 
   async renderNewGroup(
@@ -40,7 +43,7 @@ class LearningPage extends Page {
     const content = document.querySelector(
       `.${dropdown.content}`
     ) as HTMLDivElement;
-
+    const mainDiv = document.querySelector(`.${LearningPage.wrapperClass}`) as HTMLDivElement;
     div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
 
@@ -57,6 +60,7 @@ class LearningPage extends Page {
         newGroup.textContent = prevGroup;
         div.childNodes[0].textContent = clickedGroup;
         div.setAttribute("data-group", clickedGroupId);
+        mainDiv.setAttribute("data-page-group",clickedGroupId);
         const groups = document.querySelectorAll(
           `.${dropdown.group}`
         ) as NodeListOf<HTMLDivElement>;
@@ -366,5 +370,7 @@ class LearningPage extends Page {
     return this.container;
   }
 }
+
+
 
 export default LearningPage;

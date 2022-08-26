@@ -183,22 +183,27 @@
   }
 }
 
-div[data-group="1"]{
+[data-group="1"]{
   background-color: rgb(138, 171, 133);
 }
-div[data-group="2"]{
+
+[data-group="2"]{
   background-color: rgb(91, 154, 76);
 }
-div[data-group="3"]{
+
+[data-group="3"]{
   background-color: rgb(255, 176, 0);
 }
-div[data-group="4"]{
+
+[data-group="4"]{
   background-color: rgb(170, 85, 0);
 }
-div[data-group="5"]{
+
+[data-group="5"]{
   background-color: rgb(196, 40, 28);
 }
-div[data-group="6"]{
+
+[data-group="6"]{
   background-color: rgb(117, 0, 0);
 }
 

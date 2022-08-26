@@ -4,7 +4,6 @@ import Word, {
   AggregatedWord,
   AggregatedWords,
   API_URL,
-  SignInResponse,
 } from "../../components/api/types";
 import WordCard from "../../components/word-card/word-card";
 import { createElement } from "../../components/utils/utils";
@@ -12,9 +11,18 @@ import HardWordsPageControls from "../../components/controls/controls_hard-words
 
 class HardWordsPage extends Page {
   classNameDiv: string;
+  static divWrapper: HTMLDivElement;
+  static wrapperClass:string;
   constructor(id: string) {
     super(id);
     this.classNameDiv = "";
+    HardWordsPage.wrapperClass = "hard-words__wrapper";
+    HardWordsPage.divWrapper = createElement(
+      "div",
+      HardWordsPage.wrapperClass
+    ) as HTMLDivElement;
+    HardWordsPage.divWrapper.setAttribute("data-page-group","1");
+
   }
 
   static CopyAggrWordToWord(aggrWord: AggregatedWord): Word {
@@ -64,6 +72,7 @@ class HardWordsPage extends Page {
     const groups = document.querySelectorAll(
       `.${classNameGroups}`
     ) as NodeListOf<HTMLDivElement>;
+    const mainDiv = document.querySelector(`.${HardWordsPage.wrapperClass}`) as HTMLDivElement;
     controls.addEventListener("click", async (e) => {
       const group = e.target as HTMLElement;
       if (
@@ -71,12 +80,13 @@ class HardWordsPage extends Page {
         !group.classList.contains("js-clicked")
       ) {
         const chosenId = +(group.getAttribute("data-group") as string);
+        mainDiv.setAttribute("data-page-group",chosenId.toString(10));
         const words = await this.renderHardWords(chosenId);
         groups.forEach((a) => {
           if (a.classList.contains("js-clicked")) a.classList.remove("js-clicked");
         });
         group.classList.add("js-clicked");
-        this.container.insertAdjacentElement("afterbegin", words);
+        HardWordsPage.divWrapper.insertAdjacentElement("afterbegin", words);
       }
     });
   }
@@ -87,8 +97,9 @@ class HardWordsPage extends Page {
         "div",
         `controls controls_${this.classNameDiv}`
       );
-      this.container.insertAdjacentElement("afterbegin", r);
-      this.container.append(controls.render());
+      HardWordsPage.divWrapper.append(r,controls.render())
+      this.container.insertAdjacentElement("afterbegin", HardWordsPage.divWrapper);
+
       this.renderNewGroup(controls.groupsClassName, controls.groupClassName);
     });
     return this.container;
