@@ -22,7 +22,7 @@ export default class Timer extends Component{
         let countdown = this.time * 1000;
         this.container.textContent = String(countdown / 1000);
         const countingDown = () => {
-            console.log(countdown / 1000, " seconds");
+            // console.log(countdown / 1000, " seconds");
             countdown -= 1000;
             this.container.textContent = String(countdown / 1000);
             if (countdown === 0){ 
