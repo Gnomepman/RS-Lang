@@ -201,3 +201,14 @@ div[data-group="5"]{
 div[data-group="6"]{
   background-color: rgb(117, 0, 0);
 }
+
+.pagination__groups.pagination__groups_hard-words{
+  display: flex;
+  gap: 10px;
+  border: none;
+}
+
+.pagination__groups-group_hard-words.js-clicked{
+  transform: scale(1.2);
+  border: 2px solid #00B03C;
+}
