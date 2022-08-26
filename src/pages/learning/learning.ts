@@ -10,7 +10,6 @@ import {
   AggregatedWord,
   AggregatedWords,
   API_URL,
-  SavedWords,
   SignInResponse,
 } from "../../components/api/types";
 import { createElement } from "../../components/utils/utils";
@@ -24,7 +23,7 @@ class LearningPage extends Page {
   static currentGroup = 1;
   static currentPage = 1;
   static divWrapper: HTMLDivElement;
-  static wrapperClass:string;
+  static wrapperClass: string;
   constructor(id: string) {
     super(id);
     LearningPage.wrapperClass = "learning__wrapper";
@@ -32,7 +31,7 @@ class LearningPage extends Page {
       "div",
       LearningPage.wrapperClass
     ) as HTMLDivElement;
-    LearningPage.divWrapper.setAttribute("data-page-group","1");
+    LearningPage.divWrapper.setAttribute("data-page-group", "1");
   }
 
   async renderNewGroup(
@@ -43,7 +42,9 @@ class LearningPage extends Page {
     const content = document.querySelector(
       `.${dropdown.content}`
     ) as HTMLDivElement;
-    const mainDiv = document.querySelector(`.${LearningPage.wrapperClass}`) as HTMLDivElement;
+    const mainDiv = document.querySelector(
+      `.${LearningPage.wrapperClass}`
+    ) as HTMLDivElement;
     div.addEventListener("click", async (e) => {
       div.classList.toggle("js-clicked");
 
@@ -60,7 +61,7 @@ class LearningPage extends Page {
         newGroup.textContent = prevGroup;
         div.childNodes[0].textContent = clickedGroup;
         div.setAttribute("data-group", clickedGroupId);
-        mainDiv.setAttribute("data-page-group",clickedGroupId);
+        mainDiv.setAttribute("data-page-group", clickedGroupId);
         const groups = document.querySelectorAll(
           `.${dropdown.group}`
         ) as NodeListOf<HTMLDivElement>;
@@ -97,15 +98,29 @@ class LearningPage extends Page {
     let hardWords: AggregatedWords[] | number;
     let learnedWords: AggregatedWords[] | number;
     let userWords: AggregatedWord[];
+    let wordCount = 0;
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
-      hardWords = await api.getAggregatedWords(page,group,"hard");
-      learnedWords = await api.getAggregatedWords(page,group,"learned");
-      if ((Array.isArray(hardWords))&&(Array.isArray(learnedWords))){
-        userWords = [...hardWords[0].paginatedResults,...learnedWords[0].paginatedResults];
+      hardWords = await api.getAggregatedWords(page, group, "hard");
+      learnedWords = await api.getAggregatedWords(page, group, "learned");
+      console.log("learnedWords", learnedWords);
+      console.log("hardWords", hardWords);
+      if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
+        userWords = [
+          ...hardWords[0].paginatedResults,
+          ...learnedWords[0].paginatedResults,
+        ];
+        const hardWordsCount = hardWords[0].totalCount[0]?.count
+          ? hardWords[0].totalCount[0]?.count
+          : 0;
+        const learnedWordsCount = learnedWords[0].totalCount[0]?.count
+          ? learnedWords[0].totalCount[0]?.count
+          : 0;
+        wordCount = hardWordsCount + learnedWordsCount;
+        console.log("wordCount", wordCount);
       }
-      
-      console.log("user",user);
+
+      console.log("user", user);
     }
 
     const div = document.createElement("div");
@@ -113,14 +128,21 @@ class LearningPage extends Page {
     let wordCard: WordCard;
     if (current) current.remove();
     div.className = "learning";
+    // if all words had been learned or added to hard
+    if (wordCount === 20) LearningPage.divWrapper.classList.add("js-done");
+    // if page already has class "js-done"
+    else {
+      if (LearningPage.divWrapper.classList.contains("js-done"))
+        LearningPage.divWrapper.classList.remove("js-done");
+    }
     words.forEach((word) => {
       // if user added to hard words or learned
       if (userWords && Array.isArray(userWords)) {
-        // if word added to hard words or learned
+        // if word had been added to hard words or learned
         if (LearningPage.isAdded(userWords, word.id)) {
           const difficulty = LearningPage.isAdded(userWords, word.id);
           //if difficulty of word is hard
-          if (difficulty?.userWord?.difficulty === "hard"){
+          if (difficulty?.userWord?.difficulty === "hard") {
             wordCard = new WordCard(
               "div",
               "learning__word-card",
@@ -129,8 +151,8 @@ class LearningPage extends Page {
               ""
             );
           }
-          //if difficulty of word is learned
-          if (difficulty?.userWord?.difficulty === "learned"){
+          //if difficulty of word is "learned"
+          if (difficulty?.userWord?.difficulty === "learned") {
             wordCard = new WordCard(
               "div",
               "learning__word-card",
@@ -140,10 +162,10 @@ class LearningPage extends Page {
             );
           }
         } else {
-          wordCard = new WordCard("div", "learning__word-card", word, "","");
+          wordCard = new WordCard("div", "learning__word-card", word, "", "");
         }
       } else {
-        wordCard = new WordCard("div", "learning__word-card", word, "","");
+        wordCard = new WordCard("div", "learning__word-card", word, "", "");
       }
       div.append(wordCard.render());
     });
@@ -310,16 +332,16 @@ class LearningPage extends Page {
     linkAudioChallenge.append(miniGameAudioChallenge);
     content.append(linkAudioChallenge, linkSprint);
     icon.append(content);
-    
-    icon.addEventListener("click", () => {
 
-        icon.classList.toggle("js-clicked");
-        // add links to div
-        const linkToAudioChallenge = icon.lastChild?.firstChild as HTMLLinkElement;
-        const linkToSprint = icon.lastChild?.lastChild as HTMLLinkElement;
-        //form href attribute for link
-        linkToAudioChallenge.href =`#audio-challenge/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
-        linkToSprint.href =`#sprint/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
+    icon.addEventListener("click", () => {
+      icon.classList.toggle("js-clicked");
+      // add links to div
+      const linkToAudioChallenge = icon.lastChild
+        ?.firstChild as HTMLLinkElement;
+      const linkToSprint = icon.lastChild?.lastChild as HTMLLinkElement;
+      //form href attribute for link
+      linkToAudioChallenge.href = `#audio-challenge/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
+      linkToSprint.href = `#sprint/page:${LearningPage.currentPage}/group:${LearningPage.currentGroup}`;
     });
   }
 
@@ -370,7 +392,5 @@ class LearningPage extends Page {
     return this.container;
   }
 }
-
-
 
 export default LearningPage;

@@ -5,6 +5,9 @@
   position: relative;
   padding: 30px 20px;
   
+  &.js-done{
+    background-color: rgba($color: #02fd1b, $alpha: 0.5);
+  }
 }
 
 .learning{

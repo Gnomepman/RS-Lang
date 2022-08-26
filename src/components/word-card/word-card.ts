@@ -77,6 +77,19 @@ class WordCard extends Component {
         }
       }
     }
+    const pageIsDone = ()=>{
+      return {
+        add(){
+          const page = document.querySelector(".learning__wrapper") as HTMLDivElement;
+          if (page && !page.classList.contains("js-done")) page.classList.add("js-done");
+        },
+        remove(){
+          const page = document.querySelector(".learning__wrapper") as HTMLDivElement;
+          if (page && page.classList.contains("js-done")) page.classList.remove("js-done");
+        }
+      }
+      
+    }
 
     this.container.id = `${this.wordTemplate.id}`;
     (img as HTMLImageElement).src = `${API_URL}/${this.wordTemplate.image}`;
@@ -114,7 +127,11 @@ class WordCard extends Component {
     ) => {
       const api = new Api(API_URL);
       const button = target.currentTarget as HTMLButtonElement;
-      console.log("from add button",button);
+      const words1 = document.querySelectorAll(`.${classToAdd}`) as NodeListOf<HTMLElement>;
+      const words2 = document.querySelectorAll(`.${classToRemove}`) as NodeListOf<HTMLElement>;
+      const wordsCount = (words1.length + words2.length) / 2;
+      console.log("from add button",button); 
+
       // if word hadn't been added to hard words
       if (!button.classList.contains(classToAdd)){
         const response = await api.addToUserWords(
@@ -123,6 +140,7 @@ class WordCard extends Component {
         );
         if (typeof response == "object"){
           changeButton(button,this.container,classToAdd,text1).add();
+          if ((wordsCount + 1) === 20) pageIsDone().add();
           if (location.hash === "#hard-words-page"){
             this.container.remove();
           }
@@ -146,6 +164,7 @@ class WordCard extends Component {
         const response = await api.deleteUserWord(this.container.id);  
         if (response === 204){
           changeButton(button,this.container,classToAdd,text1).remove();
+          pageIsDone().remove();
         }
         if (location.hash === "#hard-words-page"){
           this.container.remove();
