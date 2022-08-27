@@ -13,8 +13,8 @@ import {
   SignInResponse,
 } from "../../components/api/types";
 import { createElement, getPageFromSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
-import sprint_icon from "../../assets/sprint.svg";
-import audio_challenge_icon from "../../assets/audio_challenge.svg";
+import sprint_icon from "../../assets/sprint_game.png";
+import audio_challenge_icon from "../../assets/audiocall_game.png";
 
 class LearningPage extends Page {
   static TextObject = {
