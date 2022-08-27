@@ -4,6 +4,10 @@ import Api from '../../components/api/api';
 import Word from '../../components/api/types'
 import { API_URL } from '../../components/api/types';
 import Timer from '../../components/timer/timer';
+// import human_1 from '../../assets/Humaaans Sitting.svg'
+import human_1 from '../../assets/sprint_human_1.svg'
+import human_2 from '../../assets/sprint_human_2.svg'
+import human_3 from '../../assets/sprint_human_3.svg'
 
 export default class Sprint_game extends Page {
   private group: number;
@@ -13,6 +17,7 @@ export default class Sprint_game extends Page {
   private correctWords: Word[];
   private wrongWords: Word[];
   private guessedWordsInARow: number;
+  private howManyHumansToRender: number;
 
   constructor(id: string, group?: number, page?: number) {
     super(id);
@@ -22,6 +27,7 @@ export default class Sprint_game extends Page {
     this.wrongWords = [];
     this.page = [];
     this.guessedWordsInARow = 0;
+    this.howManyHumansToRender = 1;
 
     if(page){
       this.page.push(page);
@@ -45,9 +51,6 @@ export default class Sprint_game extends Page {
       let temp = await this.api.getWords(page, this.group)
       this.words = this.words.concat(temp);
     })
-   // this.words = await this.api.getWords(this.page, this.group);
-    console.log(`Group: ${this.group}, page ${this.page}`)
-    //console.log('Words from api', this.words);
   }
 
   randomIntFromInterval(min: number, max: number) {
@@ -82,7 +85,7 @@ export default class Sprint_game extends Page {
         choose_group.remove();
         this.group = Number(button.textContent);
         await this.getWords();
-        this.renderTimer(wrapper);
+        this.renderStartTimer(wrapper);
       });
       groups.append(button);
     }
@@ -90,7 +93,7 @@ export default class Sprint_game extends Page {
     wrapper.append(choose_group);
   }
 
-  renderTimer(wrapper: HTMLDivElement) {
+  renderStartTimer(wrapper: HTMLDivElement) {
     const timer = new Timer("div", "timer", 5).render();
     timer.addEventListener("countDown", () => {
       timer.remove();
@@ -100,9 +103,7 @@ export default class Sprint_game extends Page {
   }
 
   generateСard() {
-   // console.log(this.words)
     if (document.querySelector(".game_window") !== null) {
-      //console.log("Game is still on, generating card");
       let arrayOfWords = [...this.words];
       const indexForWordToChoose = Sprint_game.randomIntFromIntervalWithoutRepeat(0, arrayOfWords.length - 1)
       const fakeOrRealTranslation = Boolean(this.randomIntFromInterval(0, 1));
@@ -143,8 +144,10 @@ export default class Sprint_game extends Page {
         if(this.guessedWordsInARow !== 3){
           this.guessedWordsInARow++;
         } else {
-          this.guessedWordsInARow = 0
+          this.guessedWordsInARow = 0;
+          this.howManyHumansToRender++;
         }
+       // this.howManyHumansToRender === 3 ? this.howManyHumansToRender = 3 : this.howManyHumansToRender++;
         console.log("Counter: ", this.guessedWordsInARow);
         //document.removeEventListener('keypress', eventFunction)
       }
@@ -153,8 +156,8 @@ export default class Sprint_game extends Page {
         if (this.wrongWords.indexOf(wordToGuess) === -1){this.wrongWords.push(wordToGuess)}
         document.querySelector(".card")?.remove()
         //document.removeEventListener('keypress', eventFunction)
-        //all birds/humans resets to 0
         if(this.guessedWordsInARow !== 0) this.guessedWordsInARow--;
+        this.howManyHumansToRender = 1;
         console.log("Counter: ", this.guessedWordsInARow);
       }
 
@@ -168,29 +171,42 @@ export default class Sprint_game extends Page {
         leftButton.addEventListener("click", correctGuess);
       }
 
+      //Indicators
       const indicators = this.createDivBlock('indicators');
       for (let i = 0; i < 3; i++){
         const indicator = this.createDivBlock('indicator')
         indicators.append(indicator)
       }
-
       for (let i = 0; i < this.guessedWordsInARow; i++){
         indicators.children[i].classList.add("active");
       }
+      //Adding humans
+      const humans = this.createDivBlock('humans');
+      switch(this.howManyHumansToRender){
+        default:
+        case 3:
+          humans.innerHTML += `<img src="${human_1}" alt="">`;
+          console.log("Adding human", 3)
+        case 2:
+          humans.innerHTML += `<img src="${human_2}" alt="">`;
+          console.log("Adding human", 2)
+        case 1:
+          humans.innerHTML += `<img src="${human_3}" alt="">`;
+          console.log("Adding human", 1)
+      }
 
       buttonsWrapper.append(leftButton, rightButton);
-      card.append(indicators, word_original, word_translation, buttonsWrapper);
+      card.append(indicators, humans, word_original, word_translation, buttonsWrapper);
       return card;
     }
   }
 
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("game_window");
-    const TIME_FOR_GAME = 600; //in seconds
+    const TIME_FOR_GAME = 60; //in seconds
     let timer = new Timer("div", "timer", TIME_FOR_GAME).render();
 
     timer.addEventListener("countDown", () => {
-      //console.log("Game timer is out");
       game_window.remove();
       console.log('Correct: ', this.correctWords, '\nWrong: ', this.wrongWords)
       //Then we renderStatistics, by passing two arrays
@@ -201,7 +217,6 @@ export default class Sprint_game extends Page {
 
     setInterval(() => {
       if (document.querySelector(".timer") !== null && !document.querySelector(".card")) {
-        //console.log("Game timer is still on, starting generating card");
         game_window.append(this.generateСard()!);
       }
     }, 50);
@@ -212,7 +227,7 @@ export default class Sprint_game extends Page {
     if (this.group === -1) {
       this.renderChooseGroup(wrapper);
     } else {
-      this.renderTimer(wrapper);
+      this.renderStartTimer(wrapper);
     }
 
     this.container.append(wrapper);

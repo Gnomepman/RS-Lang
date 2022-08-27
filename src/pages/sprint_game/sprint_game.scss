@@ -4,6 +4,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background-image:
+    radial-gradient(at 90% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y;
 }
 
 .sprint_game{
@@ -94,8 +99,9 @@
     width: 60%;
     height: 50%;
     border-radius: 20px;
+    box-shadow: 6px 6px 18px rgb(0 0 0 / 25%);
     padding: 20px;
-    background-color: rgb(196, 180, 180);
+    background: #FFFFFF;
     display: grid;
     grid-template-rows: 60px auto;
     justify-items: center;
@@ -107,12 +113,23 @@
 
 .card{
     width: 400px;
-    // height: 300px;
     display: flex;
     flex-direction: column;
     align-self: center;
     align-items: center;
     justify-content: center;
+    gap: 20px;
+
+    .humans{
+        display: grid;
+        grid-template-columns: repeat(3, 65px);
+        gap: 15px;
+
+        img{
+            width: 60px;
+            height: 70px;
+        }
+    }
 
     .indicators{
         display: flex;
@@ -143,7 +160,6 @@
     .buttons_wrapper{
         display: flex;
         gap: 60px;
-        margin-top: 50px;
 
         button{
             font-size: 20px;
@@ -179,6 +195,4 @@
             }
         }
     }
-
-    
 }
