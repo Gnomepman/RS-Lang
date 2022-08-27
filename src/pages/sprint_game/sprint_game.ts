@@ -7,11 +7,12 @@ import Timer from '../../components/timer/timer';
 
 export default class Sprint_game extends Page {
   private group: number;
-  private page: number;
+  private page: number[];
   private words: Word[];
   private api: Api;
   private correctWords: Word[];
   private wrongWords: Word[];
+  private guessedWordsInARow: number;
 
   constructor(id: string, group?: number, page?: number) {
     super(id);
@@ -19,7 +20,18 @@ export default class Sprint_game extends Page {
     this.words = [];
     this.correctWords = [];
     this.wrongWords = [];
-    page ? (this.page = page) : (this.page = this.randomIntFromInterval(1, 30));
+    this.page = [];
+    this.guessedWordsInARow = 0;
+
+    if(page){
+      this.page.push(page);
+    } else {
+      const rand = Sprint_game.randomIntFromIntervalWithoutRepeat(1,30);
+      for (let i = 0; i < 3; i++){
+        this.page.push(rand());
+      }
+    }
+    
     if (group) {
       this.group = group;
       (async () => await this.getWords())()
@@ -29,9 +41,13 @@ export default class Sprint_game extends Page {
   }
 
   async getWords() {
-    this.words = await this.api.getWords(this.page, this.group);
+    this.page.forEach(async page => {
+      let temp = await this.api.getWords(page, this.group)
+      this.words = this.words.concat(temp);
+    })
+   // this.words = await this.api.getWords(this.page, this.group);
     console.log(`Group: ${this.group}, page ${this.page}`)
-    console.log('Words from api', this.words);
+    //console.log('Words from api', this.words);
   }
 
   randomIntFromInterval(min: number, max: number) {
@@ -83,14 +99,13 @@ export default class Sprint_game extends Page {
     wrapper.append(timer);
   }
 
-  generateСard(words: Word[]) {
+  generateСard() {
+   // console.log(this.words)
     if (document.querySelector(".game_window") !== null) {
-      console.log("Game is still on, generating card");
+      //console.log("Game is still on, generating card");
       let arrayOfWords = [...this.words];
       const indexForWordToChoose = Sprint_game.randomIntFromIntervalWithoutRepeat(0, arrayOfWords.length - 1)
       const fakeOrRealTranslation = Boolean(this.randomIntFromInterval(0, 1));
-      
-      //const randomWordIndex = getRandomNumber();
       const wordToGuess = arrayOfWords[indexForWordToChoose()];
       //Card itself
       const card = this.createDivBlock("card");
@@ -103,62 +118,82 @@ export default class Sprint_game extends Page {
       //Buttons
       const buttonsWrapper = this.createDivBlock("buttons_wrapper");
       const leftButton = document.createElement("button");
-      leftButton.classList.add('left')
+      leftButton.classList.add('wrong')
       const rightButton = document.createElement("button");
       rightButton.classList.add('right')
       leftButton.textContent = "Wrong";
       rightButton.textContent = "Correct";
 
-      rightButton.addEventListener("keypress", (e) => {
-        if (e.code === "ArrowRight") {
-            e.preventDefault();
-            // Trigger the button element with a click
-            rightButton.click();
-          }
-      })
+      // const eventFunction = (e: KeyboardEvent) => {
+      //   //console.log(e)
+      //   if (e.code === "ArrowRight") {
+      //     console.log(e.code);
+      //     rightButton.click();
+      //   }
+      //   if (e.code === "ArrowRight") {
+      //     console.log(e.code);
+      //     rightButton.click();
+      //   }
+      // };
+      //document.addEventListener("keypress", eventFunction)
 
       const correctGuess = () => {
         if (this.correctWords.indexOf(wordToGuess) === -1){this.correctWords.push(wordToGuess)}
         document.querySelector(".card")?.remove()
+        if(this.guessedWordsInARow !== 3){
+          this.guessedWordsInARow++;
+        } else {
+          this.guessedWordsInARow = 0
+        }
+        console.log("Counter: ", this.guessedWordsInARow);
+        //document.removeEventListener('keypress', eventFunction)
       }
 
       const wrongGuess = () => {
         if (this.wrongWords.indexOf(wordToGuess) === -1){this.wrongWords.push(wordToGuess)}
         document.querySelector(".card")?.remove()
+        //document.removeEventListener('keypress', eventFunction)
+        //all birds/humans resets to 0
+        if(this.guessedWordsInARow !== 0) this.guessedWordsInARow--;
+        console.log("Counter: ", this.guessedWordsInARow);
       }
 
-      //Case when translation match
-      if (fakeOrRealTranslation) {
+      if (fakeOrRealTranslation) {//Case when translations match
         word_translation.textContent = wordToGuess.wordTranslate;
         rightButton.addEventListener("click", correctGuess);
         leftButton.addEventListener("click", wrongGuess);
-      } else {
-        //Case when translations do not match
+      } else {//Case when translations do not match
         word_translation.textContent = arrayOfWords[indexForWordToChoose()].wordTranslate;
         rightButton.addEventListener("click", wrongGuess);
         leftButton.addEventListener("click", correctGuess);
       }
 
-      rightButton.addEventListener("click", () =>
-        document.querySelector(".card")?.remove()
-      );
+      const indicators = this.createDivBlock('indicators');
+      for (let i = 0; i < 3; i++){
+        const indicator = this.createDivBlock('indicator')
+        indicators.append(indicator)
+      }
+
+      for (let i = 0; i < this.guessedWordsInARow; i++){
+        indicators.children[i].classList.add("active");
+      }
 
       buttonsWrapper.append(leftButton, rightButton);
-      card.append(word_original, word_translation, buttonsWrapper);
+      card.append(indicators, word_original, word_translation, buttonsWrapper);
       return card;
     }
   }
 
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("game_window");
-    const TIME_FOR_GAME = 20; //in seconds
+    const TIME_FOR_GAME = 600; //in seconds
     let timer = new Timer("div", "timer", TIME_FOR_GAME).render();
 
     timer.addEventListener("countDown", () => {
-      console.log("Game timer is out");
+      //console.log("Game timer is out");
       game_window.remove();
       console.log('Correct: ', this.correctWords, '\nWrong: ', this.wrongWords)
-      //Then we renderStatistics
+      //Then we renderStatistics, by passing two arrays
     });
 
     game_window.append(timer);
@@ -166,8 +201,8 @@ export default class Sprint_game extends Page {
 
     setInterval(() => {
       if (document.querySelector(".timer") !== null && !document.querySelector(".card")) {
-        console.log("Game timer is still on, starting generating card");
-        game_window.append(this.generateСard(this.words)!);
+        //console.log("Game timer is still on, starting generating card");
+        game_window.append(this.generateСard()!);
       }
     }, 50);
   }

@@ -97,18 +97,38 @@
     padding: 20px;
     background-color: rgb(196, 180, 180);
     display: grid;
-    grid-template-columns: 60px auto;
-    justify-items: center
+    grid-template-rows: 60px auto;
+    justify-items: center;
+
+    .timer{
+        justify-self: self-start !important;
+    }
 }
 
 .card{
     width: 400px;
-    height: 300px;
+    // height: 300px;
     display: flex;
     flex-direction: column;
     align-self: center;
     align-items: center;
     justify-content: center;
+
+    .indicators{
+        display: flex;
+        gap: 10px;
+        .indicator{
+            width: 20px;
+            height: 20px;
+            border-radius: 20px;
+            background-color: gray;
+            
+
+            &.active{
+                background-color: green;
+            }
+        }
+    }
 
     .original{
         font-weight: 600;
@@ -122,14 +142,41 @@
 
     .buttons_wrapper{
         display: flex;
-        gap: 20px;
+        gap: 60px;
         margin-top: 50px;
 
         button{
-            font-size: 30px;
+            font-size: 20px;
             width: 190px;
             height: 50px;
-            border-radius: 10px;
+            font-weight: 400;;
+            border-radius: 4px;
+
+            &.wrong {
+                    background: #e34242;
+                    border: none;
+                    color: #23231d;
+                    transition: .5s;
+                    box-shadow: 0px 0px 10px 4px #ef7a7a;
+
+                    &:hover {
+                        transition: .5s;
+                        box-shadow: 0px 0px 15px 4px #e34242;
+                    }
+                }
+            
+            &.right {
+                background: #00B03C;
+                border: 1px solid #00B03C;
+                box-shadow: 0px 0px 15px 4px rgba(35, 224, 88, 0.75);
+                color: #FFFFFF;
+                transition: .5s;
+
+                &:hover {
+                    transition: .5s;
+                    box-shadow: 0px 0px 15px 4px rgba(54, 253, 110, 0.75);
+                }
+            }
         }
     }
 
