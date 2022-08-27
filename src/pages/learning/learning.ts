@@ -34,51 +34,62 @@ class LearningPage extends Page {
     LearningPage.divWrapper.setAttribute("data-page-group", "1");
   }
 
+  dropdownAction(event:MouseEvent,dropdown: DropdownClasses):string | undefined{
+
+    const content = document.querySelector(
+      `.${dropdown.content}`
+    ) as HTMLDivElement;
+    const element = event.currentTarget as HTMLDivElement;
+    const group = event.target as HTMLDivElement;
+    element.classList.toggle("js-clicked");
+    if (group.classList.contains(dropdown.group)) {
+      console.log("if true");
+      const prevGroup = element.childNodes[0].textContent;
+      const prevGroupId: number = +(element.getAttribute("data-group") as string);
+      const clickedGroupId: string = group.getAttribute("data-group") as string;
+      const clickedGroup = group.textContent;
+      const newGroup = createElement("div", dropdown.group);
+      newGroup.setAttribute("data-group", prevGroupId.toString(10));
+      newGroup.textContent = prevGroup;
+      element.childNodes[0].textContent = clickedGroup;
+      element.setAttribute("data-group", clickedGroupId);
+      const groups = document.querySelectorAll(
+        `.${dropdown.group}`
+      ) as NodeListOf<HTMLDivElement>;
+      if (prevGroupId === 1){
+        content.insertAdjacentElement("afterbegin", newGroup);
+      }
+      else if (prevGroupId === 6){
+        content.insertAdjacentElement("beforeend", newGroup);
+      }
+      else{
+        groups[prevGroupId - 1].insertAdjacentElement(
+          "beforebegin",
+          newGroup
+        );
+      }
+      console.log("group",group);
+      group.remove();
+      return clickedGroupId;
+    }
+  }
+
   async renderNewGroup(
     dropdown: DropdownClasses,
     pagButtons: PaginationButtons
   ) {
     const div = document.querySelector(`.${dropdown.div}`) as HTMLDivElement;
-    const content = document.querySelector(
-      `.${dropdown.content}`
-    ) as HTMLDivElement;
-    const mainDiv = document.querySelector(
-      `.${LearningPage.wrapperClass}`
-    ) as HTMLDivElement;
     div.addEventListener("click", async (e) => {
-      div.classList.toggle("js-clicked");
-
-      if ((e.target as HTMLDivElement).classList.contains(dropdown.group)) {
-        const prevGroup = div.childNodes[0].textContent;
-        const prevGroupId: number = +(div.getAttribute("data-group") as string);
-        LearningPage.currentGroup = prevGroupId;
-        const clickedGroupId: string = (
-          e.target as HTMLDivElement
-        ).getAttribute("data-group") as string;
-        const clickedGroup = (e.target as HTMLDivElement).textContent;
-        const newGroup = createElement("div", dropdown.group);
-        newGroup.setAttribute("data-group", prevGroupId.toString(10));
-        newGroup.textContent = prevGroup;
-        div.childNodes[0].textContent = clickedGroup;
-        div.setAttribute("data-group", clickedGroupId);
-        mainDiv.setAttribute("data-page-group", clickedGroupId);
-        const groups = document.querySelectorAll(
-          `.${dropdown.group}`
-        ) as NodeListOf<HTMLDivElement>;
-        if (prevGroupId === 1)
-          content.insertAdjacentElement("afterbegin", newGroup);
-        else if (prevGroupId === 6)
-          content.insertAdjacentElement("beforeend", newGroup);
-        else
-          groups[prevGroupId - 1].insertAdjacentElement(
-            "beforebegin",
-            newGroup
-          );
-        (e.target as HTMLDivElement).remove();
-        LearningPage.currentGroup = +clickedGroupId;
-        await this.renderCardWords(1, LearningPage.currentGroup);
-        LearningPage.resetPagination(pagButtons);
+      const clickedGroup = this.dropdownAction(e,dropdown);
+      const mainDiv = document.querySelector(
+        `.${LearningPage.wrapperClass}`
+      ) as HTMLDivElement;
+      if (clickedGroup){
+        LearningPage.currentGroup = +(clickedGroup as string);
+        mainDiv.setAttribute("data-page-group", clickedGroup);
       }
+      await this.renderCardWords(1, LearningPage.currentGroup);
+      LearningPage.resetPagination(pagButtons);
     });
   }
 

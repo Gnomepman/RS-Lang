@@ -11,24 +11,8 @@ class HardWordsPageControls extends Controls{
     this.groupClassName = "";
   }
 
-  private renderGroups(className:string):HTMLElement{
-    const classNameModifier = className.split("_")[className.split("_").length - 1];
-    const div = createElement("div",`pagination__groups pagination__groups_${classNameModifier}`);
-    for (let i = 0; i < 6; i++) {
-      const divGroup = createElement("div",`pagination__groups-group pagination__groups-group_${classNameModifier}`);
-      if (i == 0) divGroup.classList.add("js-clicked");
-      divGroup.textContent = `Group ${i + 1}`;
-      divGroup.setAttribute("data-group", `${i + 1}`);
-      div.append(divGroup);
-    }
-    this.groupsClassName = `.pagination__groups.pagination__groups_${classNameModifier}`;
-    this.groupClassName =`pagination__groups-group_${classNameModifier}`;
-    return div;
-  } 
-
   render(): HTMLElement {
-    const classNameModifier = this.container.className.split("_")[1];
-    this.container.append(this.renderGroups(`pagination__groups-group pagination__groups-group_${classNameModifier}`))
+    this.container.append(this.renderDropdown("pagination__groups"));
     return this.container;
   }
 }

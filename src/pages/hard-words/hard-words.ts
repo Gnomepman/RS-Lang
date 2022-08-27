@@ -8,8 +8,10 @@ import Word, {
 import WordCard from "../../components/word-card/word-card";
 import { createElement } from "../../components/utils/utils";
 import HardWordsPageControls from "../../components/controls/controls_hard-words";
+import LearningPage from "../learning/learning";
+import Controls, { DropdownClasses } from "../../components/controls/controls";
 
-class HardWordsPage extends Page {
+class HardWordsPage extends LearningPage {
   classNameDiv: string;
   static divWrapper: HTMLDivElement;
   static wrapperClass:string;
@@ -65,27 +67,16 @@ class HardWordsPage extends Page {
     return div;
   }
 
-  async renderNewGroup(classNameControls: string, classNameGroups: string) {
+  async renderNewGroupWithHardWords(dropdown:DropdownClasses) {
     const controls = document.querySelector(
-      classNameControls
+      `.${dropdown.div}`
     ) as HTMLDivElement;
-    const groups = document.querySelectorAll(
-      `.${classNameGroups}`
-    ) as NodeListOf<HTMLDivElement>;
     const mainDiv = document.querySelector(`.${HardWordsPage.wrapperClass}`) as HTMLDivElement;
     controls.addEventListener("click", async (e) => {
-      const group = e.target as HTMLElement;
-      if (
-        group.classList.contains(classNameGroups) &&
-        !group.classList.contains("js-clicked")
-      ) {
-        const chosenId = +(group.getAttribute("data-group") as string);
-        mainDiv.setAttribute("data-page-group",chosenId.toString(10));
-        const words = await this.renderHardWords(chosenId);
-        groups.forEach((a) => {
-          if (a.classList.contains("js-clicked")) a.classList.remove("js-clicked");
-        });
-        group.classList.add("js-clicked");
+      let chosenId = this.dropdownAction(e,dropdown);
+      if (chosenId){
+        mainDiv.setAttribute("data-page-group",chosenId);
+        const words = await this.renderHardWords(+chosenId);
         HardWordsPage.divWrapper.insertAdjacentElement("afterbegin", words);
       }
     });
@@ -100,7 +91,7 @@ class HardWordsPage extends Page {
       HardWordsPage.divWrapper.append(r,controls.render())
       this.container.insertAdjacentElement("afterbegin", HardWordsPage.divWrapper);
 
-      this.renderNewGroup(controls.groupsClassName, controls.groupClassName);
+      this.renderNewGroupWithHardWords(controls.dropdown);
     });
     return this.container;
   }
