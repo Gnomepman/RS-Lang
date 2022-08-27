@@ -12,7 +12,7 @@ import {
   API_URL,
   SignInResponse,
 } from "../../components/api/types";
-import { createElement } from "../../components/utils/utils";
+import { createElement, getPageFromSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint.svg";
 import audio_challenge_icon from "../../assets/audio_challenge.svg";
 
@@ -194,6 +194,7 @@ class LearningPage extends Page {
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent += 1;
       LearningPage.currentPage = pageCurrent;
+      savePageToSessionStorage(LearningPage.currentPage);
       // if current page 30 - disable buttons next and last
       if (pageCurrent === 30) {
         buttonNext.disabled = true;
@@ -231,6 +232,7 @@ class LearningPage extends Page {
       let pageCurrent: number = +(spanPage?.textContent as string);
       pageCurrent -= 1;
       LearningPage.currentPage = pageCurrent;
+      savePageToSessionStorage(LearningPage.currentPage);
       // if current page 1 - disable buttons prev and first
       if (pageCurrent === 1) {
         buttonPrev.disabled = true;
@@ -265,6 +267,7 @@ class LearningPage extends Page {
         `.${pagButtons.page}`
       ) as HTMLSpanElement;
       LearningPage.currentPage = 30;
+      savePageToSessionStorage(LearningPage.currentPage);
       spanPage.textContent = `30`;
       buttonLast.disabled = true;
       buttonNext.disabled = true;
@@ -295,6 +298,7 @@ class LearningPage extends Page {
       ) as HTMLSpanElement;
       spanPage.textContent = `1`;
       LearningPage.currentPage = 1;
+      savePageToSessionStorage(LearningPage.currentPage);
       buttonPrev.disabled = true;
       buttonFirst.disabled = true;
       if (buttonNext.disabled) {
@@ -373,10 +377,13 @@ class LearningPage extends Page {
     }
   }
 
+
   render() {
     const controls = new Controls("div", "controls");
-
-    this.renderCardWords(1, 1).then(() => {
+    if (getPageFromSessionStorage()) {
+      LearningPage.currentPage = +(getPageFromSessionStorage() as string);
+    }
+    this.renderCardWords(LearningPage.currentPage, 1).then(() => {
       LearningPage.divWrapper.append(controls.render()),
         this.container.insertAdjacentElement(
           "afterbegin",

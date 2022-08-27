@@ -1,5 +1,5 @@
 import Component from "../templates/component";
-import { createElement } from "../utils/utils";
+import { createElement, getPageFromSessionStorage } from "../utils/utils";
 import home_icon from "../../assets/home.svg";
 import miniGames_icon from "../../assets/mini-games.svg";
 import "./controls.scss";
@@ -90,11 +90,21 @@ class Controls extends Component {
     buttonPrev.innerHTML = "&#5130;";
     buttonFirst.innerHTML = "&#5130;&#5130;";
     buttonLast.innerHTML = "&#5125;&#5125;";
-    page.textContent = "1";
+    if (getPageFromSessionStorage()) page.textContent = getPageFromSessionStorage();
+    else page.textContent = "1";
 
-    buttonPrev.disabled = true;
-    buttonFirst.disabled = true;
+    const currentPage =  +(page.textContent as string);
 
+    if (currentPage === 1){
+      buttonPrev.disabled = true;
+      buttonFirst.disabled = true;
+    }
+
+    if (currentPage === 30){
+      buttonNext.disabled = true;
+      buttonLast.disabled = true;
+    }
+    
     this.pagButtons.first = buttonFirst.className;
     this.pagButtons.last = buttonLast.className;
     this.pagButtons.next = buttonNext.className;
