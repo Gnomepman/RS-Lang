@@ -230,6 +230,23 @@ class Api {
     }
     return response.status;
   }
+
+  async deleteUserWord(wordId: string){
+    await this.checkToken();
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem("user") as string
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}/${wordId}`;
+    const response = await fetch(request, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    return response.status;
+  }
 }
 
 export default Api;
