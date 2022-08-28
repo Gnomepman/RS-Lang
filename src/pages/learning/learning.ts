@@ -15,6 +15,7 @@ import {
 import { createElement, getPageFromSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint_game.png";
 import audio_challenge_icon from "../../assets/audiocall_game.png";
+import LoadingAnimation from "../../components/loadnig-animation/loading-animation";
 
 class LearningPage extends Page {
   static TextObject = {
@@ -87,9 +88,13 @@ class LearningPage extends Page {
       if (clickedGroup){
         LearningPage.currentGroup = +(clickedGroup as string);
         mainDiv.setAttribute("data-page-group", clickedGroup);
+        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+        loadingAnimation.start();
+        await this.renderCardWords(1, LearningPage.currentGroup);
+        loadingAnimation.stop();
+        LearningPage.resetPagination(pagButtons);
       }
-      await this.renderCardWords(1, LearningPage.currentGroup);
-      LearningPage.resetPagination(pagButtons);
+
     });
   }
 
@@ -217,8 +222,12 @@ class LearningPage extends Page {
         buttonFirst.disabled = false;
       }
       // remove div with class .learning and append new div with new words
+      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+      loadingAnimation.start();
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
+      loadingAnimation.stop();
       spanPage.textContent = pageCurrent.toString(10);
+
     });
   }
 
@@ -255,7 +264,10 @@ class LearningPage extends Page {
         buttonLast.disabled = false;
       }
       // remove div with class .learning and append new div with new words
+      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+      loadingAnimation.start();
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
+      loadingAnimation.stop();
       spanPage.textContent = pageCurrent.toString(10);
     });
   }
@@ -286,7 +298,10 @@ class LearningPage extends Page {
         buttonPrev.disabled = false;
         buttonFirst.disabled = false;
       }
+      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+      loadingAnimation.start();
       await this.renderCardWords(30, LearningPage.currentGroup);
+      loadingAnimation.stop();
     });
   }
 
@@ -316,7 +331,10 @@ class LearningPage extends Page {
         buttonNext.disabled = false;
         buttonLast.disabled = false;
       }
+      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+      loadingAnimation.start();
       await this.renderCardWords(1, LearningPage.currentGroup);
+      loadingAnimation.stop();
     });
   }
   //render dropdown for minigame's links

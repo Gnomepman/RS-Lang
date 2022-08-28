@@ -1,0 +1,23 @@
+body.js-block{
+  overflow: hidden;
+}
+.loading-animation{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color: #f8f8f8, $alpha: 0.5);
+}
+.animation{
+  background-color:#084777;
+  border: none;
+}
+#rect1,
+#rect2,
+#rect3,
+#rect4{
+  fill: white;
+  stroke: white;
+}
