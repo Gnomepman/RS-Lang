@@ -86,7 +86,8 @@ class HardWordsPage extends LearningPage {
     this.renderHardWords(1).then((r) => {
       const controls = new HardWordsPageControls(
         "div",
-        `controls controls_${this.classNameDiv}`
+        `controls controls_${this.classNameDiv}`,
+        1
       );
       HardWordsPage.divWrapper.append(r,controls.render())
       this.container.insertAdjacentElement("afterbegin", HardWordsPage.divWrapper);

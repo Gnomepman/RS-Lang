@@ -12,7 +12,7 @@ import {
   API_URL,
   SignInResponse,
 } from "../../components/api/types";
-import { createElement, getPageFromSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
+import { createElement, getGroupFromSessionStorage, getPageFromSessionStorage, saveGroupToSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint_game.png";
 import audio_challenge_icon from "../../assets/audiocall_game.png";
 import LoadingAnimation from "../../components/loadnig-animation/loading-animation";
@@ -87,6 +87,7 @@ class LearningPage extends Page {
       ) as HTMLDivElement;
       if (clickedGroup){
         LearningPage.currentGroup = +(clickedGroup as string);
+        saveGroupToSessionStorage(LearningPage.currentGroup);
         mainDiv.setAttribute("data-page-group", clickedGroup);
         await this.renderCardWords(1, LearningPage.currentGroup);
         LearningPage.resetPagination(pagButtons);
@@ -396,11 +397,12 @@ class LearningPage extends Page {
 
 
   render() {
-    const controls = new Controls("div", "controls");
+    if (getGroupFromSessionStorage()) LearningPage.currentGroup = +(getGroupFromSessionStorage() as string);
+    const controls = new Controls("div", "controls",LearningPage.currentGroup);
     if (getPageFromSessionStorage()) {
       LearningPage.currentPage = +(getPageFromSessionStorage() as string);
     }
-    this.renderCardWords(LearningPage.currentPage, 1).then(() => {
+    this.renderCardWords(LearningPage.currentPage, LearningPage.currentGroup).then(() => {
       LearningPage.divWrapper.append(controls.render()),
         this.container.insertAdjacentElement(
           "afterbegin",
