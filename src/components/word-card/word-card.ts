@@ -5,6 +5,7 @@ import { createElement } from "../utils/utils";
 
 import "./word-card.scss";
 import Api from "../api/api";
+import LoadingAnimation from "../loadnig-animation/loading-animation";
 class WordCard extends Component {
   private wordTemplate: Word;
   private isAdded:string;
@@ -134,10 +135,13 @@ class WordCard extends Component {
 
       // if word hadn't been added to hard words
       if (!button.classList.contains(classToAdd)){
+        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper","card");
+        this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(
           this.container.id,
           { difficulty: difficulty, optional: {} }
         );
+        loadingAnimation.stop();
         if (typeof response == "object"){
           changeButton(button,this.container,classToAdd,text1).add();
           if ((wordsCount + 1) === 20) pageIsDone().add();
@@ -146,10 +150,12 @@ class WordCard extends Component {
           }
         }
         if (response === 417){
+          this.container.append(loadingAnimation.render());
           const responseFromAdd = await api.updateUserWord(
             this.container.id,
             { difficulty: difficulty, optional: {} });
             console.log(`response update to ${difficulty}`,responseFromAdd)
+          loadingAnimation.stop();
           if (typeof responseFromAdd == "object"){
             if (buttonToChange.classList.contains(classToRemove)){
               changeButton(buttonLearn,this.container,classToRemove,text2).remove();
@@ -161,7 +167,10 @@ class WordCard extends Component {
           }
         }
       } else {
-        const response = await api.deleteUserWord(this.container.id);  
+        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper","card");
+        this.container.append(loadingAnimation.render());
+        const response = await api.deleteUserWord(this.container.id); 
+        loadingAnimation.stop(); 
         if (response === 204){
           changeButton(button,this.container,classToAdd,text1).remove();
           pageIsDone().remove();

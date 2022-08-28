@@ -88,10 +88,7 @@ class LearningPage extends Page {
       if (clickedGroup){
         LearningPage.currentGroup = +(clickedGroup as string);
         mainDiv.setAttribute("data-page-group", clickedGroup);
-        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
-        loadingAnimation.start();
         await this.renderCardWords(1, LearningPage.currentGroup);
-        loadingAnimation.stop();
         LearningPage.resetPagination(pagButtons);
       }
 
@@ -109,6 +106,8 @@ class LearningPage extends Page {
   // Render words from needed page and group
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
+    const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
+    LearningPage.divWrapper.append(loadingAnimation.render())  ;
     const words = await api.getWords(page, group);
     let user: SignInResponse;
     let hardWords: AggregatedWords[] | number;
@@ -186,6 +185,7 @@ class LearningPage extends Page {
       div.append(wordCard.render());
     });
     LearningPage.divWrapper.insertAdjacentElement("afterbegin", div);
+    loadingAnimation.stop();
   }
 
   // Render next page after click on button next page
@@ -222,10 +222,7 @@ class LearningPage extends Page {
         buttonFirst.disabled = false;
       }
       // remove div with class .learning and append new div with new words
-      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
-      loadingAnimation.start();
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
-      loadingAnimation.stop();
       spanPage.textContent = pageCurrent.toString(10);
 
     });
@@ -264,10 +261,7 @@ class LearningPage extends Page {
         buttonLast.disabled = false;
       }
       // remove div with class .learning and append new div with new words
-      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
-      loadingAnimation.start();
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
-      loadingAnimation.stop();
       spanPage.textContent = pageCurrent.toString(10);
     });
   }
@@ -298,10 +292,7 @@ class LearningPage extends Page {
         buttonPrev.disabled = false;
         buttonFirst.disabled = false;
       }
-      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
-      loadingAnimation.start();
       await this.renderCardWords(30, LearningPage.currentGroup);
-      loadingAnimation.stop();
     });
   }
 
@@ -331,10 +322,7 @@ class LearningPage extends Page {
         buttonNext.disabled = false;
         buttonLast.disabled = false;
       }
-      const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper");
-      loadingAnimation.start();
       await this.renderCardWords(1, LearningPage.currentGroup);
-      loadingAnimation.stop();
     });
   }
   //render dropdown for minigame's links
