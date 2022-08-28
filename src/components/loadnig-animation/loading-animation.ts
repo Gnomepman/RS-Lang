@@ -3,11 +3,9 @@ import { animation } from "./animation";
 import "./loading-animation.scss";
 
 class LoadingAnimation extends Component{
-  divClass:string;
   type:string;
-  constructor(tagName: string, className: string,divClass:string,type = "") {
+  constructor(tagName: string, className: string,type = "") {
     super(tagName,className);
-    this.divClass = divClass;
     this.type = type;
   }
 

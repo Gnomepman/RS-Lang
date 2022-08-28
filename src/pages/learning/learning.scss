@@ -4,6 +4,7 @@
   gap: 15px;
   position: relative;
   padding: 30px 20px;
+  box-sizing: border-box;
   
   &.js-done{
     background-color: rgba($color: #02fd1b, $alpha: 0.5);
@@ -23,6 +24,7 @@
   flex-direction: column;
   gap: 15px;
   margin-bottom: 15px;
+  padding: 40px 20px;
 }
 
 [data-page-group="1"]{

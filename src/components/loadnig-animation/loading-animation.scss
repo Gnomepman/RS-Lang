@@ -3,9 +3,10 @@ body.js-block{
 }
 .loading-animation{
   display: flex;
+  top: 0;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   justify-content: center;
   align-items: center;
   background-color: rgba($color: #f8f8f8, $alpha: 0.5);

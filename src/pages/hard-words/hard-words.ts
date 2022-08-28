@@ -10,6 +10,7 @@ import { createElement } from "../../components/utils/utils";
 import HardWordsPageControls from "../../components/controls/controls_hard-words";
 import LearningPage from "../learning/learning";
 import Controls, { DropdownClasses } from "../../components/controls/controls";
+import LoadingAnimation from "../../components/loadnig-animation/loading-animation";
 
 class HardWordsPage extends LearningPage {
   classNameDiv: string;
@@ -75,8 +76,11 @@ class HardWordsPage extends LearningPage {
     controls.addEventListener("click", async (e) => {
       let chosenId = this.dropdownAction(e,dropdown);
       if (chosenId){
+        const loadingAnimation = new LoadingAnimation("div","loading-animation");
+        HardWordsPage.divWrapper.append(loadingAnimation.render());
         mainDiv.setAttribute("data-page-group",chosenId);
         const words = await this.renderHardWords(+chosenId);
+        loadingAnimation.stop();
         HardWordsPage.divWrapper.insertAdjacentElement("afterbegin", words);
       }
     });

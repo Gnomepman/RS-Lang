@@ -135,7 +135,7 @@ class WordCard extends Component {
 
       // if word hadn't been added to hard words
       if (!button.classList.contains(classToAdd)){
-        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper","card");
+        const loadingAnimation = new LoadingAnimation("div","loading-animation","card");
         this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(
           this.container.id,
@@ -167,7 +167,7 @@ class WordCard extends Component {
           }
         }
       } else {
-        const loadingAnimation = new LoadingAnimation("div","loading-animation","learning__wrapper","card");
+        const loadingAnimation = new LoadingAnimation("div","loading-animation","card");
         this.container.append(loadingAnimation.render());
         const response = await api.deleteUserWord(this.container.id); 
         loadingAnimation.stop(); 
