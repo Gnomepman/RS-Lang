@@ -4,6 +4,7 @@ import Word, {
   SignInResponse,
   User,
   WordAttributes,
+  wordDifficulty,
 } from "./types";
 
 enum ApiLinks {
@@ -196,7 +197,7 @@ class Api {
   async getAggregatedWords(
     page: number,
     group: number,
-    difficulty: string,
+    difficulty: wordDifficulty,
     learned:boolean,
     wordsPerPage = 20
   ): Promise<AggregatedWords[] | number> {
