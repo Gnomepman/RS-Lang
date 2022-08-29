@@ -67,6 +67,7 @@ class HardWordsPage extends LearningPage {
         div.append(newWord.render());
       });
     } else {
+      console.log("empty");
       HardWordsPage.emptyDiv.textContent = "You don't have any hard words";
       div.append(HardWordsPage.emptyDiv);
     }
@@ -83,6 +84,7 @@ class HardWordsPage extends LearningPage {
       let chosenId = this.dropdownAction(e,dropdown);
       if (chosenId){
         const loadingAnimation = new LoadingAnimation("div","loading-animation");
+        sessionStorage.setItem("currentGroupForHardWords",chosenId)
         HardWordsPage.divWrapper.append(loadingAnimation.render());
         mainDiv.setAttribute("data-page-group",chosenId);
         const words = await this.renderHardWords(+chosenId);
@@ -94,12 +96,15 @@ class HardWordsPage extends LearningPage {
 
   render(): HTMLElement {
     const loadingAnimation = new LoadingAnimation("div","loading-animation");
+    const savedGroup = sessionStorage.getItem("currentGroupForHardWords");
+    if (savedGroup) HardWordsPage.currentGroup = +savedGroup;
+    console.log("currentGroup",HardWordsPage.currentGroup);
     this.container.append(loadingAnimation.render(),HardWordsPage.emptyDiv);
-    this.renderHardWords(1).then((r) => {
+    this.renderHardWords(HardWordsPage.currentGroup).then((r) => {
       const controls = new HardWordsPageControls(
         "div",
         `controls controls_${this.classNameDiv}`,
-        1
+        HardWordsPage.currentGroup
       );
       HardWordsPage.emptyDiv.remove();
       loadingAnimation.stop();
