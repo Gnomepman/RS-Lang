@@ -1,4 +1,4 @@
-import Word, { API_URL, SignInResponse, User, WordAttributes } from "../api/types";
+import Word, { API_URL, SignInResponse, User, WordAttributes, wordDifficulty } from "../api/types";
 import Component from "../templates/component";
 import play_icon from "../../assets/play.svg";
 import { createElement } from "../utils/utils";
@@ -121,7 +121,8 @@ class WordCard extends Component {
       target: MouseEvent,
       classToAdd: string,
       text1: string,
-      difficulty: string,
+      difficulty: wordDifficulty,
+      learned:boolean,
       classToRemove: string,
       text2: string,
       buttonToChange: HTMLElement
@@ -132,45 +133,47 @@ class WordCard extends Component {
       const words2 = document.querySelectorAll(`.${classToRemove}`) as NodeListOf<HTMLElement>;
       const wordsCount = (words1.length + words2.length) / 2;
       console.log("from add button",button); 
-
+      const loadingAnimation = new LoadingAnimation("div","loading-animation","card");
       // if word hadn't been added to hard words
       if (!button.classList.contains(classToAdd)){
-        const loadingAnimation = new LoadingAnimation("div","loading-animation","card");
+        //animation start
         this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(
           this.container.id,
-          { difficulty: difficulty, optional: {} }
+          { difficulty: difficulty, optional: {learned:learned} }
         );
-        loadingAnimation.stop();
+        console.log("add response",response);
         if (typeof response == "object"){
+          loadingAnimation.stop();
           changeButton(button,this.container,classToAdd,text1).add();
           if ((wordsCount + 1) === 20) pageIsDone().add();
           if (location.hash === "#hard-words-page"){
             this.container.remove();
           }
         }
+        // if word already had been added
         if (response === 417){
-          this.container.append(loadingAnimation.render());
+          //animation start
           const responseFromAdd = await api.updateUserWord(
             this.container.id,
-            { difficulty: difficulty, optional: {} });
+            { difficulty: difficulty, optional: {learned:learned} });
             console.log(`response update to ${difficulty}`,responseFromAdd)
-          loadingAnimation.stop();
+          //animation stop
           if (typeof responseFromAdd == "object"){
             if (buttonToChange.classList.contains(classToRemove)){
-              changeButton(buttonLearn,this.container,classToRemove,text2).remove();
+              changeButton(buttonToChange,this.container,classToRemove,text2).remove();
               if (location.hash === "#hard-words-page"){
                 this.container.remove();
               }
             }
+            loadingAnimation.stop();
             changeButton(button,this.container,classToAdd,text1).add();
           }
         }
+        // if you want remove from added
       } else {
         const loadingAnimation = new LoadingAnimation("div","loading-animation","card");
-        this.container.append(loadingAnimation.render());
         const response = await api.deleteUserWord(this.container.id); 
-        loadingAnimation.stop(); 
         if (response === 204){
           changeButton(button,this.container,classToAdd,text1).remove();
           pageIsDone().remove();
@@ -178,6 +181,7 @@ class WordCard extends Component {
         if (location.hash === "#hard-words-page"){
           this.container.remove();
         }
+        loadingAnimation.stop();
       }
     };
 
@@ -188,6 +192,7 @@ class WordCard extends Component {
         "js-added",
         "Added",
         "hard",
+        false,
         "js-learned",
         "Not learned",
         buttonLearn
@@ -199,7 +204,8 @@ class WordCard extends Component {
         e,
         "js-learned",
         "Learned",
-        "learned",
+        "easy",
+        true,
         "js-added",
         "Add to hard",
         buttonAdd

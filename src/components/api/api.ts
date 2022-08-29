@@ -197,6 +197,7 @@ class Api {
     page: number,
     group: number,
     difficulty: string,
+    learned:boolean,
     wordsPerPage = 20
   ): Promise<AggregatedWords[] | number> {
     await this.checkToken();
@@ -207,12 +208,14 @@ class Api {
             { page: page - 1 },
             { group: group - 1 },
             { "userWord.difficulty": `${difficulty}` },
+            { "userWord.optional.learned":learned}
           ],
         }
       : {
           $and: [
             { group: group - 1 },
             { "userWord.difficulty": `${difficulty}` },
+            { "userWord.optional.learned":learned}
           ],
         };
     const string = JSON.stringify(filter);

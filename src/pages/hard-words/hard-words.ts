@@ -44,6 +44,7 @@ class HardWordsPage extends LearningPage {
       -1,
       group,
       "hard",
+      false,
       600
     );
     console.log("hardWords",hardWords)

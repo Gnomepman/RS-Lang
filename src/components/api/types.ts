@@ -14,7 +14,11 @@ type Word = {
   textMeaningTranslate: string;
   textExampleTranslate: string;
   userWord?:{
-    difficulty:string;
+    difficulty:wordDifficulty;
+    optional?: {
+      learned?: boolean;
+      progress?: wordProgress;
+    };
   }
 };
 
@@ -61,7 +65,7 @@ type miniGameStatisticsPerDay = {
 };
 
 type miniGameStatistics = {
-  percantage_of_correct_words: number;
+  percentage_of_correct_words: number;
   longest_streak: number;
   progress_by_days: miniGameStatisticsPerDay[];
 };
@@ -92,8 +96,8 @@ type wordProgress = 0 | 1 | 2 | 3; //How many times in a row word was guessed. O
 type WordAttributes = {
   difficulty: wordDifficulty;
   optional?: {
-    learned: boolean;
-    progress: wordProgress;
+    learned?: boolean;
+    progress?: wordProgress;
   };
 };
 
