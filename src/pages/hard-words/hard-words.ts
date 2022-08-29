@@ -10,7 +10,7 @@ import { createElement } from "../../components/utils/utils";
 import HardWordsPageControls from "../../components/controls/controls_hard-words";
 import LearningPage from "../learning/learning";
 import Controls, { DropdownClasses } from "../../components/controls/controls";
-import LoadingAnimation from "../../components/loadnig-animation/loading-animation";
+import LoadingAnimation from "../../components/loading-animation/loading-animation";
 
 class HardWordsPage extends LearningPage {
   classNameDiv: string;

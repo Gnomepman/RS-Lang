@@ -5,7 +5,7 @@ import { createElement } from "../utils/utils";
 
 import "./word-card.scss";
 import Api from "../api/api";
-import LoadingAnimation from "../loadnig-animation/loading-animation";
+import LoadingAnimation from "../loading-animation/loading-animation";
 class WordCard extends Component {
   private wordTemplate: Word;
   private isAdded:string;

@@ -15,7 +15,7 @@ import {
 import { createElement, getGroupFromSessionStorage, getPageFromSessionStorage, saveGroupToSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint_game.png";
 import audio_challenge_icon from "../../assets/audiocall_game.png";
-import LoadingAnimation from "../../components/loadnig-animation/loading-animation";
+import LoadingAnimation from "../../components/loading-animation/loading-animation";
 
 class LearningPage extends Page {
   static TextObject = {
@@ -25,6 +25,7 @@ class LearningPage extends Page {
   static currentPage = 1;
   static divWrapper: HTMLDivElement;
   static wrapperClass: string;
+  static emptyDiv: HTMLDivElement;
   constructor(id: string) {
     super(id);
     LearningPage.wrapperClass = "learning__wrapper";
@@ -33,6 +34,10 @@ class LearningPage extends Page {
       LearningPage.wrapperClass
     ) as HTMLDivElement;
     LearningPage.divWrapper.setAttribute("data-page-group", "1");
+    LearningPage.emptyDiv = createElement(
+      "div",
+      "empty-container"
+    ) as HTMLDivElement;
   }
 
   dropdownAction(event:MouseEvent,dropdown: DropdownClasses):string | undefined{
@@ -402,7 +407,11 @@ class LearningPage extends Page {
     if (getPageFromSessionStorage()) {
       LearningPage.currentPage = +(getPageFromSessionStorage() as string);
     }
+    const loadingAnimation = new LoadingAnimation("div","loading-animation");
+    this.container.append(loadingAnimation.render(),LearningPage.emptyDiv);
     this.renderCardWords(LearningPage.currentPage, LearningPage.currentGroup).then(() => {
+      LearningPage.emptyDiv.remove();
+      loadingAnimation.stop();
       LearningPage.divWrapper.append(controls.render()),
         this.container.insertAdjacentElement(
           "afterbegin",
