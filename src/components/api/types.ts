@@ -35,10 +35,10 @@ type SignInResponse = {
   [key:string]:string
 };
 
-type WordAttributes = {
-  difficulty: string;
-  optional?: {};
-};
+// type WordAttributes = {
+//   difficulty: string;
+//   optional?: {};
+// };
 
 type SavedWords ={
   difficulty: string;
@@ -55,7 +55,50 @@ type AggregatedWords = {
   "totalCount":Count[]
 }
 
+type miniGameStatisticsPerDay = {
+  date: Date;
+  number_of_new_words: number;
+};
+
+type miniGameStatistics = {
+  percantage_of_correct_words: number;
+  longest_streak: number;
+  progress_by_days: miniGameStatisticsPerDay[];
+};
+
+type dayStatistics = {
+  day: Date;
+  new_words_per_day: number;
+  learned_words_per_day: number;
+  percentage_of_correct_answers_per_day: number;
+};
+
+type statisticsPerDay = {
+  statistics_per_day: dayStatistics[];
+};
+
+type statistics = {
+  learnedWords: number;
+  optional?: {
+    sprint?: miniGameStatistics;
+    audio_call?: miniGameStatistics;
+    words_statistics?: statisticsPerDay;
+  };
+};
+
+type wordDifficulty = 'easy' | 'hard'//hard word cannot have 'true' on 'learned'
+type wordProgress = 0 | 1 | 2 | 3; //How many times in a row word was guessed. One wrong answer resets to 0
+
+type WordAttributes = {
+  difficulty: wordDifficulty;
+  optional?: {
+    learned: boolean;
+    progress: wordProgress;
+  };
+};
+
 const API_URL = "https://rs-lang-test.herokuapp.com";
 
-export { API_URL, User, SignInResponse, WordAttributes, SavedWords,Count,AggregatedWords,AggregatedWord};
+export { API_URL, User, SignInResponse, WordAttributes, SavedWords,Count,AggregatedWords,AggregatedWord, 
+  miniGameStatisticsPerDay, miniGameStatistics, statisticsPerDay, statistics, wordDifficulty, wordProgress};
 export default Word;
