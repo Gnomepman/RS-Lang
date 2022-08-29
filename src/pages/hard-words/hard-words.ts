@@ -1,4 +1,3 @@
-import Page from "../../components/templates/page";
 import Api from "../../components/api/api";
 import Word, {
   AggregatedWord,
@@ -9,7 +8,8 @@ import WordCard from "../../components/word-card/word-card";
 import { createElement } from "../../components/utils/utils";
 import HardWordsPageControls from "../../components/controls/controls_hard-words";
 import LearningPage from "../learning/learning";
-import Controls, { DropdownClasses } from "../../components/controls/controls";
+import { DropdownClasses } from "../../components/controls/controls";
+import LoadingAnimation from "../../components/loading-animation/loading-animation";
 
 class HardWordsPage extends LearningPage {
   classNameDiv: string;
@@ -44,8 +44,10 @@ class HardWordsPage extends LearningPage {
       -1,
       group,
       "hard",
+      false,
       600
     );
+    console.log("hardWords",hardWords)
     const isDivExisting = document.querySelector(
       `.learning.learning_${className}`
     );
@@ -53,6 +55,7 @@ class HardWordsPage extends LearningPage {
     this.classNameDiv = className;
     if (isDivExisting) isDivExisting.remove();
     if (Array.isArray(hardWords)) {
+      if (hardWords[0].paginatedResults.length){
       hardWords[0].paginatedResults.forEach((word) => {
         const newWord = new WordCard(
           "div",
@@ -63,6 +66,10 @@ class HardWordsPage extends LearningPage {
         );
         div.append(newWord.render());
       });
+    } else {
+      HardWordsPage.emptyDiv.textContent = "You don't have any hard words";
+      div.append(HardWordsPage.emptyDiv);
+    }
     }
     return div;
   }
@@ -75,19 +82,27 @@ class HardWordsPage extends LearningPage {
     controls.addEventListener("click", async (e) => {
       let chosenId = this.dropdownAction(e,dropdown);
       if (chosenId){
+        const loadingAnimation = new LoadingAnimation("div","loading-animation");
+        HardWordsPage.divWrapper.append(loadingAnimation.render());
         mainDiv.setAttribute("data-page-group",chosenId);
         const words = await this.renderHardWords(+chosenId);
+        loadingAnimation.stop();
         HardWordsPage.divWrapper.insertAdjacentElement("afterbegin", words);
       }
     });
   }
 
   render(): HTMLElement {
+    const loadingAnimation = new LoadingAnimation("div","loading-animation");
+    this.container.append(loadingAnimation.render(),HardWordsPage.emptyDiv);
     this.renderHardWords(1).then((r) => {
       const controls = new HardWordsPageControls(
         "div",
-        `controls controls_${this.classNameDiv}`
+        `controls controls_${this.classNameDiv}`,
+        1
       );
+      HardWordsPage.emptyDiv.remove();
+      loadingAnimation.stop();
       HardWordsPage.divWrapper.append(r,controls.render())
       this.container.insertAdjacentElement("afterbegin", HardWordsPage.divWrapper);
 

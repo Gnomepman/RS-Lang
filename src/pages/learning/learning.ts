@@ -12,9 +12,10 @@ import {
   API_URL,
   SignInResponse,
 } from "../../components/api/types";
-import { createElement, getPageFromSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
+import { createElement, getGroupFromSessionStorage, getPageFromSessionStorage, saveGroupToSessionStorage, savePageToSessionStorage } from "../../components/utils/utils";
 import sprint_icon from "../../assets/sprint_game.png";
 import audio_challenge_icon from "../../assets/audiocall_game.png";
+import LoadingAnimation from "../../components/loading-animation/loading-animation";
 
 class LearningPage extends Page {
   static TextObject = {
@@ -24,6 +25,7 @@ class LearningPage extends Page {
   static currentPage = 1;
   static divWrapper: HTMLDivElement;
   static wrapperClass: string;
+  static emptyDiv: HTMLDivElement;
   constructor(id: string) {
     super(id);
     LearningPage.wrapperClass = "learning__wrapper";
@@ -32,6 +34,10 @@ class LearningPage extends Page {
       LearningPage.wrapperClass
     ) as HTMLDivElement;
     LearningPage.divWrapper.setAttribute("data-page-group", "1");
+    LearningPage.emptyDiv = createElement(
+      "div",
+      "empty-container"
+    ) as HTMLDivElement;
   }
 
   dropdownAction(event:MouseEvent,dropdown: DropdownClasses):string | undefined{
@@ -86,10 +92,12 @@ class LearningPage extends Page {
       ) as HTMLDivElement;
       if (clickedGroup){
         LearningPage.currentGroup = +(clickedGroup as string);
+        saveGroupToSessionStorage(LearningPage.currentGroup);
         mainDiv.setAttribute("data-page-group", clickedGroup);
+        await this.renderCardWords(1, LearningPage.currentGroup);
+        LearningPage.resetPagination(pagButtons);
       }
-      await this.renderCardWords(1, LearningPage.currentGroup);
-      LearningPage.resetPagination(pagButtons);
+
     });
   }
 
@@ -104,6 +112,8 @@ class LearningPage extends Page {
   // Render words from needed page and group
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
+    const loadingAnimation = new LoadingAnimation("div","loading-animation");
+    LearningPage.divWrapper.append(loadingAnimation.render());
     const words = await api.getWords(page, group);
     let user: SignInResponse;
     let hardWords: AggregatedWords[] | number;
@@ -112,8 +122,8 @@ class LearningPage extends Page {
     let wordCount = 0;
     if (localStorage.getItem("user")) {
       user = JSON.parse(localStorage.getItem("user") as string);
-      hardWords = await api.getAggregatedWords(page, group, "hard");
-      learnedWords = await api.getAggregatedWords(page, group, "learned");
+      hardWords = await api.getAggregatedWords(page, group, "hard",false);
+      learnedWords = await api.getAggregatedWords(page, group, "easy",true);
       console.log("learnedWords", learnedWords);
       console.log("hardWords", hardWords);
       if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
@@ -163,7 +173,7 @@ class LearningPage extends Page {
             );
           }
           //if difficulty of word is "learned"
-          if (difficulty?.userWord?.difficulty === "learned") {
+          if ((difficulty?.userWord?.difficulty === "easy")&&(difficulty?.userWord?.optional?.learned === true)) {
             wordCard = new WordCard(
               "div",
               "learning__word-card",
@@ -181,6 +191,7 @@ class LearningPage extends Page {
       div.append(wordCard.render());
     });
     LearningPage.divWrapper.insertAdjacentElement("afterbegin", div);
+    loadingAnimation.stop();
   }
 
   // Render next page after click on button next page
@@ -219,6 +230,7 @@ class LearningPage extends Page {
       // remove div with class .learning and append new div with new words
       await this.renderCardWords(pageCurrent, LearningPage.currentGroup);
       spanPage.textContent = pageCurrent.toString(10);
+
     });
   }
 
@@ -390,11 +402,16 @@ class LearningPage extends Page {
 
 
   render() {
-    const controls = new Controls("div", "controls");
+    if (getGroupFromSessionStorage()) LearningPage.currentGroup = +(getGroupFromSessionStorage() as string);
+    const controls = new Controls("div", "controls",LearningPage.currentGroup);
     if (getPageFromSessionStorage()) {
       LearningPage.currentPage = +(getPageFromSessionStorage() as string);
     }
-    this.renderCardWords(LearningPage.currentPage, 1).then(() => {
+    const loadingAnimation = new LoadingAnimation("div","loading-animation");
+    this.container.append(loadingAnimation.render(),LearningPage.emptyDiv);
+    this.renderCardWords(LearningPage.currentPage, LearningPage.currentGroup).then(() => {
+      LearningPage.emptyDiv.remove();
+      loadingAnimation.stop();
       LearningPage.divWrapper.append(controls.render()),
         this.container.insertAdjacentElement(
           "afterbegin",

@@ -23,8 +23,9 @@ class Controls extends Component {
   pagButtons: PaginationButtons;
   dropdown: DropdownClasses;
   miniGamesClass: string;
+  initial:number
   private controlsWrapper: HTMLDivElement;
-  constructor(tagName: string, className: string) {
+  constructor(tagName: string, className: string,initial:number) {
     super(tagName, className);
     this.currentPage = 1;
     this.pagButtons = {
@@ -44,18 +45,25 @@ class Controls extends Component {
       "div",
       "controls-wrapper"
     ) as HTMLDivElement;
+    this.initial = initial;
   }
-  renderDropdown(className: string): HTMLElement {
+  renderDropdown(className: string,initial:number): HTMLElement {
     const dropdown = createElement("div", `${className}`);
     const content = createElement("div", `${className}-content`);
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < 7; i++) {
       const element = createElement("div", `${className}-group`);
-      element.textContent = `Раздел ${i + 1}`;
-      element.setAttribute("data-group", `${i + 1}`);
-      content.append(element);
+      if (i === initial) {
+        dropdown.textContent = `Group ${i}`;
+        dropdown.setAttribute("data-group", `${i}`);
+      } else {
+        element.textContent = `Group ${i}`;
+        element.setAttribute("data-group", `${i}`);
+        content.append(element);
+      }
+
     }
-    dropdown.textContent = "Раздел 1";
-    dropdown.setAttribute("data-group", "1");
+
+    dropdown.setAttribute("data-group", `${initial}`);
     dropdown.append(content)
 
     this.dropdown = {
@@ -136,7 +144,7 @@ class Controls extends Component {
     this.controlsWrapper.append(
       this.renderHomeLink("controls__home", home_icon),
       this.renderIcon(this.miniGamesClass, miniGames_icon),
-      this.renderDropdown("pagination__groups")
+      this.renderDropdown("pagination__groups",this.initial)
     );
     this.container.append(
       this.controlsWrapper,
