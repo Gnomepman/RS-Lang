@@ -12,7 +12,7 @@ class HardWordsPageControls extends Controls{
   }
 
   render(): HTMLElement {
-    this.container.append(this.renderDropdown("pagination__groups",1));
+    this.container.append(this.renderDropdown("pagination__groups",this.initial));
     return this.container;
   }
 }
