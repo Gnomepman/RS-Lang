@@ -26,7 +26,7 @@ class HardWordsPage extends LearningPage {
     HardWordsPage.divWrapper.setAttribute("data-page-group","1");
 
   }
-
+// trasnforms object with type AggregatedWord to type Word
   static CopyAggrWordToWord(aggrWord: AggregatedWord): Word {
     let oldAggregatedWord: AggregatedWord = {} as AggregatedWord;
     let newWord: Word = {} as Word;
@@ -37,9 +37,10 @@ class HardWordsPage extends LearningPage {
     newWord.id = tempId as string;
     return newWord;
   }
-
+// render hard words
   async renderHardWords(group: number, className = "hard-words") {
     const api = new Api(API_URL);
+    //get all    words for user with difficulty "hard" for specific group 
     const hardWords: AggregatedWords[] | number = await api.getAggregatedWords(
       -1,
       group,
@@ -53,8 +54,10 @@ class HardWordsPage extends LearningPage {
     );
     const div = createElement("div", `learning learning_${className}`);
     this.classNameDiv = className;
+    // if words alredy had been rendered - remove them
     if (isDivExisting) isDivExisting.remove();
     if (Array.isArray(hardWords)) {
+      // if user added words
       if (hardWords[0].paginatedResults.length){
       hardWords[0].paginatedResults.forEach((word) => {
         const newWord = new WordCard(
@@ -68,6 +71,7 @@ class HardWordsPage extends LearningPage {
       });
     } else {
       console.log("empty");
+      // if user doesn't have words
       HardWordsPage.emptyDiv.textContent = "You don't have any hard words";
       div.append(HardWordsPage.emptyDiv);
     }
@@ -81,12 +85,17 @@ class HardWordsPage extends LearningPage {
     ) as HTMLDivElement;
     const mainDiv = document.querySelector(`.${HardWordsPage.wrapperClass}`) as HTMLDivElement;
     controls.addEventListener("click", async (e) => {
+      // saving clicked group
       let chosenId = this.dropdownAction(e,dropdown);
+      // is user clicked on group
       if (chosenId){
+        //start animation for loading
         const loadingAnimation = new LoadingAnimation("div","loading-animation");
+        // saving clicked group to session storage
         sessionStorage.setItem("currentGroupForHardWords",chosenId)
         HardWordsPage.divWrapper.append(loadingAnimation.render());
         mainDiv.setAttribute("data-page-group",chosenId);
+        //rendering of words
         const words = await this.renderHardWords(+chosenId);
         loadingAnimation.stop();
         HardWordsPage.divWrapper.insertAdjacentElement("afterbegin", words);
@@ -97,8 +106,10 @@ class HardWordsPage extends LearningPage {
   render(): HTMLElement {
     const loadingAnimation = new LoadingAnimation("div","loading-animation");
     const savedGroup = sessionStorage.getItem("currentGroupForHardWords");
+    //if group had been saved
     if (savedGroup) HardWordsPage.currentGroup = +savedGroup;
     console.log("currentGroup",HardWordsPage.currentGroup);
+    //start animation and rendering of empty div
     this.container.append(loadingAnimation.render(),HardWordsPage.emptyDiv);
     this.renderHardWords(HardWordsPage.currentGroup).then((r) => {
       const controls = new HardWordsPageControls(
@@ -106,6 +117,7 @@ class HardWordsPage extends LearningPage {
         `controls controls_${this.classNameDiv}`,
         HardWordsPage.currentGroup
       );
+      //remove empty div
       HardWordsPage.emptyDiv.remove();
       loadingAnimation.stop();
       HardWordsPage.divWrapper.append(r,controls.render())

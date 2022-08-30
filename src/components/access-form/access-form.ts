@@ -1,23 +1,20 @@
-import Component from "../templates/component";
-import { createElement } from "../utils/utils";
-import log_in_img from "../../assets/log-in-img.svg";
-import "./access-form.scss";
-import Api from "../api/api";
-import { API_URL, User } from "../api/types";
+import Component from '../templates/component';
+import { createElement } from '../utils/utils';
+import log_in_img from '../../assets/log-in-img.svg';
+import './access-form.scss';
+import Api from '../api/api';
+import { API_URL, User } from '../api/types';
 
 class AccessForm extends Component {
-  constructor(tagName: string, className: string) {
-    super(tagName, className);
-  }
 
   private renderTitle(
     className: string,
     title: string,
-    subtitle: string
+    subtitle: string,
   ): HTMLDivElement {
-    const div = createElement("div", className) as HTMLDivElement;
-    const hTitle = createElement("h2", `${className}-title`);
-    const spanSubtitle = createElement("span", `${className}-subtitle`);
+    const div = createElement('div', className) as HTMLDivElement;
+    const hTitle = createElement('h2', `${className}-title`);
+    const spanSubtitle = createElement('span', `${className}-subtitle`);
 
     hTitle.textContent = title;
     spanSubtitle.textContent = subtitle;
@@ -32,32 +29,31 @@ class AccessForm extends Component {
     title: string,
     placeholder: string,
     minlength?: number,
-    type = "text"
+    type = 'text',
   ): HTMLDivElement {
-    const div = createElement("div", className) as HTMLDivElement;
-    const classNameTemp = className.split(" ")[0];
-    const classNameElem = className.split("_")[1];
+    const div = createElement('div', className) as HTMLDivElement;
+    const classNameTemp = className.split(' ')[0];
+    const classNameElem = className.split('_')[1];
     const labelTitle = createElement(
-      "label",
-      `${classNameTemp}__title ${classNameTemp}__title_${classNameElem}`
+      'label',
+      `${classNameTemp}__title ${classNameTemp}__title_${classNameElem}`,
     ) as HTMLLabelElement;
     const input = createElement(
-      "input",
-      `${classNameTemp}__input ${classNameTemp}__input_${classNameElem}`
+      'input',
+      `${classNameTemp}__input ${classNameTemp}__input_${classNameElem}`,
     ) as HTMLInputElement;
 
     labelTitle.textContent = title;
     input.placeholder = placeholder;
 
     input.type = type;
-    if (minlength) input.setAttribute("minlength", minlength.toString(10));
+    if (minlength) input.setAttribute('minlength', minlength.toString(10));
 
     input.name = `${classNameElem}`;
     input.id = `${classNameElem}-input`;
-    labelTitle.setAttribute("for", input.id);
-    if (classNameElem === "email") {
-      input.oninput = () =>
-        AccessForm.showError("error", "", "field__input_email");
+    labelTitle.setAttribute('for', input.id);
+    if (classNameElem === 'email') {
+      input.oninput = () => AccessForm.showError('error', '', 'field__input_email');
     }
     div.append(labelTitle, input);
 
@@ -65,26 +61,26 @@ class AccessForm extends Component {
   }
 
   private renderButton(className: string, text: string): HTMLButtonElement {
-    const button = createElement("button", className) as HTMLButtonElement;
+    const button = createElement('button', className) as HTMLButtonElement;
     button.textContent = text;
-    button.type = "submit";
+    button.type = 'submit';
     return button;
   }
 
   private renderCheckBox(className: string, text: string): HTMLDivElement {
-    const div = createElement("div", className) as HTMLDivElement;
-    const classNameTempBlock = className.split(" ")[0];
-    const classNameTempElem = className.split("_")[1];
+    const div = createElement('div', className) as HTMLDivElement;
+    const classNameTempBlock = className.split(' ')[0];
+    const classNameTempElem = className.split('_')[1];
     const checkbox = createElement(
-      "input",
-      `${classNameTempBlock}-checkbox ${classNameTempBlock}-checkbox_${classNameTempElem}`
+      'input',
+      `${classNameTempBlock}-checkbox ${classNameTempBlock}-checkbox_${classNameTempElem}`,
     ) as HTMLInputElement;
     const label = createElement(
-      "label",
-      `${classNameTempBlock}-label ${classNameTempBlock}-label_${classNameTempElem}`
+      'label',
+      `${classNameTempBlock}-label ${classNameTempBlock}-label_${classNameTempElem}`,
     ) as HTMLLabelElement;
 
-    checkbox.type = "checkbox";
+    checkbox.type = 'checkbox';
     label.textContent = text;
 
     div.append(checkbox, label);
@@ -94,18 +90,18 @@ class AccessForm extends Component {
   private renderLinkToForm(
     className: string,
     text1: string,
-    text2: string
+    text2: string,
   ): HTMLDivElement {
-    const div = createElement("div", className) as HTMLDivElement;
-    const classNameTemp = className.split(" ")[0];
-    const classNameElem = className.split("_")[1];
+    const div = createElement('div', className) as HTMLDivElement;
+    const classNameTemp = className.split(' ')[0];
+    const classNameElem = className.split('_')[1];
     const span = createElement(
-      "span",
-      `${classNameTemp}__span ${classNameTemp}__span_${classNameElem}`
+      'span',
+      `${classNameTemp}__span ${classNameTemp}__span_${classNameElem}`,
     );
     const spanLink = createElement(
-      "span",
-      `${classNameTemp}__link ${classNameTemp}__link_${classNameElem}`
+      'span',
+      `${classNameTemp}__link ${classNameTemp}__link_${classNameElem}`,
     ) as HTMLLinkElement;
 
     span.textContent = text1;
@@ -118,159 +114,158 @@ class AccessForm extends Component {
     return div;
   }
 
-
-  //render form for Log In
+  // render form for Log In
   private renderLogInForm(className: string): HTMLDivElement {
-    const divLogin = createElement("div", className) as HTMLDivElement;
-    const classNameTempBlock = className.split(" ")[0];
-    const classNameTempElem = className.split("_")[1];
+    const divLogin = createElement('div', className) as HTMLDivElement;
+    const classNameTempBlock = className.split(' ')[0];
+    const classNameTempElem = className.split('_')[1];
     const divData = createElement(
-      "div",
-      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+      'div',
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`,
     ) as HTMLDivElement;
     const divContainer = createElement(
-      "div",
-      `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`
+      'div',
+      `${classNameTempBlock}__container ${classNameTempBlock}__container_${classNameTempElem}`,
     );
     const formLogIn = createElement(
-      "form",
-      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
+      'form',
+      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`,
     );
     const img = createElement(
-      "img",
-      `${classNameTempBlock}__image`
+      'img',
+      `${classNameTempBlock}__image`,
     ) as HTMLImageElement;
 
     img.src = log_in_img;
     divContainer.append(
       this.renderCheckBox(
         `${classNameTempBlock}__remember-me ${classNameTempBlock}__remember-me_${classNameTempElem}`,
-        "Remember me"
+        'Remember me',
       ),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_log-in`,
-        "Log In"
-      )
+        'Log In',
+      ),
     );
     formLogIn.append(
       this.renderField(
-        `field field_email`,
-        "E-mail",
-        "Enter your e-mail",
+        'field field_email',
+        'E-mail',
+        'Enter your e-mail',
         undefined,
-        "email"
+        'email',
       ),
       this.renderField(
-        `field field_password`,
-        "Password",
-        "Enter password",
+        'field field_password',
+        'Password',
+        'Enter password',
         8,
-        "password"
+        'password',
       ),
-      this.renderSpanError("error"),
-      divContainer
+      this.renderSpanError('error'),
+      divContainer,
     );
     divData.append(
       this.renderTitle(
         `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
+        'RSLANG',
+        'Welcome to RSLANG',
       ),
       formLogIn,
       this.renderLinkToForm(
-        `link-to-form link-to-form_registration`,
-        "Not registered yet?",
-        "Sign Up"
-      )
+        'link-to-form link-to-form_registration',
+        'Not registered yet?',
+        'Sign Up',
+      ),
     );
-    formLogIn.setAttribute("method","POST");
+    formLogIn.setAttribute('method', 'POST');
     // listener for Log In method
-    formLogIn.addEventListener("submit", this.logIn);
-    divLogin.append(divData, img, this.renderCloseButton("button-close"));
+    formLogIn.addEventListener('submit', this.logIn);
+    divLogin.append(divData, img, this.renderCloseButton('button-close'));
     return divLogin;
   }
 
   // render error message for errors in e-mail or password
   private renderSpanError(className: string): HTMLSpanElement {
-    const span = createElement("span", className) as HTMLSpanElement;
+    const span = createElement('span', className) as HTMLSpanElement;
     return span;
   }
 
-  //show error with text or hide message with blank text
+  // show error with text or hide message with blank text
   static showError(spanSelector: string, text: string, inputError?: string) {
     const span = document.querySelector(`.${spanSelector}`) as HTMLSpanElement;
     const input = document.querySelector(`.${inputError}`) as HTMLInputElement;
     if (text) {
       span.textContent = text;
-      span.classList.add("js-error");
-      input.classList.add("js-error");
-    } else {
-      if (span.classList.contains("js-error")) {
-        span.classList.remove("js-error");
-        input.classList.remove("js-error");
-      }
+      span.classList.add('js-error');
+      input.classList.add('js-error');
+    } else if (span.classList.contains('js-error')) {
+      span.classList.remove('js-error');
+      input.classList.remove('js-error');
     }
   }
-  //render registration form
+
+  // render registration form
   private renderRegistrationForm(className: string) {
-    const divLogin = createElement("div", className) as HTMLDivElement;
-    const classNameTempBlock = className.split(" ")[0];
-    const classNameTempElem = className.split("_")[1];
+    const divLogin = createElement('div', className) as HTMLDivElement;
+    const classNameTempBlock = className.split(' ')[0];
+    const classNameTempElem = className.split('_')[1];
     const divData = createElement(
-      "div",
-      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`
+      'div',
+      `${classNameTempBlock}__wrapper ${classNameTempBlock}__wrapper_${classNameTempElem}`,
     ) as HTMLDivElement;
     const formRegistration = createElement(
-      "form",
-      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`
+      'form',
+      `${classNameTempBlock}__form ${classNameTempBlock}__form_${classNameTempElem}`,
     );
     const img = createElement(
-      "img",
-      `${classNameTempBlock}__image`
+      'img',
+      `${classNameTempBlock}__image`,
     ) as HTMLImageElement;
 
     img.src = log_in_img;
 
     formRegistration.append(
-      this.renderField(`field field_name`, "Username", "Enter your name"),
+      this.renderField('field field_name', 'Username', 'Enter your name'),
       this.renderField(
-        `field field_email`,
-        "E-Mail",
-        "Enter your e-mail",
+        'field field_email',
+        'E-Mail',
+        'Enter your e-mail',
         undefined,
-        "email"
+        'email',
       ),
       this.renderField(
-        `field field_password`,
-        "Password",
-        "Enter password",
+        'field field_password',
+        'Password',
+        'Enter password',
         8,
-        "password"
+        'password',
       ),
-      this.renderSpanError("error"),
+      this.renderSpanError('error'),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_${classNameTempElem}`,
-        "Sign Up"
-      )
+        'Sign Up',
+      ),
     );
     divData.append(
       this.renderTitle(
         `${classNameTempBlock}__title`,
-        "RSLANG",
-        "Welcome to RSLANG"
+        'RSLANG',
+        'Welcome to RSLANG',
       ),
       formRegistration,
       this.renderLinkToForm(
-        `link-to-form link-to-form_log-in`,
-        "Already registered?",
-        "Log In"
-      )
+        'link-to-form link-to-form_log-in',
+        'Already registered?',
+        'Log In',
+      ),
     );
     // listener for sign Up method
-    formRegistration.addEventListener("submit", this.signUp);
-    divLogin.append(divData, img, this.renderCloseButton("button-close"));
+    formRegistration.addEventListener('submit', this.signUp);
+    divLogin.append(divData, img, this.renderCloseButton('button-close'));
     return divLogin;
   }
+
   // sign Up, create user, if wrong email or password - show error message
   async signUp(event: SubmitEvent) {
     event.preventDefault();
@@ -283,25 +278,26 @@ class AccessForm extends Component {
       // if user with this email exist
       if (response === 417) {
         AccessForm.showError(
-          "error",
-          "User with this email already exist",
-          "field__input_email"
+          'error',
+          'User with this email already exist',
+          'field__input_email',
         );
       }
-      //if incorrect password
+      // if incorrect password
       if (response === 422) {
         AccessForm.showError(
-          "error",
-          "Incorrect e-mail or password",
-          "field__input_email"
+          'error',
+          'Incorrect e-mail or password',
+          'field__input_email',
         );
       }
       // if creating user successful - reload page
-      if (typeof response === "object") location.reload();
+      if (typeof response === 'object') location.reload();
     } catch (error) {
       console.log(error);
     }
   }
+
   // log in, show error - if e-mail donn't exist
   async logIn(event: SubmitEvent) {
     event.preventDefault();
@@ -311,48 +307,49 @@ class AccessForm extends Component {
     const api = new Api(API_URL);
     try {
       const response = await api.signIn(dataObj);
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         // save creation time for token
         const currentTime = Date.now();
-        response["created"] = currentTime.toString(10);
-        console.log("response",response);
+        response.created = currentTime.toString(10);
+        console.log('response', response);
         const objToString = JSON.stringify(response);
-        localStorage.setItem("user",objToString);
+        localStorage.setItem('user', objToString);
         location.reload();
       }
       if (response === 404) {
         AccessForm.showError(
-          "error",
+          'error',
           "User with this email doesn't exist",
-          "field__input_email"
+          'field__input_email',
         );
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
   }
 
   renderForm(form: string) {
-    const classNameLogin = "log-in";
-    const classNameRegistration = "registration";
+    const classNameLogin = 'log-in';
+    const classNameRegistration = 'registration';
 
-    if (form === classNameLogin)
+    if (form === classNameLogin) {
       this.container.replaceChildren(
-        this.renderLogInForm(`auth-form auth-form_${classNameLogin}`)
+        this.renderLogInForm(`auth-form auth-form_${classNameLogin}`),
       );
-    if (form === classNameRegistration)
+    }
+    if (form === classNameRegistration) {
       this.container.replaceChildren(
         this.renderRegistrationForm(
-          `auth-form auth-form_${classNameRegistration}`
-        )
+          `auth-form auth-form_${classNameRegistration}`,
+        ),
       );
+    }
   }
 
   private renderCloseButton(className: string): HTMLButtonElement {
-    const button = createElement("button", className) as HTMLButtonElement;
+    const button = createElement('button', className) as HTMLButtonElement;
     button.onclick = () => {
-      if (this.container.classList.contains("js-show"))
-        this.container.classList.remove("js-show");
+      if (this.container.classList.contains('js-show')) { this.container.classList.remove('js-show'); }
     };
 
     return button;
