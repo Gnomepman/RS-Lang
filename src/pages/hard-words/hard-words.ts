@@ -13,6 +13,7 @@ import LoadingAnimation from "../../components/loading-animation/loading-animati
 
 class HardWordsPage extends LearningPage {
   classNameDiv: string;
+  static emptyPage:HTMLDivElement;
   static divWrapper: HTMLDivElement;
   static wrapperClass:string;
   constructor(id: string) {
@@ -24,9 +25,13 @@ class HardWordsPage extends LearningPage {
       HardWordsPage.wrapperClass
     ) as HTMLDivElement;
     HardWordsPage.divWrapper.setAttribute("data-page-group","1");
+    HardWordsPage.emptyPage = createElement(
+      "div",
+      "empty-page"
+    ) as HTMLDivElement;
 
   }
-// trasnforms object with type AggregatedWord to type Word
+// transforms object with type AggregatedWord to type Word
   static CopyAggrWordToWord(aggrWord: AggregatedWord): Word {
     let oldAggregatedWord: AggregatedWord = {} as AggregatedWord;
     let newWord: Word = {} as Word;
@@ -54,7 +59,7 @@ class HardWordsPage extends LearningPage {
     );
     const div = createElement("div", `learning learning_${className}`);
     this.classNameDiv = className;
-    // if words alredy had been rendered - remove them
+    // if words already had been rendered - remove them
     if (isDivExisting) isDivExisting.remove();
     if (Array.isArray(hardWords)) {
       // if user added words
@@ -72,8 +77,8 @@ class HardWordsPage extends LearningPage {
     } else {
       console.log("empty");
       // if user doesn't have words
-      HardWordsPage.emptyDiv.textContent = "You don't have any hard words";
-      div.append(HardWordsPage.emptyDiv);
+      HardWordsPage.emptyPage.textContent = "You don't have any hard words";
+      div.append(HardWordsPage.emptyPage);
     }
     }
     return div;
