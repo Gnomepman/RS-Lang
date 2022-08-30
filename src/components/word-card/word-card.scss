@@ -15,13 +15,49 @@
   position: relative;
 
   &.js-added{
-    border: 1px solid #9A9A98;
-    box-shadow: -100px -80px 49px -17px rgba(220, 52, 223, 0.6) inset;
+    // border: 1px solid #9A9A98;
+    // box-shadow: -100px -80px 49px -17px rgba(220, 52, 223, 0.6) inset;
+
+    &::before{
+      content: "HARD";
+      position: absolute;
+      top: 7%;
+      right: 3%;
+      color: #ff3d00;
+      font-size: 40px;
+      font-weight: bold;
+      display: block;
+      width: 110px;
+      height: 50px;
+      border: 4px #ff3d00 dashed;
+      border-radius: 5px;
+      padding: 5px;
+      transform: rotate(45deg);
+
+    }
   }
 
   &.js-learned{
-    border: 1px solid #9A9A98;
-    box-shadow: 100px 80px 49px -17px rgba(0, 176, 60, 0.6) inset;
+    // border: 1px solid #9A9A98;
+    // box-shadow: 100px 80px 49px -17px rgba(0, 176, 60, 0.6) inset;
+
+    &::after{
+      content: "LEARNED";
+      position: absolute;
+      top: 11%;
+      left: 1%;
+      color: #76ff03;
+      font-size: 40px;
+      font-weight: bold;
+      display: block;
+      width: 175px;
+      height: 50px;
+      border: 4px #76ff03 dashed;
+      border-radius: 5px;
+      padding: 5px;
+      transform: rotate(-45deg);
+
+    }
   }
 }
 .learning__word-card-img{
