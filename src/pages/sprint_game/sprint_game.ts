@@ -8,6 +8,7 @@ import Timer from '../../components/timer/timer';
 import human_1 from '../../assets/sprint_human_1.svg'
 import human_2 from '../../assets/sprint_human_2.svg'
 import human_3 from '../../assets/sprint_human_3.svg'
+import After_game_stats from '../../components/after-game-stats/after-game-stats';
 
 export default class Sprint_game extends Page {
   private group: number;
@@ -203,13 +204,14 @@ export default class Sprint_game extends Page {
 
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("game_window");
-    const TIME_FOR_GAME = 60; //in seconds
+    const TIME_FOR_GAME = 30; //in seconds
     let timer = new Timer("div", "timer", TIME_FOR_GAME).render();
 
     timer.addEventListener("countDown", () => {
       game_window.remove();
       console.log('Correct: ', this.correctWords, '\nWrong: ', this.wrongWords)
-      //Then we renderStatistics, by passing two arrays
+      const stats = new After_game_stats('div', 'stats', this.correctWords, this.wrongWords)
+      wrapper.append(stats.render());
     });
 
     game_window.append(timer);
