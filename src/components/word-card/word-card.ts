@@ -230,7 +230,18 @@ class WordCard extends Component {
           pageIsDone().remove();
         }
         if (location.hash === '#hard-words-page') {
+          const classNameCard = this.container.className;
+          const main = this.container.parentElement?.parentElement as HTMLDivElement;
+          console.log("this.container.parentElement",)
           this.container.remove();
+          const words = document.querySelectorAll(`.${classNameCard}`);
+          if (!words.length){
+            const emptyDiv = createElement("div","empty-page");
+            emptyDiv.textContent = "You don't have any hard words";
+            main.insertAdjacentElement("afterbegin",emptyDiv);
+          }
+          
+         
         }
         loadingAnimation.stop();
       }
