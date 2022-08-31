@@ -416,6 +416,7 @@ class LearningPage extends Page {
   render() {
     if (getGroupFromSessionStorage()) {
       LearningPage.currentGroup = +(getGroupFromSessionStorage() as string);
+      LearningPage.divWrapper.setAttribute("data-page-group",LearningPage.currentGroup.toString(10));
     }
     const controls = new Controls('div', 'controls', LearningPage.currentGroup);
     const controlsElement = controls.render();
