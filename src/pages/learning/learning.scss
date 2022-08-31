@@ -7,6 +7,30 @@
     linear-gradient(75.46deg, #ffffff 11.55%, $color 92.47%);
 }
 
+[data-page-group="1"] {
+  @include background-gradient(#B2FF59);
+}
+
+[data-page-group="2"] {
+  @include background-gradient(#00C853);
+}
+
+[data-page-group="3"] {
+  @include background-gradient(#FDD835);
+}
+
+[data-page-group="4"] {
+  @include background-gradient(#F57F17);
+}
+
+[data-page-group="5"] {
+  @include background-gradient(#F50057);
+}
+
+[data-page-group="6"] {
+  @include background-gradient(#D500F9);
+}
+
 .learning__wrapper {
   display: flex;
   flex-direction: column;
@@ -16,7 +40,7 @@
   box-sizing: border-box;
 
   &.js-done {
-    background-color: rgba($color: #02fd1b, $alpha: 0.5);
+    background: rgba($color: #02fd1b, $alpha: 0.5);
   }
 }
 
@@ -48,26 +72,4 @@
   font-size: 40px;
 }
 
-[data-page-group="1"] {
-  @include background-gradient(#B2FF59);
-}
 
-[data-page-group="2"] {
-  @include background-gradient(#00C853);
-}
-
-[data-page-group="3"] {
-  @include background-gradient(#FDD835);
-}
-
-[data-page-group="4"] {
-  @include background-gradient(#F57F17);
-}
-
-[data-page-group="5"] {
-  @include background-gradient(#F50057);
-}
-
-[data-page-group="6"] {
-  @include background-gradient(#D500F9);
-}

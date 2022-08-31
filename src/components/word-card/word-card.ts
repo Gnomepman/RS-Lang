@@ -149,6 +149,7 @@ class WordCard extends Component {
       learned: boolean,
       classToRemove: string,
       text2: string,
+      textForDeleted:string,
       buttonToChange: HTMLElement,
     ) => {
       const api = new Api(API_URL);
@@ -216,9 +217,16 @@ class WordCard extends Component {
         }
         // if you want remove from added
       } else {
+        const loadingAnimation = new LoadingAnimation(
+          'div',
+          'loading-animation',
+          'card',
+        );
+        this.container.append(loadingAnimation.render());
         const response = await api.deleteUserWord(this.container.id);
+        loadingAnimation.stop();
         if (response === 204) {
-          changeButton(button, this.container, classToAdd, text1).remove();
+          changeButton(button, this.container, classToAdd, textForDeleted).remove();
           pageIsDone().remove();
         }
         if (location.hash === '#hard-words-page') {
@@ -238,6 +246,7 @@ class WordCard extends Component {
         false,
         'js-learned',
         'Not learned',
+        "Add to hard",
         buttonLearn,
       );
     };
@@ -251,6 +260,7 @@ class WordCard extends Component {
         true,
         'js-added',
         'Add to hard',
+        "Not learned",
         buttonAdd,
       );
     };
