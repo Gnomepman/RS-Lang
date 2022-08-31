@@ -98,7 +98,7 @@ class HardWordsPage extends LearningPage {
         const loadingAnimation = new LoadingAnimation("div","loading-animation");
         // saving clicked group to session storage
         sessionStorage.setItem("currentGroupForHardWords",chosenId)
-        HardWordsPage.divWrapper.append(loadingAnimation.render());
+        HardWordsPage.divWrapper.parentElement?.append(loadingAnimation.render());
         mainDiv.setAttribute("data-page-group",chosenId);
         //rendering of words
         const words = await this.renderHardWords(+chosenId);

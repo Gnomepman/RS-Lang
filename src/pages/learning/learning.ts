@@ -124,7 +124,7 @@ class LearningPage extends Page {
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
     const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
-    LearningPage.divWrapper.append(loadingAnimation.render());
+    LearningPage.divWrapper.parentElement?.append(loadingAnimation.render());
     const words = await api.getWords(page, group);
     let user: SignInResponse;
     let hardWords: AggregatedWords[] | number;
