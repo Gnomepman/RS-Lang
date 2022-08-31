@@ -173,8 +173,8 @@ class WordCard extends Component {
         // animation start
         this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(this.container.id, {
-          difficulty,
-          optional: { learned },
+          difficulty:difficulty,
+          optional: { learned:learned },
         });
         console.log('add response', response);
         // if adding of word was successful
@@ -193,8 +193,8 @@ class WordCard extends Component {
         if (response === 417) {
           // animation start
           const responseFromAdd = await api.updateUserWord(this.container.id, {
-            difficulty,
-            optional: { learned },
+            difficulty:difficulty,
+            optional: { learned:learned },
           });
           console.log(`response update to ${difficulty}`, responseFromAdd);
           // animation stop
