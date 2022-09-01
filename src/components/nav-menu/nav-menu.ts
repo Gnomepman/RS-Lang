@@ -9,6 +9,7 @@ import user from '../../assets/user_signin_icon.svg'
 import hard_words from '../../assets/hard_words.svg'
 import AccessForm from '../access-form/access-form';
 import { SignInResponse } from '../api/types';
+import { createElement } from '../utils/utils';
 
 export default class Nav_menu extends Component {
   //this.container = <nav class="nav-container">
@@ -25,17 +26,25 @@ export default class Nav_menu extends Component {
       text:"Hard Words",
       icon:hard_words
     };
+    const buttonBurger = createElement("button","button-burger");
+    const span = createElement("span","span-line");
+    buttonBurger.append(span);
+    buttonBurger.onclick = ()=>{
+      buttonBurger.classList.toggle("js-clicked");
+      buttonBurger.parentElement?.classList.toggle("js-clicked");
+    }
     nav_buttons_wrapper.classList.add("nav-wrapper");
     if (localStorage.getItem("user")) Buttons.push(pageHardWords);
     Buttons.forEach((button) => {
       nav_buttons_wrapper.innerHTML += `
       <a href="#${button.id}" class="nav_button">
       <img src="${button.icon}">
-      ${button.text}</a>
+      <span class="nav_text">${button.text}</span></a>
       `
     });
-    this.container.append(nav_buttons_wrapper);
+    this.container.append(buttonBurger,nav_buttons_wrapper);
   }
+
 
   showModal(className:string,linkSelector:string,form:string){
     const modalWindow = document.querySelector(`.${className}`) as HTMLDivElement;

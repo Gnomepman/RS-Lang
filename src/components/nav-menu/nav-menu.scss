@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 $begin_transition: 0.5s;
-$end_transition: 0.4s;
+$end_transition: 0.6s;
 
 .nav-container{
     display: flex;
@@ -14,12 +14,19 @@ $end_transition: 0.4s;
     align-items: center;
     position: sticky;
     top: 0;
+    transition: all 0.6s ease 0s;
+
+    &.js-clicked{
+        width: 60px;
+    }
 
     .nav-wrapper{
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 30px;
+        transform: translate(0%);
 
         .nav_button{
             display: flex;
@@ -34,6 +41,9 @@ $end_transition: 0.4s;
             transition: $end_transition;
             border-radius: 5px;
             width: 100%;
+            white-space: nowrap;
+            justify-content: stretch;
+            align-items: center;
 
             &:hover{
                 color: #767672;
@@ -43,16 +53,18 @@ $end_transition: 0.4s;
 
             img{
                 width: 24px;
-                height: 24px;
+                height: auto;
             }
         }
     }
 
     .login_wrapper{
         display: flex;
-        width: 135px;
+        width: 100%;
         flex-direction: column;
         gap: 15px;
+        transition: all 0.9s ease 0s;
+        transform: translate(0%);
 
         .login_button {
             font-family: 'Roboto', sans-serif; 
@@ -123,7 +135,6 @@ $end_transition: 0.4s;
         }
 
         .login_wrapper{
-            width: 115px;
 
             .login_button{
                 width: auto;
@@ -188,4 +199,61 @@ $end_transition: 0.4s;
             }
         }
     }
+}
+
+.button-burger{
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    border: none;
+    background-color: transparent;
+    position: relative;
+    display: block;
+    align-self: flex-start;
+    margin-left: 15px;
+    transition: all 0.3s ease 0s;
+
+    &::before,
+    &::after,
+    span {
+      left: 0;
+      position: absolute;
+      height: 10%;
+      width: 100%;
+      background-color: #160042;
+
+      &:hover{
+        background-color: #a4a4a4;
+    }
+    }
+
+    &::before,
+    &::after {
+      content: "";
+    }
+
+    &::before {
+      top: 10%;
+    }
+
+    &::after {
+      bottom: 10%;
+    }
+
+    span {
+      top: 50%;
+      transform: scale(1) translate(0px, -50%);
+    }
+
+    &.js-clicked{
+      transform: rotate(90deg);
+    }
+
+}
+
+.nav_text{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
 }
