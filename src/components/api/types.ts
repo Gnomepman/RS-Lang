@@ -96,6 +96,7 @@ type wordProgress = 0 | 1 | 2 | 3; //How many times in a row word was guessed. O
 type WordAttributes = {
   difficulty: wordDifficulty;
   optional?: {
+    id?: string;
     learned?: boolean;
     progress?: wordProgress;
   };
