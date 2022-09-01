@@ -180,6 +180,7 @@ $end_transition: 0.6s;
 
 @media screen and (max-width: 768px) {
     .nav-container{
+        width: 180px;
         padding-top: 15px;
         position: fixed;
         z-index: 1;
@@ -187,24 +188,23 @@ $end_transition: 0.6s;
         //width: 85px;
 
         &.js-clicked{
-            height: 60px;
+            width: 0;
+            // height: 60px;
             border-bottom: 1px solid #a4a4a4;
 
             .nav-wrapper{
-                height: 0;
+                margin-top: 49px;
             }
 
-            .login_wrapper{
-                height: 0;
-            }
+            // .login_wrapper{
+            //     height: 0;
+            // }
             
         }
 
         .nav-wrapper{
-            height: 200px;
             gap: 5px;
             overflow: hidden;
-            transition: all 0.6s ease 0s;
 
             // .nav_button{
             //     gap: 3px;
@@ -217,7 +217,7 @@ $end_transition: 0.6s;
 
         .login_wrapper{
             //width: 70px;
-            height: 400px;
+            // height: 400px;
             overflow: hidden;
             transition: all 0.6s ease 0s;
 
@@ -230,7 +230,7 @@ $end_transition: 0.6s;
         }
     }
     .button-burger.js-clicked{
-        position: sticky;
+        position: fixed;
     }
 
 }
