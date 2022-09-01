@@ -1,3 +1,4 @@
+import { progressOfTheWord } from '../../pages/sprint_game/sprint_game';
 import Word, {
   AggregatedWords,
   SavedWords,
@@ -5,6 +6,7 @@ import Word, {
   User,
   WordAttributes,
   wordDifficulty,
+  wordProgress,
 } from './types';
 
 enum ApiLinks {
@@ -169,15 +171,16 @@ class Api {
     const currentTime = Date.now();
     const creationTime = +user.created;
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
-    console.log('lifeTime', lifeTime);
+    //console.log('lifeTime', lifeTime);
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
-      console.log(' call refreshToken');
+      //console.log(' call refreshToken');
       await this.refreshToken();
     }
   }
 
   // get all user's words
-  async getAllUserWords(): Promise<SavedWords[] | number> {
+  //async getAllUserWords(): Promise<SavedWords[] | number> {
+    async getAllUserWords(): Promise<WordAttributes[] | number> {
     await this.checkToken();
     const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
     const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}`;
@@ -189,7 +192,8 @@ class Api {
       },
     });
     if (response.ok) {
-      const data: SavedWords[] = await response.json();
+      //const data: SavedWords[] = await response.json();
+      const data: WordAttributes[] = await response.json();
       return data;
     }
     return response.status;
@@ -252,6 +256,69 @@ class Api {
       },
     });
     return response.status;
+  }
+
+  async cleanUserWords(){
+    let temp = await this.getAllUserWords() as any[];
+
+    for (let i = 0; i < temp.length; ++i){
+      await this.deleteUserWord(temp[i].wordId!)
+    }
+  }
+
+  async saveProgressFromMinigame(game: 'sprint' | 'audio_call', progress: progressOfTheWord[]){
+    // this.cleanUserWords();
+    const user: SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}/`
+
+    for (let i = 0; i < progress.length; ++i){
+      let response = await fetch(request +  progress[i].word.id, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      //if the word was NOT added earlier
+      if (response.status === 404){
+        console.log("New word")
+        const word: WordAttributes = {
+          // difficulty: 'easy',
+          difficulty: 'hard',
+          optional: {
+            id: progress[i].word.id,
+            learned: progress[i].count === 3 ? true : false,
+            progress: progress[i].count
+          }
+        }
+        this.addToUserWords(progress[i].word.id, word)
+        //if the word is already being tracked
+      } else if (response.status === 200){
+        console.log("Word already is tracking");
+        let temp = await response.json() as WordAttributes;
+
+        let newProgress: wordProgress = Number(temp.optional?.progress! + progress[i].count) as wordProgress;
+        newProgress = newProgress > 3 ? 3 : newProgress;
+        let newDifficulty: wordDifficulty = newProgress >= 3 ? 'easy' as wordDifficulty :  temp.difficulty!;
+        let newLearned: boolean = newProgress === 3 ? true : temp.optional?.learned!;
+
+        const word: WordAttributes = {
+          difficulty: 'hard',
+          // difficulty: newDifficulty,
+          optional: {
+            id: progress[i].word.id,
+            // learned: newLearned,
+            learned: false,
+            progress: newProgress,
+          }
+        }
+
+        //422: "\"optional.progress\" must be one of [string, number, boolean, date, object]"
+        this.updateUserWord(progress[i].word.id, word);
+      }
+    }
+    console.log("Finished saving progress")
   }
 }
 
