@@ -7,6 +7,7 @@ import home from '../../assets/icon_home.svg'
 import medal from '../../assets/icon_medal.svg'
 import user from '../../assets/user_signin_icon.svg'
 import hard_words from '../../assets/hard_words.svg'
+import logout from '../../assets/logout.svg'
 import AccessForm from '../access-form/access-form';
 import { SignInResponse } from '../api/types';
 import { createElement } from '../utils/utils';
@@ -78,7 +79,7 @@ export default class Nav_menu extends Component {
         <img class="account__image" src="${user}" alt="">
         <span class="account__message">${signedInUser.name}</span>
         <button class="auth-form__button auth-form__button_account">
-          Log out
+          <img src="${logout}" />
         </button>
       </div>
       `;
