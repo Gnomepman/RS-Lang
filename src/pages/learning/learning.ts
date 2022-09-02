@@ -415,18 +415,6 @@ class LearningPage extends Page {
   }
 
   render() {
-    const api = new Api(API_URL);
-    const word:WordAttributes = {
-      difficulty: "hard",
-      optional:{
-        id:"5e9f5ee35eb9e72bc21af4a0",
-        learned: false,
-        progress: 2
-      }
-    }
-    api.addToUserWords("5e9f5ee35eb9e72bc21af4a0",word).then((r)=>{
-      console.log("r",r);
-    })
 
     if (getGroupFromSessionStorage()) {
       LearningPage.currentGroup = +(getGroupFromSessionStorage() as string);
