@@ -188,6 +188,7 @@ class Api {
     });
     if (response.ok) {
       const data: SavedWords[] = await response.json();
+      console.log("data",data);
       return data;
     }
     return response.status;
