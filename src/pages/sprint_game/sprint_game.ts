@@ -4,7 +4,6 @@ import Api from '../../components/api/api';
 import Word, { Count, wordProgress } from '../../components/api/types'
 import { API_URL } from '../../components/api/types';
 import Timer from '../../components/timer/timer';
-// import human_1 from '../../assets/Humaaans Sitting.svg'
 import human_1 from '../../assets/sprint_human_1.svg'
 import human_2 from '../../assets/sprint_human_2.svg'
 import human_3 from '../../assets/sprint_human_3.svg'
@@ -26,6 +25,8 @@ export default class Sprint_game extends Page {
   private guessedWordsInARow: number;
   private howManyHumansToRender: number;
   private progress: progressOfTheWord[];
+  private longestStreak: number;
+  private shortStreak: number;
 
   constructor(id: string, group?: number, page?: number) {
     super(id);
@@ -37,6 +38,8 @@ export default class Sprint_game extends Page {
     this.progress = [];
     this.guessedWordsInARow = 0;
     this.howManyHumansToRender = 1;
+    this.longestStreak = 0;
+    this.shortStreak = 0;
 
     if(page){
       this.page.push(page);
@@ -56,11 +59,10 @@ export default class Sprint_game extends Page {
   }
 
   async getWords() {
-    // this.page.forEach(async page => {
-    //   let temp = await this.api.getWords(page, this.group)
-    //   this.words = this.words.concat(temp);
-    // })
-    this.words = await this.api.getWords(this.page[0], this.group)
+    this.page.forEach(async page => {
+      let temp = await this.api.getWords(page, this.group)
+      this.words = this.words.concat(temp);
+    })
   }
 
   randomIntFromInterval(min: number, max: number) {
@@ -177,6 +179,9 @@ export default class Sprint_game extends Page {
           }
           this.progress.push(temp);
         }
+
+        this.shortStreak += 1;
+        this.longestStreak = this.shortStreak > this.longestStreak ? this.shortStreak : this.longestStreak;
         //document.removeEventListener('keypress', eventFunction)
       }
 
@@ -197,6 +202,8 @@ export default class Sprint_game extends Page {
           this.progress.push(temp);
         }
         this.howManyHumansToRender = 1;
+        this.longestStreak = this.shortStreak > this.longestStreak ? this.shortStreak : this.longestStreak;
+        this.shortStreak = 0;
       }
 
       if (fakeOrRealTranslation) {//Case when translations match
@@ -245,9 +252,11 @@ export default class Sprint_game extends Page {
       game_window.remove();
       const stats = new After_game_stats('div', 'stats', this.correctWords, this.wrongWords)
       wrapper.append(stats.render());
-      console.log("UserWords BEFORE saving progress", await this.api.getAllUserWords());
-      await this.api.saveProgressFromMinigame('sprint', this.progress);
-      console.log("UserWords AFTER saving progress", await this.api.getAllUserWords());
+      if (localStorage.user){
+        await this.api.saveProgressFromMinigame('sprint', this.progress, this.longestStreak, this.correctWords, this.wrongWords);
+        console.log("Statistics after saving: ", await this.api.getUserStatistics());
+        // console.log("Learneds words: ", await this.api.getAllUserAggregatedWords())
+      }
     });
 
     game_window.append(timer);
