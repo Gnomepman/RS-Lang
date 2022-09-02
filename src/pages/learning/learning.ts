@@ -64,7 +64,6 @@ class LearningPage extends Page {
     const group = event.target as HTMLDivElement;
     element.classList.toggle('js-clicked');
     if (group.classList.contains(dropdown.group)) {
-      console.log('if true');
       const prevGroup = element.childNodes[0].textContent;
       const prevGroupId: number = +(element.getAttribute(
         'data-group',
@@ -86,7 +85,6 @@ class LearningPage extends Page {
       } else {
         groups[prevGroupId - 1].insertAdjacentElement('beforebegin', newGroup);
       }
-      console.log('group', group);
       group.remove();
       return clickedGroupId;
     }
@@ -136,8 +134,6 @@ class LearningPage extends Page {
       user = JSON.parse(localStorage.getItem('user') as string);
       hardWords = await api.getAggregatedWords(page, group, 'hard', false);
       learnedWords = await api.getAggregatedWords(page, group, 'easy', true);
-      console.log('learnedWords', learnedWords);
-      console.log('hardWords', hardWords);
       if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
         userWords = [
           ...hardWords[0].paginatedResults,
@@ -150,10 +146,8 @@ class LearningPage extends Page {
           ? learnedWords[0].totalCount[0]?.count
           : 0;
         wordCount = hardWordsCount + learnedWordsCount;
-        console.log('wordCount', wordCount);
       }
 
-      console.log('user', user);
     }
 
     const div = document.createElement('div');

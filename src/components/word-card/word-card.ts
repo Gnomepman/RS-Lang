@@ -176,7 +176,6 @@ class WordCard extends Component {
       ) as NodeListOf<HTMLElement>;
       // amount of added words
       const wordsCount = (words1.length + words2.length) / 2;
-      console.log('from add button', button);
       const loadingAnimation = new LoadingAnimation(
         'div',
         'loading-animation',
@@ -193,7 +192,6 @@ class WordCard extends Component {
             progress: 0
            },
         });
-        console.log('add response', response);
         // if adding of word was successful
         if (typeof response === 'object') {
           loadingAnimation.stop();
@@ -208,13 +206,10 @@ class WordCard extends Component {
         }
         // if word already had been added
         if (response === 417) {
-          // animation start
           const responseFromAdd = await api.updateUserWord(this.container.id, {
             difficulty:difficulty,
             optional: { learned:learned },
           });
-          console.log(`response update to ${difficulty}`, responseFromAdd);
-          // animation stop
           // if updating was successful
           if (typeof responseFromAdd === 'object') {
             if (buttonToChange.classList.contains(classToRemove)) {
@@ -249,7 +244,6 @@ class WordCard extends Component {
         if (location.hash === '#hard-words-page') {
           const classNameCard = this.container.className;
           const main = this.container.parentElement?.parentElement as HTMLDivElement;
-          console.log("this.container.parentElement",)
           this.container.remove();
           const words = document.querySelectorAll(`.${classNameCard}`);
           if (!words.length){

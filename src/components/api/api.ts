@@ -143,10 +143,8 @@ class Api {
         Accept: 'application/json',
       },
     });
-    console.log('from refreshToken');
     if (response.ok) {
       const tokens: Pick<SignInResponse, 'token' | 'refreshToken'> = await response.json();
-      console.log('from refreshToken tokens', tokens);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem('user') as string,
       );
@@ -171,9 +169,7 @@ class Api {
     const currentTime = Date.now();
     const creationTime = +user.created;
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
-    console.log('lifeTime', lifeTime);
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
-      console.log(' call refreshToken');
       await this.refreshToken();
     }
   }

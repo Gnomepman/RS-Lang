@@ -53,7 +53,6 @@ class HardWordsPage extends LearningPage {
       false,
       600
     );
-    console.log("hardWords",hardWords)
     const isDivExisting = document.querySelector(
       `.learning.learning_${className}`
     );
@@ -76,7 +75,6 @@ class HardWordsPage extends LearningPage {
         div.append(newWord.render());
       });
     } else {
-      console.log("empty");
       // if user doesn't have words
       HardWordsPage.emptyPage.textContent = "You don't have any hard words";
       div.append(HardWordsPage.emptyPage);
@@ -114,7 +112,6 @@ class HardWordsPage extends LearningPage {
     const savedGroup = sessionStorage.getItem("currentGroupForHardWords");
     //if group had been saved
     if (savedGroup) HardWordsPage.currentGroup = +savedGroup;
-    console.log("currentGroup",HardWordsPage.currentGroup);
     //start animation and rendering of empty div
     this.container.append(loadingAnimation.render(),HardWordsPage.emptyDiv);
     this.renderHardWords(HardWordsPage.currentGroup).then((r) => {
