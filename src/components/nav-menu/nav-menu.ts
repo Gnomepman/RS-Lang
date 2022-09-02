@@ -71,6 +71,17 @@ export default class Nav_menu extends Component {
   render() {
     const login_form = document.createElement("div");
     login_form.classList.add("login_wrapper");
+    document.body.onclick = (e)=>{
+      const element = e.target as HTMLElement;
+      if ((!element.classList.contains("nav-container"))&&(!element.classList.contains("button-burger"))){
+        const nav = document.querySelector(".nav-container") as HTMLDivElement;
+        const burger = document.querySelector(".button-burger") as HTMLButtonElement;
+        if (nav.classList.contains("js-clicked")){
+          nav.classList.remove("js-clicked");
+          burger.classList.remove("js-clicked");
+        }
+      }
+    }
     let signedInUser:SignInResponse;
     if (localStorage.getItem("user")) {
       signedInUser = JSON.parse(localStorage.getItem("user") as string);
