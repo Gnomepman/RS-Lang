@@ -7,6 +7,11 @@ import Word, {
   WordAttributes,
   wordDifficulty,
   wordProgress,
+  statistics,
+  miniGameStatistics,
+  miniGameStatisticsPerSession,
+  statisticsPerSession,
+  sessionStatistics
 } from './types';
 
 enum ApiLinks {
@@ -17,6 +22,7 @@ enum ApiLinks {
   AggregatedWords = 'aggregatedWords',
   Filter = 'filter',
   WordPerPage = 'wordsPerPage',
+  Statistics = 'statistics'
 }
 
 const TOKEN_EXPIRE_TIME = 4;
@@ -143,10 +149,10 @@ class Api {
         Accept: 'application/json',
       },
     });
-    console.log('from refreshToken');
+    // console.log('from refreshToken');
     if (response.ok) {
       const tokens: Pick<SignInResponse, 'token' | 'refreshToken'> = await response.json();
-      console.log('from refreshToken tokens', tokens);
+      // console.log('from refreshToken tokens', tokens);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem('user') as string,
       );
@@ -240,6 +246,30 @@ class Api {
     }
     return response.status;
   }
+  
+  async getAllUserAggregatedWords(): Promise<AggregatedWords[] | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const filter =  {
+        $or: [
+          { 'userWord.difficulty': "hard" },
+          { 'userWord.difficulty': "easy" },
+        ]};
+    const string = JSON.stringify(filter);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=6000&${ApiLinks.Filter}=${string}`;
+    const response = await fetch(request, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (response.ok) {
+      const data: AggregatedWords[] = await response.json();
+      return data;
+    }
+    return response.status;
+  } 
 
   async deleteUserWord(wordId: string) {
     await this.checkToken();
@@ -266,10 +296,54 @@ class Api {
     }
   }
 
-  async saveProgressFromMinigame(game: 'sprint' | 'audio_call', progress: progressOfTheWord[]){
-    // this.cleanUserWords();
+  async getUserStatistics(): Promise<statistics | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Statistics}`;
+    const response = await fetch(request, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (response.ok) {
+      const data: statistics = await response.json();
+      return data;
+    }
+    return response.status;
+  }
+
+async updateUserStatistics(
+    statistics: statistics,
+  ): Promise<statistics | number> {
+    await this.checkToken();
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem('user') as string,
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Statistics}`;
+    const response = await fetch(request, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics),
+    });
+    if (response.ok) {
+      const data: statistics = await response.json();
+      return data;
+    }
+    return response.status;
+  }
+
+  async saveProgressFromMinigame(game: 'sprint' | 'audio_call', progress: progressOfTheWord[], longest_streak: number,
+  correctWords: Word[], wrongWords: Word[]){
     const user: SignInResponse = JSON.parse(localStorage.getItem('user') as string);
     const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Words}/`
+    let numberOfNewWords: number = 0;
+    let learnedWords = 0;
 
     for (let i = 0; i < progress.length; ++i){
       let response = await fetch(request +  progress[i].word.id, {
@@ -282,41 +356,120 @@ class Api {
       });
       //if the word was NOT added earlier
       if (response.status === 404){
-        console.log("New word")
+        numberOfNewWords += 1;
         const word: WordAttributes = {
-          // difficulty: 'easy',
-          difficulty: 'hard',
+          difficulty: 'easy',
           optional: {
             id: progress[i].word.id,
             learned: progress[i].count === 3 ? true : false,
             progress: progress[i].count
           }
         }
+        if(word.optional?.learned){learnedWords++}
         this.addToUserWords(progress[i].word.id, word)
         //if the word is already being tracked
       } else if (response.status === 200){
-        console.log("Word already is tracking");
         let temp = await response.json() as WordAttributes;
 
-        let newProgress: wordProgress = Number(temp.optional?.progress! + progress[i].count) as wordProgress;
-        newProgress = newProgress > 3 ? 3 : newProgress;
-        let newDifficulty: wordDifficulty = newProgress >= 3 ? 'easy' as wordDifficulty :  temp.difficulty!;
-        let newLearned: boolean = newProgress === 3 ? true : temp.optional?.learned!;
+        let newProgress: wordProgress = 0; 
+        if (progress[i].count < temp.optional?.progress!){
+          newProgress = temp.optional?.progress! + progress[i].count as wordProgress;
+        } else {
+          newProgress = progress[i].count;
+        }
 
+        if(newProgress >= 3){
+          newProgress = 3;
+        }
+
+        let newDifficulty: wordDifficulty = 'hard';
+        if (newProgress === 3){
+          newDifficulty = 'easy';
+        } else {
+          newDifficulty = temp.difficulty!
+        }
+
+        let newLearned: boolean = false;
+        if(newProgress === 3){
+          newLearned = true;
+          learnedWords++;
+        } else {
+          newLearned = false;
+        }
+        
         const word: WordAttributes = {
-          difficulty: 'hard',
-          // difficulty: newDifficulty,
+          difficulty: newDifficulty,
           optional: {
             id: progress[i].word.id,
-            // learned: newLearned,
-            learned: false,
+            learned: newLearned,
             progress: newProgress,
           }
         }
 
-        //422: "\"optional.progress\" must be one of [string, number, boolean, date, object]"
         this.updateUserWord(progress[i].word.id, word);
       }
+    }
+    //Start gathering statistics
+    //if there is no statistics, we have to init it
+    const previousStats = await this.getUserStatistics();
+    if (typeof previousStats === 'number'){
+      console.log("Initializing stats....");
+      const miniGameStatisticsPerSession: miniGameStatisticsPerSession = {
+        date: new Date(Date.now()),
+        number_of_new_words: numberOfNewWords,
+      }
+
+      const miniGameStats: miniGameStatistics = {
+        longest_streak: longest_streak,
+        correct_guessed_words: correctWords.length,
+        wrong_guessed_words: wrongWords.length,
+        progress_by_session: [miniGameStatisticsPerSession],
+      }
+
+      const sessionStats: sessionStatistics = {
+        day: new Date(Date.now()),
+        new_words_per_session: numberOfNewWords,
+        learned_words_per_session: learnedWords,
+        percentage_of_correct_answers_per_session: correctWords.length / (correctWords.length + wrongWords.length) * 100,
+      }
+
+      const stats_per_session: statisticsPerSession = {
+        statistics_per_session: [sessionStats],
+      }
+
+      const stats: statistics = {
+      learnedWords: (await this.getAllUserAggregatedWords() as AggregatedWords[])[0].paginatedResults.length,
+        optional: {
+          [game]: miniGameStats,
+          words_statistics: stats_per_session,
+        }
+      }
+
+      this.updateUserStatistics(stats)
+    } else {
+      console.log("Stats already exist, updating....");
+      const { id, ...temp} = JSON.parse(JSON.stringify(previousStats));
+      const newStats = (temp as statistics);
+      newStats.learnedWords = (await this.getAllUserAggregatedWords() as AggregatedWords[])[0].paginatedResults.length;
+      newStats.optional![game]!.longest_streak! = longest_streak > newStats.optional![game]?.longest_streak! ? longest_streak : newStats.optional![game]?.longest_streak!;
+      newStats.optional![game]!.correct_guessed_words! += correctWords.length;
+      newStats.optional![game]!.wrong_guessed_words! += wrongWords.length;
+
+      const miniGameStatisticsPerSession: miniGameStatisticsPerSession = {
+        date: new Date(Date.now()),
+        number_of_new_words: numberOfNewWords,
+      }
+      newStats.optional![game]!.progress_by_session.push(miniGameStatisticsPerSession)
+
+      const sessionStats: sessionStatistics = {
+        day: new Date(Date.now()),
+        new_words_per_session: numberOfNewWords,
+        learned_words_per_session: learnedWords,
+        percentage_of_correct_answers_per_session: correctWords.length / (correctWords.length + wrongWords.length) * 100,
+      }
+      newStats.optional!.words_statistics.statistics_per_session.push(sessionStats);
+
+      this.updateUserStatistics(newStats);
     }
     console.log("Finished saving progress")
   }
