@@ -223,3 +223,13 @@
     background-color: antiquewhite;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .learning__word-card{
+    box-sizing: border-box;
+  }
+
+  .learning__word-card-img{
+    width: 267px;
+  }
+}

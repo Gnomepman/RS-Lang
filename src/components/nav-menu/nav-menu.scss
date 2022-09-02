@@ -6,7 +6,7 @@ $end_transition: 0.6s;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 180px;
+    width: 60px;
     height: 100%;
     border-right: 1px solid #a4a4a4;
     // height: 100vh;
@@ -18,7 +18,7 @@ $end_transition: 0.6s;
     transition: all 0.6s ease 0s;
 
     &.js-clicked{
-        width: 60px;
+        width: 180px;
     }
 
     .nav-wrapper{
@@ -180,7 +180,7 @@ $end_transition: 0.6s;
 
 @media screen and (max-width: 768px) {
     .nav-container{
-        width: 180px;
+        width: 0;
         padding-top: 15px;
         position: fixed;
         z-index: 1;
@@ -188,7 +188,7 @@ $end_transition: 0.6s;
         //width: 85px;
 
         &.js-clicked{
-            width: 0;
+            width: 180px;
             // height: 60px;
             border-bottom: 1px solid #a4a4a4;
 
