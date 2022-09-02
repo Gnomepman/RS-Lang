@@ -311,7 +311,6 @@ class AccessForm extends Component {
         // save creation time for token
         const currentTime = Date.now();
         response.created = currentTime.toString(10);
-        console.log('response', response);
         const objToString = JSON.stringify(response);
         localStorage.setItem('user', objToString);
         location.reload();

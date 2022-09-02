@@ -1,4 +1,4 @@
-import Word, { API_URL, wordDifficulty } from '../api/types';
+import Word, { API_URL, wordDifficulty, wordProgress } from '../api/types';
 import Component from '../templates/component';
 import play_icon from '../../assets/play.svg';
 import { createElement } from '../utils/utils';
@@ -14,17 +14,21 @@ class WordCard extends Component {
 
   private isLearned: string;
 
+  private progress:wordProgress ;
+
   constructor(
     tagName: string,
     className: string,
     word: Word,
     isAdded: string,
     isLearned: string,
+    progress: wordProgress | undefined
   ) {
     super(tagName, className);
     this.wordTemplate = word;
     this.isAdded = isAdded;
     this.isLearned = isLearned;
+    this.progress = (progress) ? progress : 0;
   }
 
   // render word
@@ -78,6 +82,12 @@ class WordCard extends Component {
       'learning__word-card-button-learn',
     );
     const buttonAdd = createElement('button', 'learning__word-card-button-add');
+    const divProgress = createElement("div","learning__progress");
+    const spanProgress1 = createElement("span","");
+    const spanProgress2 = createElement("span","");
+    const spanProgress3 = createElement("span","");
+    const spanProgressArray = [spanProgress1,spanProgress2,spanProgress3];
+    divProgress.append(spanProgress1,spanProgress2,spanProgress3);
     // function for changing class and textcontent
     const changeButton = (
       button: HTMLElement,
@@ -129,6 +139,10 @@ class WordCard extends Component {
     spanMeaningEx.innerHTML = this.wordTemplate.textExample;
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
+    
+    for (let i =0; i < this.progress; i += 1){
+      spanProgressArray[i].classList.add("js-progress");
+    }
 
     buttonAdd.textContent = 'Add to hard';
     buttonLearn.textContent = 'Not learned';
@@ -149,7 +163,9 @@ class WordCard extends Component {
       learned: boolean,
       classToRemove: string,
       text2: string,
+      textForDeleted:string,
       buttonToChange: HTMLElement,
+      progress: wordProgress | undefined
     ) => {
       const api = new Api(API_URL);
       const button = target.currentTarget as HTMLButtonElement;
@@ -161,7 +177,6 @@ class WordCard extends Component {
       ) as NodeListOf<HTMLElement>;
       // amount of added words
       const wordsCount = (words1.length + words2.length) / 2;
-      console.log('from add button', button);
       const loadingAnimation = new LoadingAnimation(
         'div',
         'loading-animation',
@@ -172,10 +187,12 @@ class WordCard extends Component {
         // animation start
         this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(this.container.id, {
-          difficulty,
-          optional: { learned },
+          difficulty:difficulty,
+          optional: { 
+            learned:learned,
+            progress: progress
+           },
         });
-        console.log('add response', response);
         // if adding of word was successful
         if (typeof response === 'object') {
           loadingAnimation.stop();
@@ -190,13 +207,12 @@ class WordCard extends Component {
         }
         // if word already had been added
         if (response === 417) {
-          // animation start
           const responseFromAdd = await api.updateUserWord(this.container.id, {
-            difficulty,
-            optional: { learned },
+            difficulty:difficulty,
+            optional: { 
+              learned:learned,
+              progress: progress },
           });
-          console.log(`response update to ${difficulty}`, responseFromAdd);
-          // animation stop
           // if updating was successful
           if (typeof responseFromAdd === 'object') {
             if (buttonToChange.classList.contains(classToRemove)) {
@@ -216,13 +232,30 @@ class WordCard extends Component {
         }
         // if you want remove from added
       } else {
+        const loadingAnimation = new LoadingAnimation(
+          'div',
+          'loading-animation',
+          'card',
+        );
+        this.container.append(loadingAnimation.render());
         const response = await api.deleteUserWord(this.container.id);
+        loadingAnimation.stop();
         if (response === 204) {
-          changeButton(button, this.container, classToAdd, text1).remove();
+          changeButton(button, this.container, classToAdd, textForDeleted).remove();
           pageIsDone().remove();
         }
         if (location.hash === '#hard-words-page') {
+          const classNameCard = this.container.className;
+          const main = this.container.parentElement?.parentElement as HTMLDivElement;
           this.container.remove();
+          const words = document.querySelectorAll(`.${classNameCard}`);
+          if (!words.length){
+            const emptyDiv = createElement("div","empty-page");
+            emptyDiv.textContent = "You don't have any hard words";
+            main.insertAdjacentElement("afterbegin",emptyDiv);
+          }
+          
+         
         }
         loadingAnimation.stop();
       }
@@ -238,7 +271,9 @@ class WordCard extends Component {
         false,
         'js-learned',
         'Not learned',
+        "Add to hard",
         buttonLearn,
+        this.progress
       );
     };
     // add to learned words
@@ -251,7 +286,9 @@ class WordCard extends Component {
         true,
         'js-added',
         'Add to hard',
+        "Not learned",
         buttonAdd,
+        this.progress
       );
     };
 
@@ -281,6 +318,7 @@ class WordCard extends Component {
     // check if user logged in
     if (localStorage.getItem('user')) divButtons.append(buttonLearn, buttonAdd);
     this.container.append(
+      divProgress,
       img,
       spanWord,
       div,
