@@ -11,6 +11,7 @@ import {
   AggregatedWords,
   API_URL,
   SignInResponse,
+  WordAttributes,
 } from '../../components/api/types';
 import {
   createElement,
@@ -63,7 +64,6 @@ class LearningPage extends Page {
     const group = event.target as HTMLDivElement;
     element.classList.toggle('js-clicked');
     if (group.classList.contains(dropdown.group)) {
-      console.log('if true');
       const prevGroup = element.childNodes[0].textContent;
       const prevGroupId: number = +(element.getAttribute(
         'data-group',
@@ -85,7 +85,6 @@ class LearningPage extends Page {
       } else {
         groups[prevGroupId - 1].insertAdjacentElement('beforebegin', newGroup);
       }
-      console.log('group', group);
       group.remove();
       return clickedGroupId;
     }
@@ -124,7 +123,7 @@ class LearningPage extends Page {
   async renderCardWords(page: number, group: number) {
     const api = new Api(`${API_URL}`);
     const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
-    LearningPage.divWrapper.append(loadingAnimation.render());
+    LearningPage.divWrapper.parentElement?.append(loadingAnimation.render());
     const words = await api.getWords(page, group);
     let user: SignInResponse;
     let hardWords: AggregatedWords[] | number;
@@ -135,8 +134,6 @@ class LearningPage extends Page {
       user = JSON.parse(localStorage.getItem('user') as string);
       hardWords = await api.getAggregatedWords(page, group, 'hard', false);
       learnedWords = await api.getAggregatedWords(page, group, 'easy', true);
-      console.log('learnedWords', learnedWords);
-      console.log('hardWords', hardWords);
       if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
         userWords = [
           ...hardWords[0].paginatedResults,
@@ -149,10 +146,8 @@ class LearningPage extends Page {
           ? learnedWords[0].totalCount[0]?.count
           : 0;
         wordCount = hardWordsCount + learnedWordsCount;
-        console.log('wordCount', wordCount);
       }
 
-      console.log('user', user);
     }
 
     const div = document.createElement('div');
@@ -169,10 +164,11 @@ class LearningPage extends Page {
     words.forEach((word) => {
       // if user added to hard words or learned
       if (userWords && Array.isArray(userWords)) {
+        const difficulty = LearningPage.isAdded(userWords, word.id);
         // if word had been added to hard words or learned
-        if (LearningPage.isAdded(userWords, word.id)) {
-          const difficulty = LearningPage.isAdded(userWords, word.id);
+        if (difficulty) {
           // if difficulty of word is hard
+          console.log("userWords",userWords);
           if (difficulty?.userWord?.difficulty === 'hard') {
             wordCard = new WordCard(
               'div',
@@ -180,10 +176,11 @@ class LearningPage extends Page {
               word,
               'js-added',
               '',
+              difficulty?.userWord?.optional?.progress
             );
           }
           // if difficulty of word is "learned"
-          if (
+          else if (
             difficulty?.userWord?.difficulty === 'easy'
             && difficulty?.userWord?.optional?.learned === true
           ) {
@@ -193,13 +190,17 @@ class LearningPage extends Page {
               word,
               '',
               'js-learned',
+              difficulty?.userWord?.optional?.progress
             );
+            // if word is easy, but learned is "false"
+          } else {
+            wordCard = new WordCard('div', 'learning__word-card', word, '', '',difficulty?.userWord?.optional?.progress);
           }
         } else {
-          wordCard = new WordCard('div', 'learning__word-card', word, '', '');
+          wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
         }
       } else {
-        wordCard = new WordCard('div', 'learning__word-card', word, '', '');
+        wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
       }
       div.append(wordCard.render());
     });
@@ -414,8 +415,10 @@ class LearningPage extends Page {
   }
 
   render() {
+
     if (getGroupFromSessionStorage()) {
       LearningPage.currentGroup = +(getGroupFromSessionStorage() as string);
+      LearningPage.divWrapper.setAttribute("data-page-group",LearningPage.currentGroup.toString(10));
     }
     const controls = new Controls('div', 'controls', LearningPage.currentGroup);
     const controlsElement = controls.render();

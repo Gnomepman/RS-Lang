@@ -14,16 +14,10 @@ class LoadingAnimation extends Component{
     if (this.container.classList.contains("js-card")){
       this.container.classList.remove("js-card");
     }
-    if (document.body.classList.contains("js-block")){
-      document.body.classList.remove("js-block");
-    }
   }
 
   render(): HTMLElement {
     if (this.type === "card") this.container.classList.add("js-card");
-    if (!this.type) {
-      document.body.classList.add("js-block");
-    }
     this.container.innerHTML = animation;
     return this.container;
   }

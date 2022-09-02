@@ -3,6 +3,7 @@ import Word, {
   AggregatedWords,
   SavedWords,
   SignInResponse,
+  statistics,
   User,
   WordAttributes,
   wordDifficulty,
@@ -149,10 +150,9 @@ class Api {
         Accept: 'application/json',
       },
     });
-    // console.log('from refreshToken');
+
     if (response.ok) {
       const tokens: Pick<SignInResponse, 'token' | 'refreshToken'> = await response.json();
-      // console.log('from refreshToken tokens', tokens);
       const user: SignInResponse = JSON.parse(
         localStorage.getItem('user') as string,
       );
@@ -177,9 +177,8 @@ class Api {
     const currentTime = Date.now();
     const creationTime = +user.created;
     const lifeTime = +((currentTime - creationTime) / 3600000).toFixed(1);
-    //console.log('lifeTime', lifeTime);
+
     if (lifeTime >= TOKEN_EXPIRE_TIME) {
-      //console.log(' call refreshToken');
       await this.refreshToken();
     }
   }
@@ -198,8 +197,13 @@ class Api {
       },
     });
     if (response.ok) {
+
       //const data: SavedWords[] = await response.json();
       const data: WordAttributes[] = await response.json();
+
+      //const data: SavedWords[] = await response.json();
+      //console.log("data",data);
+
       return data;
     }
     return response.status;
@@ -288,6 +292,7 @@ class Api {
     return response.status;
   }
 
+
   async cleanUserWords(){
     let temp = await this.getAllUserWords() as any[];
 
@@ -295,6 +300,31 @@ class Api {
       await this.deleteUserWord(temp[i].wordId!)
     }
   }
+
+  async getAllUserAggregatedWords(): Promise<AggregatedWords[] | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const filter =  {
+        $or: [
+          { 'userWord.difficulty': "hard" },
+          { 'userWord.difficulty': "easy" },
+        ]};
+    const string = JSON.stringify(filter);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=6000&${ApiLinks.Filter}=${string}`;
+    const response = await fetch(request, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (response.ok) {
+      const data: AggregatedWords[] = await response.json();
+      return data;
+    }
+    return response.status;
+  } 
+
 
   async getUserStatistics(): Promise<statistics | number> {
     await this.checkToken();
@@ -314,7 +344,8 @@ class Api {
     return response.status;
   }
 
-async updateUserStatistics(
+
+  async updateUserStatistics(
     statistics: statistics,
   ): Promise<statistics | number> {
     await this.checkToken();
@@ -473,6 +504,7 @@ async updateUserStatistics(
     }
     console.log("Finished saving progress")
   }
+
 }
 
 export default Api;
