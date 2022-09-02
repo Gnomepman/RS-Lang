@@ -60,6 +60,22 @@
     }
   }
 }
+
+.learning__progress{
+  display: flex;
+  gap: 10px;
+
+  & > span{
+    display: block;
+    width: 30px;
+    border-bottom: 4px solid gray;
+
+    &.js-progress{
+      border-bottom: 4px solid #00B03C;
+    }
+  }
+}
+
 .learning__word-card-img{
   width: 307px;
   aspect-ratio: 3 / 2;

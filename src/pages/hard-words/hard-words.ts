@@ -70,7 +70,8 @@ class HardWordsPage extends LearningPage {
           `learning__word-card learning__card-word_${className}`,
           HardWordsPage.CopyAggrWordToWord(word),
           "js-added",
-          ""
+          "",
+          word.userWord?.optional?.progress
         );
         div.append(newWord.render());
       });

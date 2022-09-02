@@ -181,6 +181,7 @@ class LearningPage extends Page {
               word,
               'js-added',
               '',
+              difficulty?.userWord?.optional?.progress
             );
           }
           // if difficulty of word is "learned"
@@ -194,13 +195,14 @@ class LearningPage extends Page {
               word,
               '',
               'js-learned',
+              3
             );
           }
         } else {
-          wordCard = new WordCard('div', 'learning__word-card', word, '', '');
+          wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
         }
       } else {
-        wordCard = new WordCard('div', 'learning__word-card', word, '', '');
+        wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
       }
       div.append(wordCard.render());
     });
