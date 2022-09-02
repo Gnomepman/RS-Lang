@@ -6,10 +6,14 @@ import Nav_menu from "../../components/nav-menu/nav-menu";
 import Footer from "../../components/footer/footer";
 import ErrorPage from "../error-page/error";
 import LearningPage from "../learning/learning";
-import Choose_game from '../choose-games/choose-game'
-import { ErrorTypes, PageIds } from "../../components/types_and_enums/types_and_enums";
+import Choose_game from "../choose-games/choose-game";
+import {
+  ErrorTypes,
+  PageIds,
+} from "../../components/types_and_enums/types_and_enums";
 import AccessForm from "../../components/access-form/access-form";
 import Sprint_game from "../sprint_game/sprint_game";
+import Audio_game from "../audio_game/audio_game";
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
@@ -44,15 +48,27 @@ export default class App {
       case PageIds.SprintGame:
         page = new Sprint_game(idPage);
         break;
+      case PageIds.AudioGame:
+        page = new Audio_game(idPage);
+        break;
       case PageIds.HardWordsPage:
         page = new HardWordsPage(idPage);
         break;
       default:
-        if (idPage.match(/sprint\/page\:/)){
+        if (idPage.match(/sprint\/page\:/)) {
           console.log("Starting 'Sprint' game from textbook");
-          page = new Sprint_game(idPage, Number(idPage.split('/')[2].split(':')[1]), Number(idPage.split('/')[1].split(':')[1]));
-        } else if (idPage.match(/audio-challenge\/page\:/)){
+          page = new Sprint_game(
+            idPage,
+            Number(idPage.split("/")[2].split(":")[1]),
+            Number(idPage.split("/")[1].split(":")[1])
+          );
+        } else if (idPage.match(/audio-challenge\/page\:/)) {
           console.log("Starting 'Audio-call' game from textbook");
+          page = new Audio_game(
+            idPage,
+            Number(idPage.split("/")[2].split(":")[1]),
+            Number(idPage.split("/")[1].split(":")[1])
+          );
         } else {
           page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
@@ -64,7 +80,8 @@ export default class App {
       const pageHTML = page.render();
       pageHTML.id = App.defaultPageId;
 
-      if(!(page instanceof Sprint_game)){ //Also add < || !(page instanceof name_of_class_for_the_audio_game)>
+      if (!(page instanceof Sprint_game)) {
+        //Also add < || !(page instanceof name_of_class_for_the_audio_game)>
         pageHTML.append(App.footer.render());
       }
       pageHTML.append(App.modalWindow.render());
