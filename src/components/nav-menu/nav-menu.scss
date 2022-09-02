@@ -25,7 +25,10 @@ $end_transition: 0.6s;
     
             & > .account > .account__message{
                 font-size: 24px;
-    
+            }
+
+            .login_button {
+                font-size: 18px;
             }
         }
     }
@@ -71,7 +74,9 @@ $end_transition: 0.6s;
         display: flex;
         width: 100%;
         flex-direction: column;
+        align-items: center;
         gap: 15px;
+        padding-top: 10px;
         border-top: solid 1px #9A9A98;
         transition: all 0.2s ease 0s;
         transform: translate(0%);
@@ -79,17 +84,18 @@ $end_transition: 0.6s;
         .login_button {
             font-family: 'Roboto', sans-serif; 
             padding: 8px 0px;
-            width: 135px;
+            width: 90%;
             text-align: center;
             border: 1px solid #9A9A98;
             border-radius: 4px;
             color: #161613;
             font-style: normal;
             font-weight: 400;
-            font-size: 18px;
+            font-size: 12px;
             line-height: 24px;
             box-sizing: border-box;
             text-decoration: none;
+            white-space: nowrap;
 
             transition: $end_transition;
             &:hover{
@@ -163,13 +169,6 @@ $end_transition: 0.6s;
         .nav-wrapper{
             gap: 20px;
         }
-
-        .login_wrapper{
-
-            .login_button{
-                width: auto;
-            }
-        }
     }
 }
 
@@ -192,10 +191,6 @@ $end_transition: 0.6s;
         .login_wrapper{
             //width: 90px;
             gap: 5px;
-
-            .login_button{
-                width: auto;
-            }
         }
     }
 }
@@ -245,7 +240,6 @@ $end_transition: 0.6s;
             transition: all 0.6s ease 0s;
 
             .login_button{
-                width: auto;
                 padding: 4px 0px;
                 font-size: 12px;
                 line-height: 18px;
