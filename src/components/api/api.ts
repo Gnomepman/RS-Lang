@@ -2,6 +2,7 @@ import Word, {
   AggregatedWords,
   SavedWords,
   SignInResponse,
+  statistics,
   User,
   WordAttributes,
   wordDifficulty,
@@ -15,6 +16,7 @@ enum ApiLinks {
   AggregatedWords = 'aggregatedWords',
   Filter = 'filter',
   WordPerPage = 'wordsPerPage',
+  Statistics = 'statistics'
 }
 
 const TOKEN_EXPIRE_TIME = 4;
@@ -277,6 +279,48 @@ class Api {
     }
     return response.status;
   } 
+
+  async getUserStatistics(): Promise<statistics | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Statistics}`;
+    const response = await fetch(request, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (response.ok) {
+      const data: statistics = await response.json();
+      return data;
+    }
+    return response.status;
+  }
+
+  async updateUserStatistics(
+    statistics: statistics,
+  ): Promise<statistics | number> {
+    await this.checkToken();
+    const user: SignInResponse = JSON.parse(
+      localStorage.getItem('user') as string,
+    );
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.Statistics}`;
+    const response = await fetch(request, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics),
+    });
+    if (response.ok) {
+      const data: statistics = await response.json();
+      return data;
+    }
+    return response.status;
+  }
 
 }
 
