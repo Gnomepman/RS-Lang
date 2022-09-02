@@ -1,4 +1,4 @@
-import Word, { API_URL, wordDifficulty } from '../api/types';
+import Word, { API_URL, wordDifficulty, wordProgress } from '../api/types';
 import Component from '../templates/component';
 import play_icon from '../../assets/play.svg';
 import { createElement } from '../utils/utils';
@@ -14,7 +14,7 @@ class WordCard extends Component {
 
   private isLearned: string;
 
-  private progress:number;
+  private progress:wordProgress ;
 
   constructor(
     tagName: string,
@@ -22,7 +22,7 @@ class WordCard extends Component {
     word: Word,
     isAdded: string,
     isLearned: string,
-    progress: number | undefined
+    progress: wordProgress | undefined
   ) {
     super(tagName, className);
     this.wordTemplate = word;
@@ -165,6 +165,7 @@ class WordCard extends Component {
       text2: string,
       textForDeleted:string,
       buttonToChange: HTMLElement,
+      progress: wordProgress | undefined
     ) => {
       const api = new Api(API_URL);
       const button = target.currentTarget as HTMLButtonElement;
@@ -189,7 +190,7 @@ class WordCard extends Component {
           difficulty:difficulty,
           optional: { 
             learned:learned,
-            progress: 0
+            progress: progress
            },
         });
         // if adding of word was successful
@@ -208,7 +209,9 @@ class WordCard extends Component {
         if (response === 417) {
           const responseFromAdd = await api.updateUserWord(this.container.id, {
             difficulty:difficulty,
-            optional: { learned:learned },
+            optional: { 
+              learned:learned,
+              progress: progress },
           });
           // if updating was successful
           if (typeof responseFromAdd === 'object') {
@@ -270,6 +273,7 @@ class WordCard extends Component {
         'Not learned',
         "Add to hard",
         buttonLearn,
+        this.progress
       );
     };
     // add to learned words
@@ -284,6 +288,7 @@ class WordCard extends Component {
         'Add to hard',
         "Not learned",
         buttonAdd,
+        this.progress
       );
     };
 

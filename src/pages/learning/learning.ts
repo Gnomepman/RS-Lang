@@ -164,10 +164,11 @@ class LearningPage extends Page {
     words.forEach((word) => {
       // if user added to hard words or learned
       if (userWords && Array.isArray(userWords)) {
+        const difficulty = LearningPage.isAdded(userWords, word.id);
         // if word had been added to hard words or learned
-        if (LearningPage.isAdded(userWords, word.id)) {
-          const difficulty = LearningPage.isAdded(userWords, word.id);
+        if (difficulty) {
           // if difficulty of word is hard
+          console.log("userWords",userWords);
           if (difficulty?.userWord?.difficulty === 'hard') {
             wordCard = new WordCard(
               'div',
@@ -179,7 +180,7 @@ class LearningPage extends Page {
             );
           }
           // if difficulty of word is "learned"
-          if (
+          else if (
             difficulty?.userWord?.difficulty === 'easy'
             && difficulty?.userWord?.optional?.learned === true
           ) {
@@ -189,8 +190,11 @@ class LearningPage extends Page {
               word,
               '',
               'js-learned',
-              3
+              difficulty?.userWord?.optional?.progress
             );
+            // if word is easy, but learned is "false"
+          } else {
+            wordCard = new WordCard('div', 'learning__word-card', word, '', '',difficulty?.userWord?.optional?.progress);
           }
         } else {
           wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
