@@ -253,6 +253,31 @@ class Api {
     });
     return response.status;
   }
+
+  async getAllUserAggregatedWords(): Promise<AggregatedWords[] | number> {
+    await this.checkToken();
+    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
+    const filter =  {
+        $or: [
+          { 'userWord.difficulty': "hard" },
+          { 'userWord.difficulty': "easy" },
+        ]};
+    const string = JSON.stringify(filter);
+    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=6000&${ApiLinks.Filter}=${string}`;
+    const response = await fetch(request, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (response.ok) {
+      const data: AggregatedWords[] = await response.json();
+      return data;
+    }
+    return response.status;
+  } 
+
 }
 
 export default Api;
