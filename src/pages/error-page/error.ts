@@ -18,12 +18,14 @@ export default class ErrorPage extends Page {
   render() {
     const img = new Image();
     img.src = ErrorImage;
+    img.id = "img-error";
     img.classList.add("error-image");
 
     const errorPage = document.createElement("div");
     errorPage.classList.add("error-container");
 
     const title = this.createHeaderTitle(ErrorPage.TextObject[this.errorType]);
+    title.id = "desc-error";
     errorPage.append(img);
     errorPage.append(title);
     this.container.append(errorPage);
