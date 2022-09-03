@@ -206,6 +206,7 @@ class LearningPage extends Page {
     });
     LearningPage.divWrapper.insertAdjacentElement('afterbegin', div);
     loadingAnimation.stop();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Render next page after click on button next page
