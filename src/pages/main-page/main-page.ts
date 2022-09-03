@@ -27,7 +27,7 @@ export default class MainPage extends Page {
             <h2 class="description_logo">RSLang</h2>
             <p class="description_title">Learn English at any place you wish</p>
             <p class="description_desc">RSLang app helps you to learn English faster. Begin learning right now and very soon you will see result! </p>
-            <a href="#" class="description_button">Get Started</a>
+            <a href="#learning-page" class="description_button">Get Started</a>
     </div>
     <img src="${humans_picture}" alt="">
     `

@@ -1,7 +1,7 @@
 import Page from '../../components/templates/page';
 import './choose-game.scss'
-import sprint from '../../assets/sprint_temp.png'
-import audio_call from '../../assets/audio_call_temp.png'
+import sprint from '../../assets/sprint.png'
+import audio_call from '../../assets/audio_call.png'
 
 export default class Choose_game extends Page {
   

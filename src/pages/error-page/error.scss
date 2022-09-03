@@ -5,8 +5,44 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: "Montserrat",sans-serif;
+
+  h1, [id='desc-error']{
+    font-weight: 600;
+    text-align: center;
+  }
 }
 
-.error-image {
+.error-image, img[id=img-error] {
   height: 320px;
+}
+
+@media screen and (max-width: 1440px) {
+  .error-image, img[id=img-error] {
+    height: 420px;
+  }
+
+  h1, [id='desc-error']{
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .error-image, img[id=img-error] {
+    height: 250px;
+  }
+
+  h1, [id='desc-error']{
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .error-image, img[id=img-error] {
+    height: 180px;
+  }
+
+  h1, [id='desc-error']{
+    font-size: 25px;
+  }
 }

@@ -16,12 +16,13 @@ export default class StatisticsPage extends Page {
     //if user is anonymous
     if (!localStorage.user){
       const block = this.createDivBlock('no_statistics');
-      const description = document.createElement('h2');
-      description.textContent = 'Statistics is only for loged in users'
+      const description = document.createElement('h1');
+      description.textContent = 'Statistics is only for loged in users';
+      description.id = "desc-error";
       const img = document.createElement('img')
       img.src = error;
-      block.append(description);
-      block.append(img);
+      img.id = "img-error";
+      block.append(img, description);
       this.container.append(block);
       return this.container
     }

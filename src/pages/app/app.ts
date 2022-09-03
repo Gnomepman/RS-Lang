@@ -86,6 +86,7 @@ export default class App {
       }
       pageHTML.append(App.modalWindow.render());
       App.container.append(pageHTML);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
