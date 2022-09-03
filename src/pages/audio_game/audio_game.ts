@@ -402,7 +402,7 @@ export default class Audio_game extends Page {
       if (this.countingWord > 20) {
         clearInterval(intervalRender);
 
-        resultsMenu.style.display = "block";
+        resultsMenu.style.display = "flex";
         game_window.append(this.renderResultingWords());
       }
     }, 50);

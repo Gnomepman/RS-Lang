@@ -15,6 +15,7 @@
   background-repeat: repeat-y;
 
   .results_buttons {
+    display: flex;
     margin-top: 30px;
 
     a {
@@ -286,10 +287,6 @@
       }
     }
 
-    .results_title {
-      font-size: 24px;
-    }
-
     .variants_wrapper {
       gap: 10px;
 
@@ -297,5 +294,28 @@
         font-size: 17px;
       }
     }
+  }
+
+  .results_title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .audio_container {
+    .results_buttons {
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      a:last-child {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .results_title {
+    font-size: 20px;
   }
 }
