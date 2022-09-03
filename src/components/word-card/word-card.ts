@@ -87,7 +87,7 @@ class WordCard extends Component {
     const spanProgress2 = createElement("span","");
     const spanProgress3 = createElement("span","");
     const spanProgressArray = [spanProgress1,spanProgress2,spanProgress3];
-    divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+    
     // function for changing class and textcontent
     const changeButton = (
       button: HTMLElement,
@@ -139,10 +139,6 @@ class WordCard extends Component {
     spanMeaningEx.innerHTML = this.wordTemplate.textExample;
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
-    
-    for (let i =0; i < this.progress; i += 1){
-      spanProgressArray[i].classList.add("js-progress");
-    }
 
     buttonAdd.textContent = 'Add to hard';
     buttonLearn.textContent = 'Not learned';
@@ -311,7 +307,14 @@ class WordCard extends Component {
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
     // check if user logged in
-    if (localStorage.getItem('user')) divButtons.append(buttonLearn, buttonAdd);
+    if (localStorage.getItem('user')) {
+      divButtons.append(buttonLearn, buttonAdd);
+          
+      for (let i =0; i < this.progress; i += 1){
+        spanProgressArray[i].classList.add("js-progress");
+      }
+      divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+    }
     this.container.append(
       img,
       spanWord,
