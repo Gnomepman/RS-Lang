@@ -45,7 +45,6 @@ export default class Audio_game extends Page {
 
   async getWords() {
     this.words = await this.api.getWords(this.page, this.group);
-    console.log(this.words);
 
     setTimeout(() => {
       this.words.forEach((item) => {
@@ -55,16 +54,15 @@ export default class Audio_game extends Page {
           wordAudio: item.audio,
           multipleChoice: [
             item.wordTranslate,
-            "variant 2", // temporary
-            "variant 3", // temporary
-            "variant 4", // temporary
-            "variant 5", // temporary
-            // this.words[this.randomIntFromInterval(0, 20)].wordTranslate,
+            this.words[this.randomIntFromInterval(0, 4)].wordTranslate,
+            this.words[this.randomIntFromInterval(4, 8)].wordTranslate,
+            this.words[this.randomIntFromInterval(8, 12)].wordTranslate,
+            this.words[this.randomIntFromInterval(12, 16)].wordTranslate,
+            // this.words[this.randomIntFromInterval(min, max)].wordTranslate
           ],
         };
         this.variants.push(variantObject);
       });
-      console.log(this.variants);
     }, 100);
   }
 
@@ -84,7 +82,6 @@ export default class Audio_game extends Page {
       let random_number: number = 0;
       do {
         random_number = Math.floor(Math.random() * (max - min + 1) + min);
-        console.log(random_number);
       } while (!(prev.indexOf(random_number) === -1));
       prev.push(random_number);
       return random_number;
@@ -221,7 +218,6 @@ export default class Audio_game extends Page {
         this.countingWord++;
         document.querySelector(".audio_card")?.remove();
         //document.removeEventListener('keypress', eventFunction)
-        console.log("Mismatch: ", this.guessedWordsInARow);
       };
 
       const showAnswerFunction = () => {
