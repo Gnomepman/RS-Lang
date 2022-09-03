@@ -313,10 +313,10 @@ class WordCard extends Component {
     // check if user logged in
     if (localStorage.getItem('user')) divButtons.append(buttonLearn, buttonAdd);
     this.container.append(
-      divProgress,
       img,
       spanWord,
       div,
+      divProgress,
       divMeaning,
       divTranslate,
       divButtons,
