@@ -23,9 +23,10 @@ $margin_top_beetwen_section: 60px;
     align-self: center;
     margin: 0;
     margin-bottom: 40px;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 50px;
     font-family: 'Roboto', sans-serif; 
+    font-family: 'Montserrat', sans-serif;
 }
 
 .main_page_wrapper{
@@ -68,14 +69,16 @@ $margin_top_beetwen_section: 60px;
             margin-top: 45px;
             font-size: 48px;
             line-height: 64px;
-            color: #161616
+            color: #161616;
+            font-family: 'Montserrat', sans-serif;
         }
 
         &_desc{
             margin-top: 25px;
             font-size: 24px;
             line-height: 32px;
-            color: #535350;
+            color: #535350;   
+            font-family: 'Montserrat', sans-serif;
         }
 
         &_button{
@@ -90,6 +93,12 @@ $margin_top_beetwen_section: 60px;
             padding: 20px 25px;
             border-radius: 4px;
             text-align: center;
+            transition: .5s;
+
+            &:hover{
+                background-color: #1967a2;
+                transition: .5s;
+            }
         }
     }
 
@@ -100,7 +109,7 @@ $margin_top_beetwen_section: 60px;
 }
 
 .benefits_wrapper {
-    font-family: 'Roboto', sans-serif; 
+    
     width: 1000px;
     display: flex;
     justify-content: center;
@@ -110,14 +119,16 @@ $margin_top_beetwen_section: 60px;
         width: 100%;
         display: flex;
         flex-direction: column;
+        font-family: 'Montserrat', sans-serif;
     
         &_title{
             align-self: center;
             margin: 0;
             margin-bottom: 40px;
-            font-weight: 400;
+            font-weight: 500;
             font-size: 50px;
             line-height: 32px;
+            // font-family: 'Roboto', sans-serif; 
         }
     }
 
