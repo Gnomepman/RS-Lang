@@ -1,14 +1,19 @@
 import './sprint_game.scss';
 import Page from '../../components/templates/page';
 import Api from '../../components/api/api';
-import Word from '../../components/api/types'
+import Word, { Count, wordProgress } from '../../components/api/types'
 import { API_URL } from '../../components/api/types';
 import Timer from '../../components/timer/timer';
-// import human_1 from '../../assets/Humaaans Sitting.svg'
 import human_1 from '../../assets/sprint_human_1.svg'
 import human_2 from '../../assets/sprint_human_2.svg'
 import human_3 from '../../assets/sprint_human_3.svg'
 import After_game_stats from '../../components/after-game-stats/after-game-stats';
+import { statistics } from '../../components/api/types';
+
+export type progressOfTheWord = {
+  word: Word;
+  count: wordProgress;   
+}
 
 export default class Sprint_game extends Page {
   private group: number;
@@ -19,6 +24,9 @@ export default class Sprint_game extends Page {
   private wrongWords: Word[];
   private guessedWordsInARow: number;
   private howManyHumansToRender: number;
+  private progress: progressOfTheWord[];
+  private longestStreak: number;
+  private shortStreak: number;
 
   constructor(id: string, group?: number, page?: number) {
     super(id);
@@ -27,8 +35,11 @@ export default class Sprint_game extends Page {
     this.correctWords = [];
     this.wrongWords = [];
     this.page = [];
+    this.progress = [];
     this.guessedWordsInARow = 0;
     this.howManyHumansToRender = 1;
+    this.longestStreak = 0;
+    this.shortStreak = 0;
 
     if(page){
       this.page.push(page);
@@ -103,6 +114,15 @@ export default class Sprint_game extends Page {
     wrapper.append(timer);
   }
 
+  trackingWord(id: string): number | boolean {
+    for (let i = 0; i < this.progress.length; ++i){
+      if (this.progress[i].word.id == id){
+        return i;
+      }
+    }
+    return false;
+  }
+
   generateСard() {
     if (document.querySelector(".game_window") !== null) {
       let arrayOfWords = [...this.words];
@@ -148,8 +168,20 @@ export default class Sprint_game extends Page {
           this.guessedWordsInARow = 0;
           this.howManyHumansToRender++;
         }
-       // this.howManyHumansToRender === 3 ? this.howManyHumansToRender = 3 : this.howManyHumansToRender++;
-        console.log("Counter: ", this.guessedWordsInARow);
+
+        const tracking = this.trackingWord(wordToGuess.id)
+        if (tracking !== false){
+          this.progress[tracking as number].count = this.progress[tracking as number].count + 1 as wordProgress;
+        } else {
+          const temp: progressOfTheWord = {
+            word: wordToGuess,
+            count: 1,
+          }
+          this.progress.push(temp);
+        }
+
+        this.shortStreak += 1;
+        this.longestStreak = this.shortStreak > this.longestStreak ? this.shortStreak : this.longestStreak;
         //document.removeEventListener('keypress', eventFunction)
       }
 
@@ -158,8 +190,20 @@ export default class Sprint_game extends Page {
         document.querySelector(".card")?.remove()
         //document.removeEventListener('keypress', eventFunction)
         if(this.guessedWordsInARow !== 0) this.guessedWordsInARow--;
+
+        const tracking = this.trackingWord(wordToGuess.id)
+        if (tracking !== false){
+          this.progress[tracking as number].count = 0 as wordProgress;
+        } else {
+          const temp: progressOfTheWord = {
+            word: wordToGuess,
+            count: 0,
+          }
+          this.progress.push(temp);
+        }
         this.howManyHumansToRender = 1;
-        console.log("Counter: ", this.guessedWordsInARow);
+        this.longestStreak = this.shortStreak > this.longestStreak ? this.shortStreak : this.longestStreak;
+        this.shortStreak = 0;
       }
 
       if (fakeOrRealTranslation) {//Case when translations match
@@ -187,13 +231,10 @@ export default class Sprint_game extends Page {
         default:
         case 3:
           humans.innerHTML += `<img src="${human_1}" alt="">`;
-          console.log("Adding human", 3)
         case 2:
           humans.innerHTML += `<img src="${human_2}" alt="">`;
-          console.log("Adding human", 2)
         case 1:
           humans.innerHTML += `<img src="${human_3}" alt="">`;
-          console.log("Adding human", 1)
       }
 
       buttonsWrapper.append(leftButton, rightButton);
@@ -207,11 +248,15 @@ export default class Sprint_game extends Page {
     const TIME_FOR_GAME = 30; //in seconds
     let timer = new Timer("div", "timer", TIME_FOR_GAME).render();
 
-    timer.addEventListener("countDown", () => {
+    timer.addEventListener("countDown", async () => {
       game_window.remove();
-      console.log('Correct: ', this.correctWords, '\nWrong: ', this.wrongWords)
       const stats = new After_game_stats('div', 'stats', this.correctWords, this.wrongWords)
       wrapper.append(stats.render());
+      if (localStorage.user){
+        await this.api.saveProgressFromMinigame('sprint', this.progress, this.longestStreak, this.correctWords, this.wrongWords);
+        console.log("Statistics after saving: ", await this.api.getUserStatistics());
+        // console.log("Learneds words: ", await this.api.getAllUserAggregatedWords())
+      }
     });
 
     game_window.append(timer);

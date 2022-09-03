@@ -187,11 +187,8 @@ class WordCard extends Component {
         // animation start
         this.container.append(loadingAnimation.render());
         const response = await api.addToUserWords(this.container.id, {
-          difficulty:difficulty,
-          optional: { 
-            learned:learned,
-            progress: progress
-           },
+          difficulty: difficulty,
+          optional: { id: this.container.id, learned, progress},
         });
         // if adding of word was successful
         if (typeof response === 'object') {
@@ -208,10 +205,8 @@ class WordCard extends Component {
         // if word already had been added
         if (response === 417) {
           const responseFromAdd = await api.updateUserWord(this.container.id, {
-            difficulty:difficulty,
-            optional: { 
-              learned:learned,
-              progress: progress },
+            difficulty,
+            optional: { id: this.container.id, learned, progress},
           });
           // if updating was successful
           if (typeof responseFromAdd === 'object') {
