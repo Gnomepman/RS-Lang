@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   background-image: radial-gradient(
       at 90% 23%,
@@ -12,6 +13,31 @@
     ),
     radial-gradient(at 23% 61%, hsla(47, 100%, 89%, 1) 0px, transparent 50%);
   background-repeat: repeat-y;
+
+  .results_buttons {
+    margin-top: 30px;
+
+    a {
+      padding: 7px 16px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #0455bf;
+      border-radius: 4px;
+      font-size: 17px;
+      font-weight: 500;
+
+      transition: 0.4s ease-in-out;
+    }
+
+    a:first-child {
+      margin-right: 20px;
+    }
+
+    a:hover {
+      background-color: #2d78db;
+      box-shadow: 6px 6px 18px rgba(37, 23, 228, 0.25);
+    }
+  }
 }
 
 .audio_game {
@@ -112,7 +138,7 @@
 
         .word {
           font-weight: 700;
-          color: #1a82a9;
+          color: #4188ff;
         }
       }
 
@@ -213,12 +239,19 @@
       border: none;
       font-size: 18px;
       padding: 5px 7px;
-      background-color: #1a82a9;
+      background-color: #0455bf;
       color: #fff;
       border-radius: 6px;
+      transition: 0.3s ease-in;
     }
+
     button + button {
       margin-left: 12px;
+    }
+
+    button:hover {
+      background-color: #2d78db;
+      box-shadow: 6px 6px 18px rgba(37, 23, 228, 0.25);
     }
   }
 }

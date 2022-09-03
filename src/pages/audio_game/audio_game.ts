@@ -254,8 +254,8 @@ export default class Audio_game extends Page {
         nextButton.addEventListener("click", wrongGuess);
       });
 
-      showAnswer.textContent = "I don't know";
-      nextButton.textContent = "Next";
+      showAnswer.textContent = "Don't know ❓";
+      nextButton.textContent = "Next ⏭️";
 
       // const eventFunction = (e: KeyboardEvent) => {
       //   //console.log(e)
@@ -283,6 +283,17 @@ export default class Audio_game extends Page {
 
       return card;
     }
+  }
+
+  resultsMenuButton(): HTMLDivElement {
+    const buttonsContainer = this.createDivBlock("results_buttons");
+
+    buttonsContainer.innerHTML = `
+      <a href="#main-page" class="results_home_page">🏚️ Home page</a>
+      <a href="#mini-games-page" class="results_game_page">🎮 Mini games page</a>
+    `;
+
+    return buttonsContainer;
   }
 
   renderResultingWords() {
@@ -377,7 +388,10 @@ export default class Audio_game extends Page {
 
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("audio_game");
-    wrapper.append(game_window);
+    const resultsMenu = this.resultsMenuButton();
+    resultsMenu.style.display = "none";
+
+    wrapper.append(game_window, resultsMenu);
 
     let intervalRender = setInterval(() => {
       if (!document.querySelector(".audio_card") && this.countingWord <= 20) {
@@ -387,6 +401,8 @@ export default class Audio_game extends Page {
       // Rendering final results
       if (this.countingWord > 20) {
         clearInterval(intervalRender);
+
+        resultsMenu.style.display = "block";
         game_window.append(this.renderResultingWords());
       }
     }, 50);
