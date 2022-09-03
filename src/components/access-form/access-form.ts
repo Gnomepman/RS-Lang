@@ -293,9 +293,7 @@ class AccessForm extends Component {
       }
       // if creating user successful - reload page
       if (typeof response === 'object') {
-        console.log("response",response);
         const SignInResponse:SignInResponse = await api.signIn(dataObj) as SignInResponse;
-        console.log("SignInResponse",SignInResponse);
         AccessForm.saveUserToStorage(SignInResponse);
         location.reload();
       }
@@ -308,7 +306,6 @@ class AccessForm extends Component {
     const currentTime = Date.now();
     SignInResponse.created = currentTime.toString(10);
     const objToString = JSON.stringify(SignInResponse);
-    console.log("objToString",objToString);
     localStorage.setItem('user', objToString);
   }
 
