@@ -8,7 +8,6 @@ import Word, {
   WordAttributes,
   wordDifficulty,
   wordProgress,
-  statistics,
   miniGameStatistics,
   miniGameStatisticsPerSession,
   statisticsPerSession,
@@ -251,30 +250,6 @@ class Api {
     return response.status;
   }
   
-  async getAllUserAggregatedWords(): Promise<AggregatedWords[] | number> {
-    await this.checkToken();
-    const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
-    const filter =  {
-        $or: [
-          { 'userWord.difficulty': "hard" },
-          { 'userWord.difficulty': "easy" },
-        ]};
-    const string = JSON.stringify(filter);
-    const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=6000&${ApiLinks.Filter}=${string}`;
-    const response = await fetch(request, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        Accept: 'application/json',
-      },
-    });
-    if (response.ok) {
-      const data: AggregatedWords[] = await response.json();
-      return data;
-    }
-    return response.status;
-  } 
-
   async deleteUserWord(wordId: string) {
     await this.checkToken();
     const user: SignInResponse = JSON.parse(
@@ -301,13 +276,13 @@ class Api {
     }
   }
 
-  async getAllUserAggregatedWords(): Promise<AggregatedWords[] | number> {
+  async getAllUserLearnedWords(): Promise<AggregatedWords[] | number> {
     await this.checkToken();
     const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
     const filter =  {
-        $or: [
-          { 'userWord.difficulty': "hard" },
+        $and: [
           { 'userWord.difficulty': "easy" },
+          { 'userWord.optional.learned': true },
         ]};
     const string = JSON.stringify(filter);
     const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=6000&${ApiLinks.Filter}=${string}`;
@@ -469,7 +444,7 @@ class Api {
       }
 
       const stats: statistics = {
-      learnedWords: (await this.getAllUserAggregatedWords() as AggregatedWords[])[0].paginatedResults.length,
+      learnedWords: (await this.getAllUserLearnedWords() as AggregatedWords[])[0].paginatedResults.length,
         optional: {
           [game]: miniGameStats,
           words_statistics: stats_per_session,
@@ -481,7 +456,7 @@ class Api {
       console.log("Stats already exist, updating....");
       const { id, ...temp} = JSON.parse(JSON.stringify(previousStats));
       const newStats = (temp as statistics);
-      newStats.learnedWords = (await this.getAllUserAggregatedWords() as AggregatedWords[])[0].paginatedResults.length;
+      newStats.learnedWords = (await this.getAllUserLearnedWords() as AggregatedWords[])[0].paginatedResults.length;
       newStats.optional![game]!.longest_streak! = longest_streak > newStats.optional![game]?.longest_streak! ? longest_streak : newStats.optional![game]?.longest_streak!;
       newStats.optional![game]!.correct_guessed_words! += correctWords.length;
       newStats.optional![game]!.wrong_guessed_words! += wrongWords.length;

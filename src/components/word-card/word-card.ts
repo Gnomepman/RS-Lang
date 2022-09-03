@@ -165,7 +165,7 @@ class WordCard extends Component {
       text2: string,
       textForDeleted:string,
       buttonToChange: HTMLElement,
-      progress: wordProgress | undefined
+      progress: wordProgress
     ) => {
       const api = new Api(API_URL);
       const button = target.currentTarget as HTMLButtonElement;
