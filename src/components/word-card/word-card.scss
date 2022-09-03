@@ -68,10 +68,12 @@
   & > span{
     display: block;
     width: 30px;
-    border-bottom: 4px solid gray;
+    height: 4px;
+    border-radius: 2px;
+    background-color: gray;
 
     &.js-progress{
-      border-bottom: 4px solid #00B03C;
+      background-color: #00B03C;
     }
   }
 }

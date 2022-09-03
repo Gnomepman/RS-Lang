@@ -13,21 +13,27 @@ type Word = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  userWord?:{
-    difficulty:wordDifficulty;
+  userWord?: {
+    difficulty: wordDifficulty;
     optional?: {
       learned?: boolean;
       progress?: wordProgress;
     };
-  }
+  };
 };
 
-type AggregatedWord = Omit<Word,"id"> & {_id?:string};
+type AggregatedWord = Omit<Word, "id"> & { _id?: string };
 
 type User = {
   name: string;
   email?: string;
   password: string;
+};
+
+type RegisteredUser = {
+  name: string;
+  email: string;
+  id: string;
 };
 
 type SignInResponse = {
@@ -36,7 +42,7 @@ type SignInResponse = {
   refreshToken: string;
   userId: string;
   name: string;
-  [key:string]:string
+  [key: string]: string;
 };
 
 // type WordAttributes = {
@@ -44,20 +50,20 @@ type SignInResponse = {
 //   optional?: {};
 // };
 
-type SavedWords ={
+type SavedWords = {
   difficulty: string;
   id: string;
   wordId: string;
-}
+};
 
-type Count ={
-  count:number
-}
+type Count = {
+  count: number;
+};
 
 type AggregatedWords = {
-  "paginatedResults":AggregatedWord[],
-  "totalCount":Count[]
-}
+  paginatedResults: AggregatedWord[];
+  totalCount: Count[];
+};
 
 type miniGameStatisticsPerSession = {
   date: Date;
@@ -65,8 +71,8 @@ type miniGameStatisticsPerSession = {
 };
 
 type miniGameStatistics = {
-  correct_guessed_words: number,
-  wrong_guessed_words: number,
+  correct_guessed_words: number;
+  wrong_guessed_words: number;
   longest_streak: number;
   progress_by_session: miniGameStatisticsPerSession[];
 };
@@ -91,7 +97,7 @@ type statistics = {
   };
 };
 
-type wordDifficulty = 'easy' | 'hard'//hard word cannot have 'true' on 'learned'
+type wordDifficulty = "easy" | "hard"; //hard word cannot have 'true' on 'learned'
 type wordProgress = 0 | 1 | 2 | 3; //How many times in a row word was guessed. One wrong answer resets to 0
 
 type WordAttributes = {
@@ -105,6 +111,22 @@ type WordAttributes = {
 
 const API_URL = "https://rs-lang-test.herokuapp.com";
 
-export { API_URL, User, SignInResponse, WordAttributes, SavedWords,Count,AggregatedWords,AggregatedWord, 
-  miniGameStatisticsPerSession, miniGameStatistics, statisticsPerSession, statistics, wordDifficulty, wordProgress, sessionStatistics};
+export {
+  API_URL,
+  User,
+  SignInResponse,
+  WordAttributes,
+  SavedWords,
+  Count,
+  AggregatedWords,
+  AggregatedWord,
+  miniGameStatisticsPerSession,
+  miniGameStatistics,
+  statisticsPerSession,
+  statistics,
+  wordDifficulty,
+  wordProgress,
+  sessionStatistics,
+  RegisteredUser,
+};
 export default Word;

@@ -80,6 +80,7 @@ class HardWordsPage extends LearningPage {
       div.append(HardWordsPage.emptyPage);
     }
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     return div;
   }
 

@@ -76,18 +76,18 @@ class WordCard extends Component {
       'span',
       'learning__word-card-translate-meaning',
     );
-    const divButtons = createElement('div', 'learning__word-card-buttons');
+    const divButtons = createElement('div', '');
     const buttonLearn = createElement(
       'button',
       'learning__word-card-button-learn',
     );
     const buttonAdd = createElement('button', 'learning__word-card-button-add');
-    const divProgress = createElement("div","learning__progress");
+    const divProgress = createElement("div","");
     const spanProgress1 = createElement("span","");
     const spanProgress2 = createElement("span","");
     const spanProgress3 = createElement("span","");
     const spanProgressArray = [spanProgress1,spanProgress2,spanProgress3];
-    divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+    
     // function for changing class and textcontent
     const changeButton = (
       button: HTMLElement,
@@ -139,10 +139,6 @@ class WordCard extends Component {
     spanMeaningEx.innerHTML = this.wordTemplate.textExample;
     spanTranslateEx.textContent = `${this.wordTemplate.textMeaningTranslate}`;
     spanTranslateM.textContent = `${this.wordTemplate.textExampleTranslate}`;
-    
-    for (let i =0; i < this.progress; i += 1){
-      spanProgressArray[i].classList.add("js-progress");
-    }
 
     buttonAdd.textContent = 'Add to hard';
     buttonLearn.textContent = 'Not learned';
@@ -311,12 +307,20 @@ class WordCard extends Component {
     divMeaning.append(spanMeaning, spanMeaningEx);
     divTranslate.append(spanTranslateEx, spanTranslateM);
     // check if user logged in
-    if (localStorage.getItem('user')) divButtons.append(buttonLearn, buttonAdd);
+    if (localStorage.getItem('user')) {
+      divButtons.append(buttonLearn, buttonAdd);
+      divButtons.className = 'learning__word-card-buttons';
+      for (let i =0; i < this.progress; i += 1){
+        spanProgressArray[i].classList.add("js-progress");
+      }
+      divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+      divProgress.className = 'learning__progress';
+    }
     this.container.append(
-      divProgress,
       img,
       spanWord,
       div,
+      divProgress,
       divMeaning,
       divTranslate,
       divButtons,
