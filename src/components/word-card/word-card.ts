@@ -76,13 +76,13 @@ class WordCard extends Component {
       'span',
       'learning__word-card-translate-meaning',
     );
-    const divButtons = createElement('div', 'learning__word-card-buttons');
+    const divButtons = createElement('div', '');
     const buttonLearn = createElement(
       'button',
       'learning__word-card-button-learn',
     );
     const buttonAdd = createElement('button', 'learning__word-card-button-add');
-    const divProgress = createElement("div","learning__progress");
+    const divProgress = createElement("div","");
     const spanProgress1 = createElement("span","");
     const spanProgress2 = createElement("span","");
     const spanProgress3 = createElement("span","");
@@ -309,11 +309,12 @@ class WordCard extends Component {
     // check if user logged in
     if (localStorage.getItem('user')) {
       divButtons.append(buttonLearn, buttonAdd);
-          
+      divButtons.className = 'learning__word-card-buttons';
       for (let i =0; i < this.progress; i += 1){
         spanProgressArray[i].classList.add("js-progress");
       }
       divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+      divProgress.className = 'learning__progress';
     }
     this.container.append(
       img,
