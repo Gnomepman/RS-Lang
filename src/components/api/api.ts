@@ -11,7 +11,8 @@ import Word, {
   miniGameStatistics,
   miniGameStatisticsPerSession,
   statisticsPerSession,
-  sessionStatistics
+  sessionStatistics,
+  RegisteredUser
 } from './types';
 
 enum ApiLinks {
@@ -46,7 +47,7 @@ class Api {
     return data;
   }
   
-  async createUser(user: User): Promise<User | number> {
+  async createUser(user: User): Promise<RegisteredUser | number> {
     const request = `${this.apiUrl}/${ApiLinks.Users}`;
     const response = await fetch(request, {
       method: 'POST',
@@ -57,7 +58,7 @@ class Api {
       body: JSON.stringify(user),
     });
     if (response.ok) {
-      const data: User = await response.json();
+      const data: RegisteredUser = await response.json();
       return data;
     }
     return response.status;

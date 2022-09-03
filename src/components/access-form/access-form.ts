@@ -3,7 +3,7 @@ import { createElement } from '../utils/utils';
 import log_in_img from '../../assets/log-in-img.svg';
 import './access-form.scss';
 import Api from '../api/api';
-import { API_URL, User } from '../api/types';
+import { API_URL, SignInResponse, User } from '../api/types';
 
 class AccessForm extends Component {
 
@@ -292,10 +292,24 @@ class AccessForm extends Component {
         );
       }
       // if creating user successful - reload page
-      if (typeof response === 'object') location.reload();
+      if (typeof response === 'object') {
+        console.log("response",response);
+        const SignInResponse:SignInResponse = await api.signIn(dataObj) as SignInResponse;
+        console.log("SignInResponse",SignInResponse);
+        AccessForm.saveUserToStorage(SignInResponse);
+        location.reload();
+      }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  static saveUserToStorage(SignInResponse:SignInResponse){
+    const currentTime = Date.now();
+    SignInResponse.created = currentTime.toString(10);
+    const objToString = JSON.stringify(SignInResponse);
+    console.log("objToString",objToString);
+    localStorage.setItem('user', objToString);
   }
 
   // log in, show error - if e-mail donn't exist
@@ -309,10 +323,7 @@ class AccessForm extends Component {
       const response = await api.signIn(dataObj);
       if (typeof response === 'object') {
         // save creation time for token
-        const currentTime = Date.now();
-        response.created = currentTime.toString(10);
-        const objToString = JSON.stringify(response);
-        localStorage.setItem('user', objToString);
+        AccessForm.saveUserToStorage(response);
         location.reload();
       }
       if (response === 404) {
