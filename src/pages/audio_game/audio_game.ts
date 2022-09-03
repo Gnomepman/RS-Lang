@@ -123,7 +123,7 @@ export default class Audio_game extends Page {
   }
 
   generateСard() {
-    if (document.querySelector(".game_window") !== null) {
+    if (document.querySelector(".audio_game") !== null) {
       let arrayOfWords = [...this.words];
       let multipleChoices = [...this.variants];
 
@@ -139,7 +139,7 @@ export default class Audio_game extends Page {
       );
 
       //Card itself
-      const card = this.createDivBlock("card");
+      const card = this.createDivBlock("audio_card");
 
       // Counter of words
       const countingWords = document.createElement("span");
@@ -205,7 +205,7 @@ export default class Audio_game extends Page {
         this.correctWords.push(wordToGuess);
 
         this.countingWord++;
-        document.querySelector(".card")?.remove();
+        document.querySelector(".audio_card")?.remove();
 
         if (this.guessedWordsInARow !== 3) {
           this.guessedWordsInARow++;
@@ -219,7 +219,7 @@ export default class Audio_game extends Page {
         this.wrongWords.push(wordToGuess);
 
         this.countingWord++;
-        document.querySelector(".card")?.remove();
+        document.querySelector(".audio_card")?.remove();
         //document.removeEventListener('keypress', eventFunction)
         console.log("Mismatch: ", this.guessedWordsInARow);
       };
@@ -297,6 +297,9 @@ export default class Audio_game extends Page {
     const finalResults = document.createElement("div");
     finalResults.classList.add("results");
 
+    const finalTitle = document.createElement("h1");
+    finalTitle.classList.add("results_title");
+
     const correctsAmount = document.createElement("h3");
     correctsAmount.classList.add("corrects_title");
 
@@ -357,7 +360,16 @@ export default class Audio_game extends Page {
       listOfWrongs.append(wrongWord);
     });
 
+    if (this.correctWords.length > 12) {
+      finalTitle.innerText = "Congratulations, great result!";
+    } else if (this.correctWords.length > 5) {
+      finalTitle.innerText = "Good job, but keep practicing!";
+    } else {
+      finalTitle.innerText = "It didn't work this time, but keep practicing!";
+    }
+
     finalResults.append(
+      finalTitle,
       correctsAmount,
       listOfCorrects,
       wrongsAmount,
@@ -368,11 +380,11 @@ export default class Audio_game extends Page {
   }
 
   renderGameWindow(wrapper: HTMLDivElement) {
-    const game_window = this.createDivBlock("game_window");
+    const game_window = this.createDivBlock("audio_game");
     wrapper.append(game_window);
 
     let intervalRender = setInterval(() => {
-      if (!document.querySelector(".card") && this.countingWord <= 20) {
+      if (!document.querySelector(".audio_card") && this.countingWord <= 20) {
         game_window.append(this.generateСard()!);
       }
 
