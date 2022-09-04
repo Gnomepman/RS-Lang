@@ -5,5 +5,141 @@
     align-items: center;
     justify-content: center;
     font-family: "Montserrat",sans-serif;
+    background-color: hsla(311, 0%, 100%, 1);
+    background-image:
+    radial-gradient(at 92% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y; 
+}
 
+.max-height{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statistics_wrapper{
+    background-color: hsla(311, 0%, 100%, 1);
+    background-image:
+    radial-gradient(at 92% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    font-family: 'Montserrat', sans-serif;
+    gap: 20px;
+
+    h2{
+        font-size: 36px;
+        margin: 0;
+        
+    }
+
+    .words_block{
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        width: 750px;
+
+        p{
+            margin: 0;
+            text-align: center;
+            font-size: 20px;
+        }
+    }
+
+    details{
+        .block_container{
+            display: flex;
+            gap: 10px;
+        }
+        
+    }
+
+    .block_desc{
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+        min-height: 180px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        align-items: center;
+        justify-content: center;
+
+        &_count{
+            font-size: 60px;
+            font-weight: 700;
+        }
+
+        &_desc{
+            text-align: center;
+        }
+    }
+
+    .game_statistics{
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+
+        h2:first-letter {
+            text-transform: uppercase;
+        }        
+
+        .short_stats{
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }   
+    }
+}
+
+.sessions{
+    display: flex;
+    flex-direction: column;
+    align-self: self-start;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+
+    p{
+        margin: 0;
+        text-align: center;
+        font-size: 20px;
+    }
+}
+
+
+details {
+    padding: 10px;
+
+    span{
+        font-weight: 600;
+    }
+}
+
+details summary {
+    cursor: pointer;
+    transition: margin 150ms ease-out;
+    font-weight: 500;
+}
+
+details[open] summary {
+    margin-bottom: 10px;
 }
