@@ -434,7 +434,6 @@ class Api {
             progress: newProgress,
           }
         }
-        console.log("progress",progress);
         this.updateUserWord(progress[i].word.id, word);
       }
     }
