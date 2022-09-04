@@ -3,7 +3,7 @@ import './statistics.scss'
 import Api from '../../components/api/api';
 import { API_URL, miniGameStatistics, statistics, statisticsPerSession } from '../../components/api/types';
 import error from '../../assets/404-error.svg'
-import LoadingAnimation from '../../components/loading-animation/loading-animation';
+import GraphNewWordsPerDay from '../../components/graph/graph';
 
 export default class StatisticsPage extends Page {
   private api: Api;
@@ -114,7 +114,8 @@ export default class StatisticsPage extends Page {
       block.append(block_wrapper);
       sessions_wrapper.append(block);
     }
-    block.append(sessions_wrapper);
+    const graph = new GraphNewWordsPerDay('div', 'graph-container', array)
+    block.append(sessions_wrapper, graph.render());
     return block;
   }
 
@@ -139,14 +140,12 @@ export default class StatisticsPage extends Page {
     header.textContent = 'Statistics';
 
     this.getStatistics().then(() => {
-      const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
       if(typeof this.statistics === 'number'){
         const block = document.createElement('h2')
         block.textContent = 'Oops! Looks like you have not statistics';
         wrapper.classList.add('max-height')
         wrapper.append(block);
         this.container.insertAdjacentElement("afterbegin", wrapper);
-        loadingAnimation.stop();
         return this.container;
       }
       const stats = this.statistics as statistics;
@@ -158,7 +157,6 @@ export default class StatisticsPage extends Page {
       const words_learned_desc = document.createElement('p');
       words_learned_desc.classList.add("block_desc_desc");
       words_learned_desc.textContent = 'number of words you have learned so far';
-  
       words_learned_wrapper.append(words_learned_count, words_learned_desc);
       wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics));
       this.container.insertAdjacentElement("afterbegin", wrapper);
