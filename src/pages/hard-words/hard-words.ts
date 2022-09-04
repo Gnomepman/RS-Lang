@@ -70,6 +70,7 @@ class HardWordsPage extends LearningPage {
           HardWordsPage.CopyAggrWordToWord(word),
           "js-added",
           "",
+          false,
           word.userWord?.optional?.progress
         );
         div.append(newWord.render());

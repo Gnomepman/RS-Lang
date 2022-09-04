@@ -133,7 +133,8 @@ class LearningPage extends Page {
     if (localStorage.getItem('user')) {
       user = JSON.parse(localStorage.getItem('user') as string);
       hardWords = await api.getAggregatedWords(page, group, 'hard', false);
-      learnedWords = await api.getAggregatedWords(page, group, 'easy', true);
+      learnedWords = await api.getAggregatedWords(page, group, 'easy', null);
+      console.log("learnedWords",learnedWords);
       if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
         userWords = [
           ...hardWords[0].paginatedResults,
@@ -176,6 +177,7 @@ class LearningPage extends Page {
               word,
               'js-added',
               '',
+              false,
               difficulty?.userWord?.optional?.progress
             );
           }
@@ -190,17 +192,18 @@ class LearningPage extends Page {
               word,
               '',
               'js-learned',
+              true,
               difficulty?.userWord?.optional?.progress
             );
             // if word is easy, but learned is "false"
           } else {
-            wordCard = new WordCard('div', 'learning__word-card', word, '', '',difficulty?.userWord?.optional?.progress);
+            wordCard = new WordCard('div', 'learning__word-card', word, '', '',true,difficulty?.userWord?.optional?.progress);
           }
         } else {
-          wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
+          wordCard = new WordCard('div', 'learning__word-card', word, '', '',false,0);
         }
       } else {
-        wordCard = new WordCard('div', 'learning__word-card', word, '', '',0);
+        wordCard = new WordCard('div', 'learning__word-card', word, '', '',false,0);
       }
       div.append(wordCard.render());
     });

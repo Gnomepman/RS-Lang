@@ -214,12 +214,12 @@ class Api {
     page: number,
     group: number,
     difficulty: wordDifficulty,
-    learned:boolean,
+    learned:boolean | null,
     wordsPerPage = MAX_WORDS_PER_PAGE,
   ): Promise<AggregatedWords[] | number> {
     await this.checkToken();
     const user:SignInResponse = JSON.parse(localStorage.getItem('user') as string);
-    const filter = page > 0
+    let filter = page > 0
       ? {
         $and: [
           { page: page - 1 },
@@ -235,6 +235,23 @@ class Api {
           { 'userWord.optional.learned': learned },
         ],
       };
+
+    if (learned === null){
+      filter = page > 0
+      ? {
+        $and: [
+          { page: page - 1 },
+          { group: group - 1 },
+          { 'userWord.difficulty': `${difficulty}` }
+        ],
+      }
+      : {
+        $and: [
+          { group: group - 1 },
+          { 'userWord.difficulty': `${difficulty}` },
+        ],
+      };
+    }
     const string = JSON.stringify(filter);
     const request = `${this.apiUrl}/${ApiLinks.Users}/${user.userId}/${ApiLinks.AggregatedWords}?${ApiLinks.WordPerPage}=${wordsPerPage}&${ApiLinks.Filter}=${string}`;
     const response = await fetch(request, {
@@ -379,7 +396,7 @@ class Api {
         let temp = await response.json() as WordAttributes;
 
         let newProgress: wordProgress = 0; 
-        if (progress[i].count < temp.optional?.progress!){
+        if ((progress[i].count < temp.optional?.progress!)&&(temp.optional?.progress != 3)){
           newProgress = temp.optional?.progress! + progress[i].count as wordProgress;
         } else {
           newProgress = progress[i].count;
@@ -397,13 +414,18 @@ class Api {
         }
 
         let newLearned: boolean = false;
-        if(newProgress === 3){
+        if (newProgress === 3 ) {
           newLearned = true;
           learnedWords++;
         } else {
           newLearned = false;
         }
-        
+
+        if ((temp.optional?.learned)&&(temp.optional?.progress === 3)&&(progress[i].count < 3 )){
+          newLearned = false;
+          learnedWords -= 1;
+        }
+
         const word: WordAttributes = {
           difficulty: newDifficulty,
           optional: {
@@ -412,7 +434,6 @@ class Api {
             progress: newProgress,
           }
         }
-
         this.updateUserWord(progress[i].word.id, word);
       }
     }

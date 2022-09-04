@@ -15,6 +15,7 @@ class WordCard extends Component {
   private isLearned: string;
 
   private progress:wordProgress ;
+  private isEasy: boolean;
 
   constructor(
     tagName: string,
@@ -22,12 +23,14 @@ class WordCard extends Component {
     word: Word,
     isAdded: string,
     isLearned: string,
+    isEasy: boolean,
     progress: wordProgress | undefined
   ) {
     super(tagName, className);
     this.wordTemplate = word;
     this.isAdded = isAdded;
     this.isLearned = isLearned;
+    this.isEasy = isEasy;
     this.progress = (progress) ? progress : 0;
   }
 
@@ -279,7 +282,7 @@ class WordCard extends Component {
         'Add to hard',
         "Not learned",
         buttonAdd,
-        this.progress
+        3
       );
     };
 
@@ -310,11 +313,13 @@ class WordCard extends Component {
     if (localStorage.getItem('user')) {
       divButtons.append(buttonLearn, buttonAdd);
       divButtons.className = 'learning__word-card-buttons';
-      for (let i =0; i < this.progress; i += 1){
-        spanProgressArray[i].classList.add("js-progress");
+      if ((this.isEasy)||(this.progress > 0)){
+        for (let i =0; i < this.progress; i += 1){
+          spanProgressArray[i].classList.add("js-progress");
+        }
+        divProgress.append(spanProgress1,spanProgress2,spanProgress3);
+        divProgress.className = 'learning__progress';
       }
-      divProgress.append(spanProgress1,spanProgress2,spanProgress3);
-      divProgress.className = 'learning__progress';
     }
     this.container.append(
       img,
