@@ -68,12 +68,12 @@
         display: flex;
         flex-direction: column;
         width: 200px;
-        min-height: 180px;
+        min-height: 150px;
         padding: 15px;
         border-radius: 10px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
 
         &_count{
             font-size: 60px;
