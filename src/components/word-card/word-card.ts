@@ -279,7 +279,7 @@ class WordCard extends Component {
         'Add to hard',
         "Not learned",
         buttonAdd,
-        this.progress
+        3
       );
     };
 

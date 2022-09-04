@@ -397,13 +397,18 @@ class Api {
         }
 
         let newLearned: boolean = false;
-        if(newProgress === 3){
+        if (newProgress === 3 ) {
           newLearned = true;
           learnedWords++;
         } else {
           newLearned = false;
         }
-        
+
+        if ((temp.optional?.learned)&&(temp.optional?.progress === 3)&&(progress[i].count === 0 )){
+          newLearned = false;
+          learnedWords -= 1;
+        }
+
         const word: WordAttributes = {
           difficulty: newDifficulty,
           optional: {
@@ -412,6 +417,9 @@ class Api {
             progress: newProgress,
           }
         }
+
+        console.log("before game",temp);
+        console.log("after game",progress);
 
         this.updateUserWord(progress[i].word.id, word);
       }
