@@ -1,7 +1,7 @@
 import "./audio_game.scss";
 import Page from "../../components/templates/page";
 import Api from "../../components/api/api";
-import Word from "../../components/api/types";
+import Word, { wordProgress } from "../../components/api/types";
 import { API_URL } from "../../components/api/types";
 import Timer from "../../components/timer/timer";
 
@@ -11,6 +11,11 @@ interface IVariants {
   wordAudio: string;
   multipleChoice: string[];
 }
+
+export type progressOfTheWord = {
+  word: Word;
+  count: wordProgress;
+};
 
 export default class Audio_game extends Page {
   private group: number;
@@ -22,6 +27,9 @@ export default class Audio_game extends Page {
   private guessedWordsInARow: number;
   private countingWord: number;
   private variants: IVariants[];
+  private progress: progressOfTheWord[];
+  private longestStreak: number;
+  private shortStreak: number;
 
   constructor(id: string, group?: number, page?: number) {
     super(id);
@@ -32,6 +40,9 @@ export default class Audio_game extends Page {
     this.guessedWordsInARow = 0;
     this.countingWord = 1;
     this.variants = [];
+    this.progress = [];
+    this.longestStreak = 0;
+    this.shortStreak = 0;
 
     page ? (this.page = page) : (this.page = this.randomIntFromInterval(0, 29));
 
@@ -119,6 +130,15 @@ export default class Audio_game extends Page {
     wrapper.append(timer);
   }
 
+  trackingWord(id: string): number | boolean {
+    for (let i = 0; i < this.progress.length; ++i) {
+      if (this.progress[i].word.id == id) {
+        return i;
+      }
+    }
+    return false;
+  }
+
   generateСard() {
     if (document.querySelector(".audio_game") !== null) {
       let arrayOfWords = [...this.words];
@@ -195,13 +215,9 @@ export default class Audio_game extends Page {
       nextButton.style.display = "none";
 
       const correctGuess = () => {
-        // if (this.correctWords.indexOf(wordToGuess) === -1) {
-        //   this.correctWords.push(wordToGuess);
-        // }
-
         this.correctWords.push(wordToGuess);
-
         this.countingWord++;
+
         document.querySelector(".audio_card")?.remove();
 
         if (this.guessedWordsInARow !== 3) {
@@ -209,7 +225,26 @@ export default class Audio_game extends Page {
         } else {
           this.guessedWordsInARow = 0;
         }
-        //document.removeEventListener('keypress', eventFunction)
+
+        // Correct guess saving
+        const tracking = this.trackingWord(wordToGuess.id);
+        if (tracking !== false) {
+          this.progress[tracking as number].count = (this.progress[
+            tracking as number
+          ].count + 1) as wordProgress;
+        } else {
+          const temp: progressOfTheWord = {
+            word: wordToGuess,
+            count: 1,
+          };
+          this.progress.push(temp);
+        }
+
+        this.shortStreak += 1;
+        this.longestStreak =
+          this.shortStreak > this.longestStreak
+            ? this.shortStreak
+            : this.longestStreak;
       };
 
       const wrongGuess = () => {
@@ -217,7 +252,24 @@ export default class Audio_game extends Page {
 
         this.countingWord++;
         document.querySelector(".audio_card")?.remove();
-        //document.removeEventListener('keypress', eventFunction)
+
+        // Wrong guess saving
+        const tracking = this.trackingWord(wordToGuess.id);
+        if (tracking !== false) {
+          this.progress[tracking as number].count = 0 as wordProgress;
+        } else {
+          const temp: progressOfTheWord = {
+            word: wordToGuess,
+            count: 0,
+          };
+          this.progress.push(temp);
+        }
+
+        this.longestStreak =
+          this.shortStreak > this.longestStreak
+            ? this.shortStreak
+            : this.longestStreak;
+        this.shortStreak = 0;
       };
 
       const showAnswerFunction = () => {
@@ -257,19 +309,6 @@ export default class Audio_game extends Page {
       showAnswer.textContent = "Don't know ❓";
       nextButton.textContent = "Next ⏭️";
 
-      // const eventFunction = (e: KeyboardEvent) => {
-      //   //console.log(e)
-      //   if (e.code === "ArrowRight") {
-      //     console.log(e.code);
-      //     rightButton.click();
-      //   }
-      //   if (e.code === "ArrowRight") {
-      //     console.log(e.code);
-      //     rightButton.click();
-      //   }
-      // };
-      //document.addEventListener("keypress", eventFunction)
-
       buttonsWrapper.append(showAnswer, nextButton);
 
       card.append(
@@ -297,10 +336,6 @@ export default class Audio_game extends Page {
   }
 
   renderResultingWords() {
-    // Removing all duplicates
-    // this.correctWords = [...new Set(this.correctWords)];
-    // this.wrongWords = [...new Set(this.wrongWords)];
-
     const finalResults = document.createElement("div");
     finalResults.classList.add("results");
 
@@ -393,7 +428,7 @@ export default class Audio_game extends Page {
 
     wrapper.append(game_window, resultsMenu);
 
-    let intervalRender = setInterval(() => {
+    let intervalRender = setInterval(async () => {
       if (!document.querySelector(".audio_card") && this.countingWord <= 20) {
         game_window.append(this.generateСard()!);
       }
@@ -404,6 +439,17 @@ export default class Audio_game extends Page {
 
         resultsMenu.style.display = "flex";
         game_window.append(this.renderResultingWords());
+
+        // User login check
+        if (localStorage.user) {
+          await this.api.saveProgressFromMinigame(
+            "audio_call",
+            this.progress,
+            this.longestStreak,
+            this.correctWords,
+            this.wrongWords
+          );
+        }
       }
     }, 50);
   }
