@@ -5,6 +5,12 @@ import Component from '../templates/component';
 import { createElement } from '../utils/utils';
 import { fakeStats } from './fake-stats';
 
+
+// For working:
+// 1.Need to install: npm install chart.js
+// 2. Add line to tsconfig.json: "moduleResolution": "node",
+
+
 class GraphNewWordsPerDay extends Component{
   wordsPerSession: statisticsPerSession;
   dates: string[];
