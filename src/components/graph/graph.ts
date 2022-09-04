@@ -41,7 +41,6 @@ class GraphNewWordsPerDay extends Component{
         newWords = 0;
       }
       if (array[i + 1] === undefined){
-        console.log("1");
         newWords += array[i].new_words_per_session;
         result.push({day:new Date(array[i - 1].day),newWords});
       }
@@ -60,9 +59,7 @@ class GraphNewWordsPerDay extends Component{
       this.dates.push(`${month}/${day}`);
       this.newWords.push(a.newWords);
     })
-    
-    console.log("result",result);
-    console.log("this.data",this.dates);
+
     const myChart = new Chart(canvas, {
       type: 'bar',
       data: {
