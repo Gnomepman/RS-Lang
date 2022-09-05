@@ -77,3 +77,19 @@
         }
     }
 }
+
+@media screen and (max-width: 1440px) {
+    .stats{
+        width: 80%;
+
+        &_wrapper{
+            width: 90%;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .stats{
+        gap: 20pxж
+    }
+}
