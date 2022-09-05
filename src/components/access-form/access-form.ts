@@ -262,7 +262,6 @@ class AccessForm extends Component {
       ),
     );
     // listener for sign Up method
-    const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
     formRegistration.addEventListener('submit', this.signUp);
     divLogin.append(divData, img, this.renderCloseButton('button-close'));
     return divLogin;
