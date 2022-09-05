@@ -5,16 +5,22 @@
   justify-content: center;
   align-items: center;
   gap: 50px;
-  width: 100%;
+  // width: 100%;
+  width: fit-content;
+  //
+  align-self: center;
+  padding: 5px 20px;
+  font-family: 'Roboto', sans-serif; 
+  //
   height: 50px;
-  left: 21%;
-  background-color: hsla(311, 0%, 100%, 1);
-  background-image:
-  radial-gradient(at 92% 23%, #084777 0px, transparent 50%),
-  radial-gradient(at 23% 61%, white 0px, transparent 50%);
+  // left: 21%;
+  background-color: rgba(255, 255, 255, 0.619);
+  // background-image:
+  // radial-gradient(at 92% 23%, #084777 0px, transparent 50%),
+  // radial-gradient(at 23% 61%, white 0px, transparent 50%);
   background-repeat: repeat-y;
-  border-radius: 10px;
-  box-shadow: 0px 8px 7px 1px rgba(34, 60, 80, 0.2);
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
   @media (max-width:750px) {
     flex-direction: column;
@@ -48,7 +54,8 @@
 .pagination__page {
   font-size: 20px;
   line-height: 20px;
-  border-radius: 4px;
+  border-radius: 5px;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
 }
 
 .pagination__next,
@@ -67,7 +74,7 @@
   transition: 0.5s;
   background-size: 200% auto;
   color: white;
-  box-shadow: 0 0 20px #eee;
+  // box-shadow: 0 0 20px #eee;
   display: block;
   border: none;
 
@@ -126,7 +133,8 @@
 
 .pagination__groups,
 .pagination__groups-group {
-  border: 1px solid black;
+  // border: 1px solid black;
+  text-align: center;
   padding: 10px;
   cursor: pointer;
   color: white;
@@ -136,8 +144,9 @@
 .pagination__groups-group{
 
   &:hover{
-    border: 2px solid #00B03C;
-    transition: 0.1s;
+    // border: 2px solid #00B03C;
+    transform: scale(1.02);
+    transition: 0.2s;
   }
 }
 

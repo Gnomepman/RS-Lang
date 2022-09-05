@@ -14,6 +14,7 @@ import {
 import AccessForm from "../../components/access-form/access-form";
 import Sprint_game from "../sprint_game/sprint_game";
 import Audio_game from "../audio_game/audio_game";
+import favicon from '../../assets/logo.png';
 
 export default class App {
   private static container: HTMLElement = document.body; //container where we append all other elements
@@ -90,6 +91,14 @@ export default class App {
     }
   }
 
+  setFavicons(favImg: 'string'){
+    let headTitle = document.querySelector('head');
+    let setFavicon = document.createElement('link');
+    setFavicon.setAttribute('rel','shortcut icon');
+    setFavicon.setAttribute('href', favImg);
+    headTitle!.appendChild(setFavicon);
+}
+
   //render page depending on hash in the link - {#bla-bla-bla}
   private enableRouteChange() {
     window.addEventListener("hashchange", () => {
@@ -116,5 +125,6 @@ export default class App {
     this.nav_menu.showModal("modal-window-login", "#sign_up", "registration");
     this.nav_menu.logOut("auth-form__button_account");
     this.enableRouteChange();
+    this.setFavicons(favicon);
   }
 }

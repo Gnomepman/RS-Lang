@@ -1,9 +1,9 @@
 import Page from '../../components/templates/page';
 import './main-page.scss'
 import humans_picture from '../../assets/humans_background.png'
-import book from '../../assets/text_book.png'
-import games from '../../assets/games.png'
-import statistics from '../../assets/statistics.png'
+import book from '../../assets/icon_book.png'
+import games from '../../assets/icon_games.png'
+import statistics from '../../assets/icon_chart.png'
 import free from '../../assets/free.png'
 import danya from '../../assets/developer_danya.jpg'
 import andrey from '../../assets/developer_andrey.jpg'
@@ -106,9 +106,10 @@ export default class MainPage extends Page {
                 <div id="front-end">Front-end</div>
                 <div id="design">Design</div>
             </div>
-            <p class="developer_short_desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facilis,
-                repudiandae saepe atque, animi illo amet error numquam aspernatur maxime nihil, itaque labore libero
-                voluptatibus magnam quis delectus quaerat non culpa.</p>
+            <p class="developer_short_desc">Basically, I worked with development of a game called "Audio Call":
+            I made the initial screen of the game, added an automatic player for the pronunciation of words,
+            created final screen of the game to display the results of the game and save the user's progress. In addition,
+            I worked on the error page and worked on the design of various parts of our project.</p>
         </div>
     </div>
 </div>

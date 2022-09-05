@@ -1,6 +1,6 @@
 import Component from '../templates/component';
 import { createElement } from '../utils/utils';
-import log_in_img from '../../assets/log-in-img.svg';
+import log_in_img from '../../assets/log-in-img.jpeg';
 import './access-form.scss';
 import Api from '../api/api';
 import { API_URL, SignInResponse, User } from '../api/types';

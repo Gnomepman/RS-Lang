@@ -27,6 +27,7 @@
 
     h2{
         font-size: 35px;
+        text-align: center;
     }
 
     .groups_to_choose{
@@ -96,8 +97,8 @@
 }
 
 .game_window{
-    width: 60%;
-    height: 50%;
+    width: 830px;
+    height: 500px;
     border-radius: 20px;
     box-shadow: 6px 6px 18px rgb(0 0 0 / 25%);
     padding: 20px;
@@ -112,13 +113,15 @@
 }
 
 .card{
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
+    // width: 400px;
+    width: auto;
+    display: grid;
+    grid-template-rows: 25px 75px 40px 20px 50px;
+    justify-items: center;
     align-items: center;
+    align-content: center;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
 
     .humans{
         display: grid;
@@ -148,13 +151,14 @@
     }
 
     .original{
-        font-weight: 600;
+        font-weight: 500;
         font-size: 35px;
     }
 
     .translation{
         font-weight: 400;
-        font-size: 30px;
+        font-size: 20px;
+        margin-top: -10px;
     }
 
     .buttons_wrapper{
@@ -193,6 +197,62 @@
                     box-shadow: 0px 0px 15px 4px rgba(54, 253, 110, 0.75);
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .choose_group{
+        .groups_to_choose{
+            button{
+                font-size: 22px;
+                width: 100px;
+                height: 55px;
+            }
+        }
+    }
+
+    .game_window {
+        width: 655px;
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .game_window {
+        width: 600px;
+        height: 370px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .choose_group{
+        .groups_to_choose{
+            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+    
+            button{
+                font-size: 24px;
+            }
+        }
+    }
+
+    .game_window {
+        width: 90%;
+        box-sizing: border-box;
+        height: 500px;
+    }
+
+    .card{
+        grid-template-rows: 25px 75px 40px 20px 130px;
+        .buttons_wrapper{
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .translation{
+            margin-top: 0;
         }
     }
 }
