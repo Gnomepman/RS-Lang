@@ -139,10 +139,6 @@ class AccessForm extends Component {
 
     img.src = log_in_img;
     divContainer.append(
-      this.renderCheckBox(
-        `${classNameTempBlock}__remember-me ${classNameTempBlock}__remember-me_${classNameTempElem}`,
-        'Remember me',
-      ),
       this.renderButton(
         `${classNameTempBlock}__button ${classNameTempBlock}__button_log-in`,
         'Log In',
