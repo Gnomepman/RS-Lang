@@ -27,6 +27,7 @@
 
     h2{
         font-size: 35px;
+        text-align: center;
     }
 
     .groups_to_choose{
@@ -192,6 +193,32 @@
                     transition: .5s;
                     box-shadow: 0px 0px 15px 4px rgba(54, 253, 110, 0.75);
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .choose_group{
+        .groups_to_choose{
+            button{
+                font-size: 22px;
+                width: 100px;
+                height: 55px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .choose_group{
+        .groups_to_choose{
+            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+    
+            button{
+                font-size: 24px;
             }
         }
     }
