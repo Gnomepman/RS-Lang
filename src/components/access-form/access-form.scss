@@ -16,10 +16,10 @@
   }
 }
 
-.auth-form__wrapper{
+.auth-form__wrapper {
   display: flex;
   flex-direction: column;
-  width: 500%;
+  width: 50%;
   padding: 20px 65px;
   gap: 20px;
   justify-content: center;
@@ -29,6 +29,7 @@
 
 .auth-form {
   width: 85%;
+  max-width: 1200px;
   height: auto;
   display: flex;
   font-family: "Roboto", sans-serif;
@@ -39,6 +40,7 @@
 
 .auth-form__form {
   display: flex;
+  position: relative;
   flex-direction: column;
   width: 100%;
   gap: 20px;
@@ -46,6 +48,11 @@
   align-items: center;
 
   box-sizing: border-box;
+}
+
+.auth-form__container.auth-form__container_log-in + .loading-animation.js-card,
+.auth-form__button.auth-form__button_registration + .loading-animation.js-card {
+  border-radius: 0px;
 }
 
 .auth-form__title {
@@ -87,32 +94,32 @@
   font-size: 22px;
   padding-left: 40px;
   box-sizing: border-box;
-
 }
 
-.field__input_name{
+.field__input_name {
   background: no-repeat url("../../assets/user_icon.svg");
 }
 
-.field__input_password{
+.field__input_password {
   background: no-repeat url("../../assets/password_icon.svg");
 
-  &:invalid{
+  &:invalid {
     border: 1px solid red;
   }
 }
 
-.field__input_email{
+.field__input_email {
   background: no-repeat url("../../assets/mail_icon.svg");
 
-  &.js-error, &:invalid{
+  &.js-error,
+  &:invalid {
     border: 1px solid red;
   }
 }
 
 .field__input_name,
 .field__input_password,
-.field__input_email{
+.field__input_email {
   background-size: 30px 30px;
   background-position: 5px 10px;
 }
@@ -149,12 +156,12 @@
   cursor: pointer;
   transition: 0.4s;
 
-  &:hover{
+  &:hover {
     background-color: #1967a2;
   }
 }
 
-.auth-form__button_registration{
+.auth-form__button_registration {
   width: 100%;
 }
 
@@ -167,16 +174,16 @@
   color: #07406f;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     text-decoration: underline;
   }
 }
 
-.error{
+.error {
   display: none;
   color: red;
 
-  &.js-error{
+  &.js-error {
     display: inline-block;
   }
 }
@@ -217,46 +224,48 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .auth-form__wrapper{
+    width: 100%;
+    max-width: 600px;
+  }
   .auth-form__image {
     display: none;
   }
 }
 
 @media screen and (max-width: 768px) {
-
-  .button-close{
+  .button-close {
     width: 25px;
     height: 25px;
 
-    &::before{
+    &::before {
       bottom: 40%;
     }
 
-    &::after{
+    &::after {
       top: 45%;
     }
   }
 
-  .auth-form__wrapper{
+  .auth-form__wrapper {
     padding: 15px 30px;
   }
 
-  .field__input{
+  .field__input {
     font-size: 16px;
   }
 
-  .auth-form__button{
+  .auth-form__button {
     font-size: 16px;
   }
 
   .auth-form__image {
     display: none;
   }
-  .auth-form__title-title{
+  .auth-form__title-title {
     font-size: 40px;
   }
-  .auth-form__title-subtitle{
+  .auth-form__title-subtitle {
     font-size: 18px;
   }
 }
-
