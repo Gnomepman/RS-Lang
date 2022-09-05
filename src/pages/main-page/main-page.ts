@@ -45,7 +45,7 @@ export default class MainPage extends Page {
             <div class="benefit">
                 <img src="${games}" alt="" class="benefit_icon">
                 <h3 class="benefit_title">Games</h3>
-                <p class="benefit_description">Traditional learning is boring. So we offer better way to memorize words - by playing games “audiocall” and “sprint”. Play wherever you want: at home, in a bus, on a go etc. </p>
+                <p class="benefit_description">Traditional learning is boring. So we offer better way to memorize words - by playing games “audio call” and “sprint”. Play wherever you want: at home, in a bus, on a go etc. </p>
             </div>
             <div class="benefit">
                 <img src="${statistics}" alt="" class="benefit_icon">
@@ -61,11 +61,11 @@ export default class MainPage extends Page {
     </div>
     `
 
-    const video_section = this.createDivBlock("video");
-    video_section.innerHTML = `
-      <h2 class="section_title">How does it work?</h2>
-      <iframe <iframe width="560" height="315" src="https://www.youtube.com/embed/yK0P1Bk8Cx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    `
+    // const video_section = this.createDivBlock("video");
+    // video_section.innerHTML = `
+    //   <h2 class="section_title">How does it work?</h2>
+    //   <iframe <iframe width="560" height="315" src="https://www.youtube.com/embed/yK0P1Bk8Cx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    // `
 
     const developer_section = this.createDivBlock("developers");
     developer_section.innerHTML = `
@@ -80,9 +80,8 @@ export default class MainPage extends Page {
                 <div id="front-end">Front-end</div>
                 <div id="design">Design</div>
             </div>
-            <p class="developer_short_desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facilis,
-                repudiandae saepe atque, animi illo amet error numquam aspernatur maxime nihil, itaque labore libero
-                voluptatibus magnam quis delectus quaerat non culpa.</p>
+            <p class="developer_short_desc">As a team-lead, I organised team work. Developed nav-menu, footer, main page, sprint game, 
+            choose game page, statistics (page and saving). Also, I am responsible for almost all icons and picture you see</p>
         </div>
     </div>
     <div class="developer">
@@ -94,8 +93,8 @@ export default class MainPage extends Page {
                 <div id="back-end">Back-end</div>
                 <div id="design">Design</div>
             </div>
-            <p class="developer_short_desc">Developed textbook page, hard words page, registration and login form
-            , authorisation, graph for new words, loading animation, basic design for main page, nav menu and words </p>
+            <p class="developer_short_desc">Developed textbook page, hard words page, back-end - registration and login form,
+            authorisation, graph for new words, loading animation, basic design for main page, nav menu and words</p>
         </div>
     </div>
     <div class="developer">
@@ -106,17 +105,15 @@ export default class MainPage extends Page {
                 <div id="front-end">Front-end</div>
                 <div id="design">Design</div>
             </div>
-            <p class="developer_short_desc">Basically, I worked with development of a game called "Audio Call":
-            I made the initial screen of the game, added an automatic player for the pronunciation of words,
-            created final screen of the game to display the results of the game and save the user's progress. In addition,
-            I worked on the error page and worked on the design of various parts of our project.</p>
+            <p class="developer_short_desc">I developed game "Audio call": made the initial screen, added an automatic player for the pronunciation of words, 
+            In addition, I worked on the error page and on the design of various parts of our project</p>
         </div>
     </div>
 </div>
-    `
+    `;
     main_page_wrapper.append(description_wrapper);
     main_page_wrapper.append(benefits_section);
-    main_page_wrapper.append(video_section);
+    //main_page_wrapper.append(video_section);
     main_page_wrapper.append(developer_section);
     this.container.append(main_page_wrapper);
     return this.container;
