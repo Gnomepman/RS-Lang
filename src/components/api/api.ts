@@ -479,6 +479,14 @@ class Api {
       const { id, ...temp} = JSON.parse(JSON.stringify(previousStats));
       const newStats = (temp as statistics);
       newStats.learnedWords = (await this.getAllUserLearnedWords() as AggregatedWords[])[0].paginatedResults.length;
+      if(!newStats.optional![game]!) {
+        newStats.optional![game]! = {
+          longest_streak: 0,
+          correct_guessed_words: 0,
+          wrong_guessed_words: 0,
+          progress_by_session: [],
+        }
+      }
       newStats.optional![game]!.longest_streak! = longest_streak > newStats.optional![game]?.longest_streak! ? longest_streak : newStats.optional![game]?.longest_streak!;
       newStats.optional![game]!.correct_guessed_words! += correctWords.length;
       newStats.optional![game]!.wrong_guessed_words! += wrongWords.length;
