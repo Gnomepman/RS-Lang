@@ -245,3 +245,12 @@
   transform: scale(1.2);
   border: 2px solid #00B03C;
 }
+
+@media screen and (max-width: 768px) {
+
+  .controls__mini-games-sprint-title,
+  .controls__mini-games-audio-call-title {
+    display: none;
+  }
+
+}
