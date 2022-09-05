@@ -48,7 +48,20 @@ class GraphNewWordsPerDay extends Component {
         result.push({ day: new Date(array[i - 1].day), newWords });
       }
     }
-
+    console.log("array.length",array.length);
+    if (result.length === 1){
+      const prevDay = result[0].day.getDate() - 1;
+      const prevMonth = result[0].day.getMonth();
+      const prevYear = result[0].day.getFullYear();
+      const nextDay = result[0].day.getDate() + 1;
+      const nextMonth = result[0].day.getMonth();
+      const nextYear = result[0].day.getFullYear();
+      const pervDate = new Date(prevYear,prevMonth,prevDay);
+      const nextDate = new Date(nextYear,nextMonth,nextDay);
+      result.unshift({day:pervDate,newWords: 0});
+      result.push({day:nextDate, newWords:0});
+    }
+    console.log("result",result);
     return result;
   }
 
@@ -65,7 +78,7 @@ class GraphNewWordsPerDay extends Component {
       const day = new Intl.DateTimeFormat("en-US", { day: "2-digit" }).format(
         dateTemp
       );
-      this.dates.push(`${month}/${day}`);
+      this.dates.push(`${day}.${month}`);
       this.newWords.push(a.newWords);
     });
 
@@ -93,6 +106,8 @@ class GraphNewWordsPerDay extends Component {
 
     return canvas;
   }
+
+
 
   async createFakeStatistics() {
     const obj: statistics = fakeStats;
