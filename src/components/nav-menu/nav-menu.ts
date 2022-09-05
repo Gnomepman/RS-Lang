@@ -54,6 +54,7 @@ export default class Nav_menu extends Component {
       link.onclick = () => {
         this.authForm.renderForm(form);
         modalWindow.classList.add("js-show");
+        document.body.classList.add("js-block");
       }
     }
   }
