@@ -196,6 +196,15 @@
   }
 }
 
+.controls__mini-games-audio-call-text,
+.controls__mini-games-sprint-text{
+  display: flex;
+  font-family: "Montserrat",sans-serif;
+  gap: 5px;
+  flex-direction: column;
+  padding:0 10px 5px;
+}
+
 .controls__mini-games-audio-challenge-image,
 .controls__mini-games-sprint-image {
   cursor: pointer;
@@ -209,6 +218,11 @@
   font-size: 24px;
   text-align: center;
   color: black;
+}
+
+.controls__mini-games-audio-call-description,
+.controls__mini-games-sprint-description {
+  text-align: center;
 }
 
 [data-group="1"]{
@@ -248,8 +262,8 @@
 
 @media screen and (max-width: 768px) {
 
-  .controls__mini-games-sprint-title,
-  .controls__mini-games-audio-call-title {
+  .controls__mini-games-sprint-text,
+  .controls__mini-games-audio-call-text {
     display: none;
   }
 

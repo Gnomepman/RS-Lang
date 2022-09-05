@@ -371,15 +371,23 @@ class LearningPage extends Page {
     const divSprint = createElement('div',`${className}-sprint-wrapper`);
     const divAudioCall = createElement('div',`${className}-audio-call-wrapper`);
     const icon = document.querySelector(`.${className}`) as HTMLDivElement;
-    
+    const pSprint = createElement('div',`${className}-sprint-description`);
+    const pAudioCall = createElement('div',`${className}-audio-call-description`);
+    const divSprintText = createElement('div',`${className}-sprint-text`);
+    const divAudioCallText = createElement('div',`${className}-audio-call-text`);
+
     linkSprint.href = 'index.html#sprint';
     linkAudioChallenge.href = 'index.html#audio-challenge';
     miniGameSprint.src = sprint_icon;
     miniGameAudioChallenge.src = audio_challenge_icon;
     spanSprint.textContent = 'Sprint';
+    pSprint.textContent = 'Teaches you how to quickly translate into your native language';
     spanAudioCall.textContent = 'Audio Call';
-    divSprint.append(miniGameSprint,spanSprint);
-    divAudioCall.append(miniGameAudioChallenge,spanAudioCall);
+    pAudioCall.textContent = 'Improves listening comprehension';
+    divSprintText.append(spanSprint,pSprint);
+    divAudioCallText.append(spanAudioCall,pAudioCall);
+    divSprint.append(miniGameSprint,divSprintText);
+    divAudioCall.append(miniGameAudioChallenge,divAudioCallText);
     linkSprint.append(divSprint);
     linkAudioChallenge.append(divAudioCall);
     content.append(linkAudioChallenge, linkSprint);

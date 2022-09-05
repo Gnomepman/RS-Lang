@@ -160,7 +160,6 @@ export default class StatisticsPage extends Page {
         return this.container;
       }
       const stats = this.statistics as statistics;
-      const graph = new GraphNewWordsPerDay("div",'graph-new-words',stats.optional.words_statistics);
       const words_learned_wrapper = this.createDivBlock('block_desc');
       const words_learned_count = document.createElement('span');
       words_learned_count.classList.add("block_desc_count");
@@ -170,7 +169,7 @@ export default class StatisticsPage extends Page {
       words_learned_desc.textContent = 'number of words you have learned so far';
   
       words_learned_wrapper.append(words_learned_count, words_learned_desc);
-      wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics),graph.render());
+      wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics));
       emptyDiv.remove();
       loadingAnimation.stop();
       this.container.insertAdjacentElement("afterbegin", wrapper);
