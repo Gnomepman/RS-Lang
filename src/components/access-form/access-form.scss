@@ -150,7 +150,7 @@
   transition: 0.4s;
 
   &:hover{
-    background-color: #e0ebf4;
+    background-color: #1967a2;
   }
 }
 
@@ -194,26 +194,38 @@
   padding: 0;
   cursor: pointer;
   margin: 5px;
+  background-image: url("../../assets/close.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  transition: .4s;
 
-  &::after,
-  &::before {
-    content: "";
-    width: 100%;
-    border: 2px solid #07406f;
-    position: absolute;
+  &:hover{
+    transition: .4s;
+    background-color: #eeeeee;
   }
 
-  &::after {
-    top: 48%;
-    left: -1px;
-    transform: rotate(0.38turn);
-  }
+  // &::after,
+  // &::before {
+  //   content: "";
+  //   width: 100%;
+  //   border: 2px solid #07406f;
+  //   position: absolute;
+  // }
 
-  &::before {
-    bottom: 44%;
-    left: -1px;
-    transform: rotate(-0.38turn);
-  }
+  // &::after {
+  //   top: 48%;
+  //   left: -1px;
+  //   transform: rotate(0.38turn);
+  // }
+
+  // &::before {
+  //   bottom: 44%;
+  //   left: -1px;
+  //   transform: rotate(-0.38turn);
+  // }
 }
 
 @media screen and (max-width: 1024px) {
@@ -228,13 +240,13 @@
     width: 25px;
     height: 25px;
 
-    &::before{
-      bottom: 40%;
-    }
+    // &::before{
+    //   bottom: 40%;
+    // }
 
-    &::after{
-      top: 45%;
-    }
+    // &::after{
+    //   top: 45%;
+    // }
   }
 
   .auth-form__wrapper{
