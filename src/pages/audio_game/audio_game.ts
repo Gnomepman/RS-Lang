@@ -338,10 +338,8 @@ export default class Audio_game extends Page {
 
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("audio_game");
-    const resultsMenu = this.resultsMenuButton();
-    resultsMenu.style.display = "none";
 
-    wrapper.append(game_window, resultsMenu);
+    wrapper.append(game_window);
 
     let intervalRender = setInterval(async () => {
       if (!document.querySelector(".audio_card") && this.countingWord <= 20) {
@@ -352,8 +350,6 @@ export default class Audio_game extends Page {
       if (this.countingWord > 20) {
         clearInterval(intervalRender);
 
-        resultsMenu.style.display = "flex";
-
         game_window.remove();
         const stats = new After_game_stats(
           "div",
@@ -361,7 +357,7 @@ export default class Audio_game extends Page {
           this.correctWords,
           this.wrongWords
         );
-        wrapper.prepend(stats.render());
+        wrapper.append(stats.render());
 
         // User login check
         if (localStorage.user) {
