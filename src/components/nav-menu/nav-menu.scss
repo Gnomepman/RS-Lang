@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+$begin_transition: 0.5s;
+$end_transition: 0.6s;
+
+.nav-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 60px;
+    height: 100vh;
+    border-right: 1px solid #a4a4a4;
+    // height: 100vh;
+    padding-top: 24px;
+    background: #ffffff;
+    justify-content: flex-start;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    transition: all 0.6s ease 0s;
+
+    &.js-clicked{
+        width: 180px;
+
+        .login_wrapper{
+    
+            & > .account > .account__message{
+                font-size: 24px;
+            }
+
+            .login_button {
+                font-size: 18px;
+            }
+        }
+    }
+    .nav-wrapper{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        transform: translate(0%);
+
+        .nav_button{
+            display: flex;
+            gap: 10px;
+            color: #535350;
+            font-family: sans-serif;
+            padding: 5px 15px;
+            box-sizing: border-box;
+            font-size: 18px;
+            line-height: 26px;
+            text-decoration: none;
+            transition: $end_transition;
+            border-radius: 5px;
+            width: 100%;
+            white-space: nowrap;
+            justify-content: stretch;
+            align-items: center;
+
+            &:hover{
+                color: #767672;
+                background-color: rgb(239, 239, 239);
+                transition: $begin_transition;
+            }
+
+            img{
+                width: 24px;
+                height: auto;
+            }
+        }
+    }
+
+    .login_wrapper{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding-top: 10px;
+        border-top: solid 1px #9A9A98;
+        transition: all 0.2s ease 0s;
+        transform: translate(0%);
+
+        .login_button {
+            font-family: 'Roboto', sans-serif; 
+            padding: 8px 0px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #9A9A98;
+            border-radius: 4px;
+            color: #161613;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 24px;
+            box-sizing: border-box;
+            text-decoration: none;
+            white-space: nowrap;
+
+            transition: $end_transition;
+            &:hover{
+                transition: $begin_transition;
+            }
+        }
+
+        #log_in{
+            &:hover{
+                background-color: rgb(245, 245, 245);
+            }
+        }
+
+        #sign_up{
+            color: #FFFFFF;
+            background: #084777;
+            border: 1px solid #084777;
+
+            &:hover{
+                background-color: #1967a2;
+            }
+        }
+    }
+}
+
+.account{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 15px;
+    box-sizing: border-box;
+
+    .account__message{
+        font-family: "Silkscreen", cursive;
+        width: 100%;
+        font-size: 80%;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-align: center;
+        transition: all 0.5s ease 0s;
+    }
+
+    .auth-form__button_account{
+        width: 100%;
+        font-size: 12px;
+        background-color: white;
+        padding: 0;
+        border: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        //overflow: hidden;
+
+
+        & > img{
+            width: 30px;
+            height: auto;
+        }
+    }
+
+    .account__image{
+        width: 70%;
+        height: auto;
+    }
+    
+}
+
+
+
+@media screen and (max-width: 1440px) {
+    .nav-container{
+        //width: 150px;
+
+        .nav-wrapper{
+            gap: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .nav-container{
+        //width: 125px;
+
+        .nav-wrapper{
+            gap: 15px;
+
+            // .nav_button{
+            //     gap: 5px;
+            //     padding: 5px 5px;
+            //     font-size: 16px;
+            //     line-height: 22px;
+            //     align-items: center;
+            // }
+        }
+
+        .login_wrapper{
+            //width: 90px;
+            gap: 5px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .nav-container{
+        width: 0;
+        padding-top: 15px;
+        position: fixed;
+        z-index: 1;
+        box-sizing: border-box;
+        //width: 85px;
+
+        &.js-clicked{
+            width: 180px;
+            // height: 60px;
+            border-bottom: 1px solid #a4a4a4;
+
+            .nav-wrapper{
+                margin-top: 49px;
+            }
+
+            // .login_wrapper{
+            //     height: 0;
+            // }
+            
+        }
+
+        .nav-wrapper{
+            gap: 5px;
+            overflow: hidden;
+
+            // .nav_button{
+            //     gap: 3px;
+            //     padding: 0;
+            //     font-size: 12px;
+            //     line-height: 15px;
+            //     align-items: center;
+            // }
+        }
+
+        .login_wrapper{
+            //width: 70px;
+            // height: 400px;
+            overflow: hidden;
+            transition: all 0.6s ease 0s;
+
+            .login_button{
+                padding: 4px 0px;
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+    .button-burger.js-clicked{
+        position: fixed;
+    }
+
+}
+
+.button-burger{
+    width: 23px;
+    height: 23px;
+    align-self: center;
+    border: none;
+    background-color: transparent;
+    position: relative;
+    display: block;
+    align-self: flex-start;
+    margin-left: 15px;
+    transition: all 0.3s ease 0s;
+
+    &::before,
+    &::after,
+    span {
+      left: 0;
+      position: absolute;
+      height: 10%;
+      width: 100%;
+      background-color: #160042;
+      border-radius: 10px;
+
+      &:hover{
+        background-color: #a4a4a4;
+    }
+    }
+
+    &::before,
+    &::after {
+      content: "";
+    }
+
+    &::before {
+      top: 10%;
+    }
+
+    &::after {
+      bottom: 10%;
+    }
+
+    span {
+      top: 50%;
+      transform: scale(1) translate(0px, -50%);
+    }
+
+    &.js-clicked{
+      transform: rotate(90deg);
+    }
+
+}
+
+.nav_text{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}

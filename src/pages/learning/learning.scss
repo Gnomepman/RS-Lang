@@ -1,0 +1,80 @@
+@mixin background-gradient($color) {
+  background: linear-gradient(
+      0deg,
+      rgba(246, 251, 0, 0.2),
+      rgba(246, 251, 0, 0.2)
+    ),
+    linear-gradient(90deg, #ffffff 11.55%, $color 100%);
+}
+
+[data-page-group="1"] {
+  @include background-gradient(#B2FF59);
+}
+
+[data-page-group="2"] {
+  @include background-gradient(#00C853);
+}
+
+[data-page-group="3"] {
+  @include background-gradient(#FDD835);
+}
+
+[data-page-group="4"] {
+  @include background-gradient(#F57F17);
+}
+
+[data-page-group="5"] {
+  @include background-gradient(#F50057);
+}
+
+[data-page-group="6"] {
+  @include background-gradient(#D500F9);
+}
+
+.learning__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 70px);
+  gap: 15px;
+  position: relative;
+  padding: 30px 20px;
+  box-sizing: border-box;
+
+  &.js-done {
+    background: rgba($color: #02fd1b, $alpha: 0.5);
+  }
+}
+
+.learning {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hard-words__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 40px 20px;
+}
+
+.empty-container {
+  width: 100%;
+  height: 100vh;
+}
+
+.empty-page {
+  font-family: "Montserrat",sans-serif;
+  width: 100%;
+  height: 100vh;
+  font-size: 50px;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
+}
+
+

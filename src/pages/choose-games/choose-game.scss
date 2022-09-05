@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+.choose_game_wrapper{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-image:
+    radial-gradient(at 92% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y;
+
+    .choose_games{
+        display: flex;
+        gap: 150px;
+        margin-top: 70px;
+
+        .game{
+            text-decoration: none;
+            width: 445px;
+            height: 450px;
+            background-color: #ffffff;
+            box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.25);
+            border-radius: 19px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #000000;
+            padding: 0 10px;
+            transition: .3s;
+
+            &:hover{
+                transform: scale(1.02);
+                transition: .5s;
+            }
+
+            *{
+                margin: 0;
+            }
+
+            img{
+                width: 400px;
+                height: 250px;
+            }
+
+            h3{
+                margin-top: 5px;
+                font-weight: 700;
+                font-size: 40px;
+            }
+
+            p{
+                margin-top: 10px;
+                font-weight: 400;
+                font-size: 25px;
+                text-align: center;
+                width: 70%;
+            }
+        }
+    }
+
+    h2{
+        margin: 0;
+        font-weight: 700;
+        font-size: 60px;
+        text-align: center;
+    }  
+}
+
+
+@media screen and (max-width: 1440px) {
+    .choose_game_wrapper{
+        .choose_games{
+            gap: 30px;
+
+            .game{
+                width: 345px;
+                height: 350px;
+
+                img{
+                    width: 300px;
+                    height: 200px;
+                }
+
+                h3{
+                    font-size: 30px;
+                }
+    
+                p{
+                    font-size: 22px;
+                    width: 80%;
+                }
+            }
+        }
+
+        h2{
+            font-size: 50px;
+        }
+    } 
+}
+
+@media screen and (max-width: 1024px) {
+    .choose_game_wrapper{
+        .choose_games{
+            gap: 15px;
+
+            .game{
+                width: 280px;
+                height: 275px;
+
+                img{
+                    width: 240px;
+                    height: 150px;
+                }
+
+                h3{
+                    font-size: 25px;
+                }
+    
+                p{
+                    font-size: 20px;
+                    width: 80%;
+                }
+            }
+        }
+
+        h2{
+            font-size: 40px;
+        }
+    } 
+}
+
+@media screen and (max-width: 768px) {
+    .choose_game_wrapper{
+        height: auto;
+        .choose_games{
+            flex-direction: column;
+            margin-top: 25px;
+        }
+
+        h2{
+            font-size: 35px;
+        }
+    }
+}

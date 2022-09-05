@@ -1,0 +1,238 @@
+.learning__word-card{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  gap: 15px;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif; 
+  align-items: center;
+  border-radius: 16px;
+  width: 300px;
+  min-height: 550px;
+  font-size: 16px;
+  transition: 0.2s;
+  // box-shadow: 0px 8px 18px rgba(44, 39, 56, 0.05), 0px 16px 30px rgba(44, 39, 56, 0.05);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: relative;
+
+  &.js-added{
+    // border: 1px solid #9A9A98;
+    // box-shadow: -100px -80px 49px -17px rgba(220, 52, 223, 0.6) inset;
+
+    &::before{
+      content: "HARD";
+      position: absolute;
+      top: 7%;
+      right: 3%;
+      color: #ff3d00;
+      font-size: 40px;
+      font-weight: bold;
+      display: block;
+      width: 110px;
+      height: 50px;
+      border: 4px #ff3d00 dashed;
+      border-radius: 5px;
+      padding: 5px;
+      transform: rotate(45deg);
+
+    }
+  }
+
+  &.js-learned{
+    // border: 1px solid #9A9A98;
+    // box-shadow: 100px 80px 49px -17px rgba(0, 176, 60, 0.6) inset;
+
+    &::after{
+      content: "LEARNED";
+      position: absolute;
+      top: 11%;
+      left: 1%;
+      color: #76ff03;
+      font-size: 40px;
+      font-weight: bold;
+      display: block;
+      width: 175px;
+      height: 50px;
+      border: 4px #76ff03 dashed;
+      border-radius: 5px;
+      padding: 5px;
+      transform: rotate(-45deg);
+
+    }
+  }
+}
+
+.learning__progress{
+  display: flex;
+  gap: 10px;
+
+  & > span{
+    display: block;
+    width: 30px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: gray;
+
+    &.js-progress{
+      background-color: #00B03C;
+    }
+  }
+}
+
+.learning__word-card-img{
+  width: 307px;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  border-radius: 16px;
+}
+.learning__word-card-audio-img,
+.learning__word-card-button-play{
+  padding: 0;
+  margin: 0;
+  width: 34px;
+  height: 34px;
+}
+
+.learning__word-card-button-play{
+  border-radius: 50%;
+  border: none;
+  position: relative;
+  cursor: pointer;
+    
+  &::after{
+    content: "";
+    display: block;
+    border: 2px solid #00B03C;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  &.js-clicked::after  {
+    animation-duration: 1s;
+    animation-name: playing;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes playing {
+  from{
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  to{
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+
+.learning__word-card-word{
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.learning__word-card-translate-word{
+  display: inline-block;
+  max-width: 130px;
+}
+
+.learning__word-card-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.learning__word-card-meaning,
+.learning__word-card-translate{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #1103AD;
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
+.learning__word-card-translate{
+  border: 1px solid #1E9E1C;
+}
+
+.learning__word-card-buttons{
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+
+.learning__word-card-button-add{
+  width: 50%;
+  background-color: #084777;
+  color: white;
+  transition: 0.3s;
+
+  &:hover{
+    background-color: #1967a2;
+  }
+
+  &.js-added{
+    background-color: #DC34DF;
+    color: white;
+    box-shadow: 0px 0px 10px 4px rgba(224, 55, 227, 0.66);
+    transition: 0.2s;
+
+    &:hover{
+      background-color: #d376d4;
+    }
+  }
+}
+
+.learning__word-card-button-add,
+.learning__word-card-button-learn{
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+}
+
+
+.learning__word-card-button-learn{
+  width: 50%;
+  height: 40px;
+  padding: 8px 18px;
+  background-color: white;
+  border: 1px solid rgb(105, 105, 105);
+  transition: 0.1s;
+
+  &.js-learned{
+    background-color: #00B03C;
+    color: white;
+    box-shadow: 0px 0px 17px 4px rgba(35, 224, 88, 0.74);
+
+    &:hover{
+      background-color: #00cf45;
+    }
+  }
+
+  &:hover{
+    background-color: antiquewhite;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .learning__word-card{
+    box-sizing: border-box;
+  }
+
+  .learning__word-card-img{
+    width: 267px;
+  }
+}

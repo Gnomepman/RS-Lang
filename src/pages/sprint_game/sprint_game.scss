@@ -1,0 +1,258 @@
+.sprint_wrapper{
+    height: 100vh;
+    font-family: "Montserrat",sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-image:
+    radial-gradient(at 90% 23%, hsla(178,100%,53%,1) 0px, transparent 50%),
+    radial-gradient(at 23% 61%, hsla(47,100%,89%,1) 0px, transparent 50%);
+    background-repeat: repeat-y;
+}
+
+.sprint_game{
+    height: 40%;
+    width: 50%;
+    border-radius: 10px;
+    border: 3px solid black;
+}
+
+.choose_group{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    h2{
+        font-size: 35px;
+        text-align: center;
+    }
+
+    .groups_to_choose{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+
+        button{
+            color: #202020;
+            font-size: 18px;
+            width: 90px;
+            height: 45px;
+            border-radius: 10px;
+            transition: 0.3s;
+            border: none;
+            //background-color: rgb(216, 255, 21);
+
+            &:hover{
+                cursor: pointer;
+                transition: 0.5s;
+                //background-color: rgb(206, 241, 31);
+            }
+
+            &[id="1"]{
+                background: rgb(68, 168, 53);
+                &:hover{
+                    background: rgb(59, 141, 46);
+                }
+            }
+
+            &[id="2"]{
+                background: #FDFF96;
+                &:hover{
+                    background: #e3e487;
+                }
+            }
+
+            &[id="3"]{
+                background: #FCFF5D;
+                &:hover{
+                    background: #e6e955;
+                }
+            }
+
+            &[id="4"]{
+                background: #FAFE22;
+                &:hover{
+                    background: #e0e41e;
+                }
+            }
+
+            &[id="5"]{
+                background: #FF7A00;
+                &:hover{
+                    background: #e87102;
+                }
+            }
+
+            &[id="6"]{
+                background: #FF2828;  
+                &:hover{
+                    background: #e42323;
+                }
+            }
+        }
+    }
+}
+
+.game_window{
+    width: 830px;
+    height: 500px;
+    border-radius: 20px;
+    box-shadow: 6px 6px 18px rgb(0 0 0 / 25%);
+    padding: 20px;
+    background: #FFFFFF;
+    display: grid;
+    grid-template-rows: 60px auto;
+    justify-items: center;
+
+    .timer{
+        justify-self: self-start !important;
+    }
+}
+
+.card{
+    // width: 400px;
+    width: auto;
+    display: grid;
+    grid-template-rows: 25px 75px 40px 20px 50px;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 15px;
+
+    .humans{
+        display: grid;
+        grid-template-columns: repeat(3, 65px);
+        gap: 15px;
+
+        img{
+            width: 60px;
+            height: 70px;
+        }
+    }
+
+    .indicators{
+        display: flex;
+        gap: 10px;
+        .indicator{
+            width: 20px;
+            height: 20px;
+            border-radius: 20px;
+            background-color: gray;
+            
+
+            &.active{
+                background-color: green;
+            }
+        }
+    }
+
+    .original{
+        font-weight: 500;
+        font-size: 35px;
+    }
+
+    .translation{
+        font-weight: 400;
+        font-size: 20px;
+        margin-top: -10px;
+    }
+
+    .buttons_wrapper{
+        display: flex;
+        gap: 60px;
+
+        button{
+            font-size: 20px;
+            width: 190px;
+            height: 50px;
+            font-weight: 400;;
+            border-radius: 4px;
+
+            &.wrong {
+                    background: #e34242;
+                    border: none;
+                    color: #23231d;
+                    transition: .5s;
+                    box-shadow: 0px 0px 10px 4px #ef7a7a;
+
+                    &:hover {
+                        transition: .5s;
+                        box-shadow: 0px 0px 15px 4px #e34242;
+                    }
+                }
+            
+            &.right {
+                background: #00B03C;
+                border: 1px solid #00B03C;
+                box-shadow: 0px 0px 15px 4px rgba(35, 224, 88, 0.75);
+                color: #FFFFFF;
+                transition: .5s;
+
+                &:hover {
+                    transition: .5s;
+                    box-shadow: 0px 0px 15px 4px rgba(54, 253, 110, 0.75);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .choose_group{
+        .groups_to_choose{
+            button{
+                font-size: 22px;
+                width: 100px;
+                height: 55px;
+            }
+        }
+    }
+
+    .game_window {
+        width: 655px;
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .game_window {
+        width: 600px;
+        height: 370px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .choose_group{
+        .groups_to_choose{
+            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+    
+            button{
+                font-size: 24px;
+            }
+        }
+    }
+
+    .game_window {
+        width: 90%;
+        box-sizing: border-box;
+        height: 500px;
+    }
+
+    .card{
+        grid-template-rows: 25px 75px 40px 20px 130px;
+        .buttons_wrapper{
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .translation{
+            margin-top: 0;
+        }
+    }
+}
