@@ -218,6 +218,12 @@ details[open] summary {
             padding: 10px;
             width: fit-content;
         }
+
+        details{
+            .block_container{
+                flex-direction: column;
+            }
+        }
     }
 
     .sessions{

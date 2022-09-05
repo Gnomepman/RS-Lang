@@ -11,6 +11,7 @@ $margin_top_beetwen_section: 60px;
     display: flex;
     align-items: center;
     font-weight: 500;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
     @media screen and (max-width: 1024px) {
         height: 20px;
