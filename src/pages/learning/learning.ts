@@ -20,8 +20,8 @@ import {
   saveGroupToSessionStorage,
   savePageToSessionStorage,
 } from '../../components/utils/utils';
-import sprint_icon from '../../assets/sprint_game.png';
-import audio_challenge_icon from '../../assets/audiocall_game.png';
+import sprint_icon from '../../assets/sprint.png';
+import audio_challenge_icon from '../../assets/audio_call.png';
 import LoadingAnimation from '../../components/loading-animation/loading-animation';
 
 class LearningPage extends Page {
@@ -368,13 +368,22 @@ class LearningPage extends Page {
       'img',
       `${className}-audio-challenge-image`,
     ) as HTMLImageElement;
+    const spanSprint = createElement("span",`${className}-sprint-title`);
+    const spanAudioCall = createElement("span",`${className}-audio-call-title`);
+    const divSprint = createElement('div',`${className}-sprint-wrapper`);
+    const divAudioCall = createElement('div',`${className}-audio-call-wrapper`);
     const icon = document.querySelector(`.${className}`) as HTMLDivElement;
+    
     linkSprint.href = 'index.html#sprint';
     linkAudioChallenge.href = 'index.html#audio-challenge';
     miniGameSprint.src = sprint_icon;
     miniGameAudioChallenge.src = audio_challenge_icon;
-    linkSprint.append(miniGameSprint);
-    linkAudioChallenge.append(miniGameAudioChallenge);
+    spanSprint.textContent = 'Sprint';
+    spanAudioCall.textContent = 'Audio Call';
+    divSprint.append(miniGameSprint,spanSprint);
+    divAudioCall.append(miniGameAudioChallenge,spanAudioCall);
+    linkSprint.append(divSprint);
+    linkAudioChallenge.append(divAudioCall);
     content.append(linkAudioChallenge, linkSprint);
     icon.append(content);
     // listener for event click
