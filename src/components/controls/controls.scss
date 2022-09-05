@@ -199,9 +199,8 @@
   border-radius: 14px;
 
   &:hover{
-    transform: scale(1.1);
-    transition: 0.1s;
-    border: 1px solid #00B03C;
+    transform: scale(1.02);
+    transition: 0.3s;
   }
 }
 
@@ -225,6 +224,7 @@
 .controls__mini-games-sprint-title,
 .controls__mini-games-audio-call-title {
   font-size: 24px;
+  font-weight: bold;
   text-align: center;
   color: black;
 }
@@ -232,6 +232,13 @@
 .controls__mini-games-audio-call-description,
 .controls__mini-games-sprint-description {
   text-align: center;
+
+  &:visited{
+    color:black;
+  }
+  &:link{
+    text-decoration: none;
+  }
 }
 
 [data-group="1"]{

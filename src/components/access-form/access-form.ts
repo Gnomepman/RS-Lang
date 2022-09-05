@@ -366,6 +366,7 @@ class AccessForm extends Component {
     const button = createElement('button', className) as HTMLButtonElement;
     button.onclick = () => {
       if (this.container.classList.contains('js-show')) { this.container.classList.remove('js-show'); }
+      if (document.body.classList.contains('js-block')) document.body.classList.remove('js-block');
     };
 
     return button;
