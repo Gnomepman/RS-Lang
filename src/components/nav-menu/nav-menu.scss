@@ -146,6 +146,9 @@ $end_transition: 0.6s;
         width: 100%;
         font-size: 12px;
         background-color: white;
+        padding: 0;
+        border: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
         & > img{
             width: 30px;
@@ -253,8 +256,8 @@ $end_transition: 0.6s;
 }
 
 .button-burger{
-    width: 30px;
-    height: 30px;
+    width: 23px;
+    height: 23px;
     align-self: center;
     border: none;
     background-color: transparent;
