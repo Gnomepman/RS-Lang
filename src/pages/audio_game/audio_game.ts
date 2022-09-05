@@ -4,6 +4,7 @@ import Api from "../../components/api/api";
 import Word, { wordProgress } from "../../components/api/types";
 import { API_URL } from "../../components/api/types";
 import Timer from "../../components/timer/timer";
+import After_game_stats from "../../components/after-game-stats/after-game-stats";
 
 interface IVariants {
   word: string;
@@ -335,98 +336,10 @@ export default class Audio_game extends Page {
     return buttonsContainer;
   }
 
-  renderResultingWords() {
-    const finalResults = document.createElement("div");
-    finalResults.classList.add("results");
-
-    const finalTitle = document.createElement("h1");
-    finalTitle.classList.add("results_title");
-
-    const correctsAmount = document.createElement("h3");
-    correctsAmount.classList.add("corrects_title");
-
-    const wrongsAmount = document.createElement("h3");
-    wrongsAmount.classList.add("wrongs_title");
-
-    const listOfCorrects = document.createElement("div");
-    listOfCorrects.classList.add("correct_list");
-
-    correctsAmount.innerText = `Correct words: ${this.correctWords.length}`;
-
-    this.correctWords.forEach((item) => {
-      let audio = new Audio();
-      audio.src = `${API_URL}/${item.audio}`;
-
-      const correctWord = document.createElement("div");
-      const audio_btn = document.createElement("button");
-
-      audio_btn.innerText = "🔊";
-      audio_btn.addEventListener("click", () => {
-        audio.play();
-      });
-
-      correctWord.innerHTML = `
-        <p>
-          <span class="word">${item.word}</span> - <span>${item.wordTranslate}</span>
-        </p>
-      `;
-
-      correctWord.append(audio_btn);
-      listOfCorrects.append(correctWord);
-    });
-
-    const listOfWrongs = document.createElement("div");
-    listOfWrongs.classList.add("wrong_list");
-
-    wrongsAmount.innerText = `Mistaken words: ${this.wrongWords.length}`;
-
-    this.wrongWords.forEach((item) => {
-      let audio = new Audio();
-      audio.src = `${API_URL}/${item.audio}`;
-
-      const wrongWord = document.createElement("div");
-      const audio_btn = document.createElement("button");
-
-      audio_btn.innerText = "🔊";
-      audio_btn.addEventListener("click", () => {
-        audio.play();
-      });
-
-      wrongWord.innerHTML = `
-        <p>
-          <span class="word">${item.word}</span> - <span>${item.wordTranslate}</span>
-        </p>
-      `;
-
-      wrongWord.append(audio_btn);
-      listOfWrongs.append(wrongWord);
-    });
-
-    if (this.correctWords.length > 12) {
-      finalTitle.innerText = "Congratulations, great result!";
-    } else if (this.correctWords.length > 5) {
-      finalTitle.innerText = "Good job, but keep practicing!";
-    } else {
-      finalTitle.innerText = "It didn't work this time, but keep practicing!";
-    }
-
-    finalResults.append(
-      finalTitle,
-      correctsAmount,
-      listOfCorrects,
-      wrongsAmount,
-      listOfWrongs
-    );
-
-    return finalResults;
-  }
-
   renderGameWindow(wrapper: HTMLDivElement) {
     const game_window = this.createDivBlock("audio_game");
-    const resultsMenu = this.resultsMenuButton();
-    resultsMenu.style.display = "none";
 
-    wrapper.append(game_window, resultsMenu);
+    wrapper.append(game_window);
 
     let intervalRender = setInterval(async () => {
       if (!document.querySelector(".audio_card") && this.countingWord <= 20) {
@@ -437,8 +350,14 @@ export default class Audio_game extends Page {
       if (this.countingWord > 20) {
         clearInterval(intervalRender);
 
-        resultsMenu.style.display = "flex";
-        game_window.append(this.renderResultingWords());
+        game_window.remove();
+        const stats = new After_game_stats(
+          "div",
+          "stats",
+          this.correctWords,
+          this.wrongWords
+        );
+        wrapper.append(stats.render());
 
         // User login check
         if (localStorage.user) {
