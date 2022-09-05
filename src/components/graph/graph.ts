@@ -48,7 +48,6 @@ class GraphNewWordsPerDay extends Component {
         result.push({ day: new Date(array[i - 1].day), newWords });
       }
     }
-    console.log("array.length",array.length);
     if (result.length === 1){
       const prevDay = result[0].day.getDate() - 1;
       const prevMonth = result[0].day.getMonth();
@@ -61,7 +60,6 @@ class GraphNewWordsPerDay extends Component {
       result.unshift({day:pervDate,newWords: 0});
       result.push({day:nextDate, newWords:0});
     }
-    console.log("result",result);
     return result;
   }
 

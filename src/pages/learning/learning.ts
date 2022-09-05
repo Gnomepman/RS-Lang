@@ -134,7 +134,6 @@ class LearningPage extends Page {
       user = JSON.parse(localStorage.getItem('user') as string);
       hardWords = await api.getAggregatedWords(page, group, 'hard', false);
       learnedWords = await api.getAggregatedWords(page, group, 'easy', null);
-      console.log("learnedWords",learnedWords);
       if (Array.isArray(hardWords) && Array.isArray(learnedWords)) {
         userWords = [
           ...hardWords[0].paginatedResults,
@@ -169,7 +168,6 @@ class LearningPage extends Page {
         // if word had been added to hard words or learned
         if (difficulty) {
           // if difficulty of word is hard
-          console.log("userWords",userWords);
           if (difficulty?.userWord?.difficulty === 'hard') {
             wordCard = new WordCard(
               'div',
