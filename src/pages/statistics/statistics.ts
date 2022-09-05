@@ -66,8 +66,11 @@ export default class StatisticsPage extends Page {
         const block = document.createElement("details");
         block.innerHTML = `Number of new words: <span>${elem.number_of_new_words}</span>`;
         const summary = document.createElement("summary");
-        summary.textContent = `${time.getHours()}:${time.getMinutes()} / ${time.getDate()}.${
-          time.getMonth() + 1
+        const minutes = time.getMinutes() < 10 ? `0${time.getMinutes()}` : `${time.getMinutes()}`;
+        const date = time.getDate() < 10 ? `0${time.getDate()}` : `${time.getDate()}`;
+        const month = time.getMonth() + 1 < 10 ? `0${time.getMonth() + 1}` : `${time.getMonth() + 1}`;
+        summary.textContent = `${time.getHours()}:${minutes} / ${date}.${
+          month
         }.${time.getFullYear()}`;
         block.append(summary);
         sessions_wrapper.append(block);
@@ -111,7 +114,10 @@ export default class StatisticsPage extends Page {
       </div>
       `;
       const summary = document.createElement("summary");
-      summary.textContent = `${time.getHours()}:${time.getMinutes()} / ${time.getDate()}.${time.getMonth() + 1}.${time.getFullYear()}`;
+      const minutes = time.getMinutes() < 10 ? `0${time.getMinutes()}` : `${time.getMinutes()}`;
+      const date = time.getDate() < 10 ? `0${time.getDate()}` : `${time.getDate()}`;
+      const month = time.getMonth() + 1 < 10 ? `0${time.getMonth() + 1}` : `${time.getMonth() + 1}`;
+      summary.textContent = `${time.getHours()}:${minutes} / ${date}.${month}.${time.getFullYear()}`;
       block.append(summary);
       block.append(block_wrapper);
       sessions_wrapper.append(block);
@@ -148,6 +154,8 @@ export default class StatisticsPage extends Page {
         block.textContent = 'Oops! Looks like you have not statistics';
         wrapper.classList.add('max-height')
         wrapper.append(block);
+        emptyDiv.remove();
+        loadingAnimation.stop();
         this.container.insertAdjacentElement("afterbegin", wrapper);
         return this.container;
       }

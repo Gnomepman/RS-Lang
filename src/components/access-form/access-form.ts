@@ -4,6 +4,7 @@ import log_in_img from '../../assets/log-in-img.svg';
 import './access-form.scss';
 import Api from '../api/api';
 import { API_URL, SignInResponse, User } from '../api/types';
+import LoadingAnimation from '../loading-animation/loading-animation';
 
 class AccessForm extends Component {
 
@@ -261,6 +262,7 @@ class AccessForm extends Component {
       ),
     );
     // listener for sign Up method
+    const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
     formRegistration.addEventListener('submit', this.signUp);
     divLogin.append(divData, img, this.renderCloseButton('button-close'));
     return divLogin;

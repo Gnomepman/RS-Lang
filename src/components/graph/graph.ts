@@ -78,7 +78,7 @@ class GraphNewWordsPerDay extends Component {
       const day = new Intl.DateTimeFormat("en-US", { day: "2-digit" }).format(
         dateTemp
       );
-      this.dates.push(`${day}.${month}`);
+      this.dates.push(`${day}/${month}`);
       this.newWords.push(a.newWords);
     });
 
