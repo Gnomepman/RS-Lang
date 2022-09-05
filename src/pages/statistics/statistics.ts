@@ -4,6 +4,7 @@ import Api from '../../components/api/api';
 import { API_URL, miniGameStatistics, statistics, statisticsPerSession } from '../../components/api/types';
 import error from '../../assets/404-error.svg'
 import LoadingAnimation from '../../components/loading-animation/loading-animation';
+import { createElement } from '../../components/utils/utils';
 
 export default class StatisticsPage extends Page {
   private api: Api;
@@ -120,6 +121,8 @@ export default class StatisticsPage extends Page {
 
   render() {
     //if user is anonymous
+    const emptyDiv = createElement("div","empty-page");
+    const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
     if (!localStorage.user){
       const block = this.createDivBlock('no_statistics');
       const description = document.createElement('h1');
@@ -137,16 +140,14 @@ export default class StatisticsPage extends Page {
     const header = document.createElement('h2');
     header.classList.add('statistics_header');
     header.textContent = 'Statistics';
-
+    this.container.append(emptyDiv,loadingAnimation.render())
     this.getStatistics().then(() => {
-      const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
       if(typeof this.statistics === 'number'){
         const block = document.createElement('h2')
         block.textContent = 'Oops! Looks like you have not statistics';
         wrapper.classList.add('max-height')
         wrapper.append(block);
         this.container.insertAdjacentElement("afterbegin", wrapper);
-        loadingAnimation.stop();
         return this.container;
       }
       const stats = this.statistics as statistics;
@@ -161,6 +162,8 @@ export default class StatisticsPage extends Page {
   
       words_learned_wrapper.append(words_learned_count, words_learned_desc);
       wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics));
+      emptyDiv.remove();
+      loadingAnimation.stop();
       this.container.insertAdjacentElement("afterbegin", wrapper);
     })
 
