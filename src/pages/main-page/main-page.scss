@@ -166,13 +166,13 @@ $margin_top_beetwen_section: 60px;
 
             img{
                 // https://codepen.io/sosuke/pen/Pjoqqp
-                filter: invert(66%) sepia(81%) saturate(320%) hue-rotate(129deg) brightness(91%) contrast(99%);
+                // filter: invert(66%) sepia(81%) saturate(320%) hue-rotate(129deg) brightness(91%) contrast(99%);
                 width: 80px;
                 height: 80px;
             }
 
             &_title{
-                font-weight: 400;
+                font-weight: 500;
                 font-size: 45px;
                 line-height: 32px;
                 margin-top: 25px;
@@ -611,11 +611,6 @@ $margin_top_beetwen_section: 60px;
             .benefit{
                 width: $width320 - 15px;
                 padding: 10px 5px;
-
-                img{
-                    width: 30px;
-                    height: 30px;
-                }
 
                 &_title{
                     font-size: 20px;

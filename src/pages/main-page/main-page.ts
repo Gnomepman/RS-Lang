@@ -1,9 +1,9 @@
 import Page from '../../components/templates/page';
 import './main-page.scss'
 import humans_picture from '../../assets/humans_background.png'
-import book from '../../assets/text_book.png'
-import games from '../../assets/games.png'
-import statistics from '../../assets/statistics.png'
+import book from '../../assets/icon_book.png'
+import games from '../../assets/icon_games.png'
+import statistics from '../../assets/icon_chart.png'
 import free from '../../assets/free.png'
 import danya from '../../assets/developer_danya.jpg'
 import andrey from '../../assets/developer_andrey.jpg'
