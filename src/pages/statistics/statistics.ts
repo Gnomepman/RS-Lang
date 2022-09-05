@@ -4,6 +4,8 @@ import Api from '../../components/api/api';
 import { API_URL, miniGameStatistics, statistics, statisticsPerSession } from '../../components/api/types';
 import error from '../../assets/404-error.svg'
 import LoadingAnimation from '../../components/loading-animation/loading-animation';
+import { createElement } from '../../components/utils/utils';
+import GraphNewWordsPerDay from '../../components/graph/graph';
 
 export default class StatisticsPage extends Page {
   private api: Api;
@@ -64,8 +66,11 @@ export default class StatisticsPage extends Page {
         const block = document.createElement("details");
         block.innerHTML = `Number of new words: <span>${elem.number_of_new_words}</span>`;
         const summary = document.createElement("summary");
-        summary.textContent = `${time.getHours()}:${time.getMinutes()} / ${time.getDate()}.${
-          time.getMonth() + 1
+        const minutes = time.getMinutes() < 10 ? `0${time.getMinutes()}` : `${time.getMinutes()}`;
+        const date = time.getDate() < 10 ? `0${time.getDate()}` : `${time.getDate()}`;
+        const month = time.getMonth() + 1 < 10 ? `0${time.getMonth() + 1}` : `${time.getMonth() + 1}`;
+        summary.textContent = `${time.getHours()}:${minutes} / ${date}.${
+          month
         }.${time.getFullYear()}`;
         block.append(summary);
         sessions_wrapper.append(block);
@@ -109,7 +114,10 @@ export default class StatisticsPage extends Page {
       </div>
       `;
       const summary = document.createElement("summary");
-      summary.textContent = `${time.getHours()}:${time.getMinutes()} / ${time.getDate()}.${time.getMonth() + 1}.${time.getFullYear()}`;
+      const minutes = time.getMinutes() < 10 ? `0${time.getMinutes()}` : `${time.getMinutes()}`;
+      const date = time.getDate() < 10 ? `0${time.getDate()}` : `${time.getDate()}`;
+      const month = time.getMonth() + 1 < 10 ? `0${time.getMonth() + 1}` : `${time.getMonth() + 1}`;
+      summary.textContent = `${time.getHours()}:${minutes} / ${date}.${month}.${time.getFullYear()}`;
       block.append(summary);
       block.append(block_wrapper);
       sessions_wrapper.append(block);
@@ -120,6 +128,8 @@ export default class StatisticsPage extends Page {
 
   render() {
     //if user is anonymous
+    const emptyDiv = createElement("div","empty-page");
+    const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
     if (!localStorage.user){
       const block = this.createDivBlock('no_statistics');
       const description = document.createElement('h1');
@@ -137,20 +147,19 @@ export default class StatisticsPage extends Page {
     const header = document.createElement('h2');
     header.classList.add('statistics_header');
     header.textContent = 'Statistics';
-
+    this.container.append(emptyDiv,loadingAnimation.render())
     this.getStatistics().then(() => {
-      const loadingAnimation = new LoadingAnimation('div', 'loading-animation');
       if(typeof this.statistics === 'number'){
         const block = document.createElement('h2')
         block.textContent = 'Oops! Looks like you have not statistics';
         wrapper.classList.add('max-height')
         wrapper.append(block);
-        this.container.insertAdjacentElement("afterbegin", wrapper);
+        emptyDiv.remove();
         loadingAnimation.stop();
+        this.container.insertAdjacentElement("afterbegin", wrapper);
         return this.container;
       }
       const stats = this.statistics as statistics;
-  
       const words_learned_wrapper = this.createDivBlock('block_desc');
       const words_learned_count = document.createElement('span');
       words_learned_count.classList.add("block_desc_count");
@@ -161,6 +170,8 @@ export default class StatisticsPage extends Page {
   
       words_learned_wrapper.append(words_learned_count, words_learned_desc);
       wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics));
+      emptyDiv.remove();
+      loadingAnimation.stop();
       this.container.insertAdjacentElement("afterbegin", wrapper);
     })
 

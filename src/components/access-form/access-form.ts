@@ -4,6 +4,7 @@ import log_in_img from '../../assets/log-in-img.svg';
 import './access-form.scss';
 import Api from '../api/api';
 import { API_URL, SignInResponse, User } from '../api/types';
+import LoadingAnimation from '../loading-animation/loading-animation';
 
 class AccessForm extends Component {
 
@@ -272,11 +273,14 @@ class AccessForm extends Component {
     const form = event.currentTarget as HTMLFormElement;
     const dataFromForm = new FormData(form);
     const dataObj: User = Object.fromEntries(dataFromForm) as User;
+    const loadingAnimation = new LoadingAnimation('div', 'loading-animation',"card");
     const api = new Api(API_URL);
     try {
+      form.append(loadingAnimation.render());
       const response = await api.createUser(dataObj);
       // if user with this email exist
       if (response === 417) {
+        loadingAnimation.stop();
         AccessForm.showError(
           'error',
           'User with this email already exist',
@@ -285,6 +289,7 @@ class AccessForm extends Component {
       }
       // if incorrect password
       if (response === 422) {
+        loadingAnimation.stop();
         AccessForm.showError(
           'error',
           'Incorrect e-mail or password',
@@ -293,11 +298,13 @@ class AccessForm extends Component {
       }
       // if creating user successful - reload page
       if (typeof response === 'object') {
+        loadingAnimation.stop();
         const SignInResponse:SignInResponse = await api.signIn(dataObj) as SignInResponse;
         AccessForm.saveUserToStorage(SignInResponse);
         location.reload();
       }
     } catch (error) {
+      loadingAnimation.stop();
       console.log(error);
     }
   }
@@ -316,14 +323,19 @@ class AccessForm extends Component {
     const dataFromForm = new FormData(form);
     const dataObj: User = Object.fromEntries(dataFromForm) as User;
     const api = new Api(API_URL);
+    const loadingAnimation = new LoadingAnimation('div', 'loading-animation',"card");
     try {
+      
+      form.append(loadingAnimation.render());
       const response = await api.signIn(dataObj);
       if (typeof response === 'object') {
         // save creation time for token
         AccessForm.saveUserToStorage(response);
+        loadingAnimation.stop();
         location.reload();
       }
       if (response === 404) {
+        loadingAnimation.stop();
         AccessForm.showError(
           'error',
           "User with this email doesn't exist",
@@ -331,6 +343,7 @@ class AccessForm extends Component {
         );
       }
     } catch (error) {
+      loadingAnimation.stop();
       console.log('error', error);
     }
   }

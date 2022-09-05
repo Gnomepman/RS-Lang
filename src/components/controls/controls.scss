@@ -169,16 +169,60 @@
   cursor: pointer;
 }
 
+.controls__mini-games-audio-challenge-link,
+.controls__mini-games-sprint-link {
+  width: fit-content;
+
+  &:visited{
+    color:black;
+  }
+  &:link{
+    text-decoration: none;
+  }
+}
+
+.controls__mini-games-sprint-wrapper,
+.controls__mini-games-audio-call-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border-radius: 14px;
+
+  &:hover{
+    transform: scale(1.1);
+    transition: 0.1s;
+    border: 1px solid #00B03C;
+  }
+}
+
+.controls__mini-games-audio-call-text,
+.controls__mini-games-sprint-text{
+  display: flex;
+  font-family: "Montserrat",sans-serif;
+  gap: 5px;
+  flex-direction: column;
+  padding:0 10px 5px;
+}
+
 .controls__mini-games-audio-challenge-image,
 .controls__mini-games-sprint-image {
   cursor: pointer;
   width: 200px;
   height: auto;
 
-  &:hover{
-    transform: scale(1.1);
-    transition: 0.1s;
-  }
+}
+
+.controls__mini-games-sprint-title,
+.controls__mini-games-audio-call-title {
+  font-size: 24px;
+  text-align: center;
+  color: black;
+}
+
+.controls__mini-games-audio-call-description,
+.controls__mini-games-sprint-description {
+  text-align: center;
 }
 
 [data-group="1"]{
@@ -214,4 +258,13 @@
 .pagination__groups-group_hard-words.js-clicked{
   transform: scale(1.2);
   border: 2px solid #00B03C;
+}
+
+@media screen and (max-width: 768px) {
+
+  .controls__mini-games-sprint-text,
+  .controls__mini-games-audio-call-text {
+    display: none;
+  }
+
 }
