@@ -94,9 +94,8 @@ export default class MainPage extends Page {
                 <div id="back-end">Back-end</div>
                 <div id="design">Design</div>
             </div>
-            <p class="developer_short_desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facilis,
-                repudiandae saepe atque, animi illo amet error numquam aspernatur maxime nihil, itaque labore libero
-                voluptatibus magnam quis delectus quaerat non culpa.</p>
+            <p class="developer_short_desc">Developed textbook page, hard words page, registration and login form
+            , authorisation, graph for new words, loading animation, basic design for main page, nav menu and words </p>
         </div>
     </div>
     <div class="developer">
