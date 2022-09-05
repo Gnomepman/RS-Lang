@@ -4,7 +4,7 @@
       rgba(246, 251, 0, 0.2),
       rgba(246, 251, 0, 0.2)
     ),
-    linear-gradient(75.46deg, #ffffff 11.55%, $color 92.47%);
+    linear-gradient(90deg, #ffffff 11.55%, $color 100%);
 }
 
 [data-page-group="1"] {
@@ -67,10 +67,14 @@
 }
 
 .empty-page {
-  font-family: "Silkscreen", cursive;
+  font-family: "Montserrat",sans-serif;
   width: 100%;
   height: 100vh;
-  font-size: 40px;
+  font-size: 50px;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
 }
 
 

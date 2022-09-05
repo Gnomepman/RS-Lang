@@ -40,23 +40,56 @@
         height: 40%;
         width: 70%;
         overflow-y: scroll;
+        gap: 15px;
+
+        .such_empty{
+            align-self: center;
+        }
 
         .word{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
             p{
                 margin: 0;
             }
 
+            button{
+                background: none;
+                border: none;
+                width: 30px;
+                height: 20px;
+                padding: 0;
+            }
+
             .original{
-                margin-top: 15px;
+                // margin-top: 15px;
                 font-size: 16px;
                 font-weight: 600;
             }
 
             .translation{
-                margin-top: 5px;
+                // margin-top: 5px;
                 font-size: 13px;
                 font-weight: 400;
             }
         }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .stats{
+        width: 80%;
+
+        &_wrapper{
+            width: 90%;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .stats{
+        gap: 20pxж
     }
 }

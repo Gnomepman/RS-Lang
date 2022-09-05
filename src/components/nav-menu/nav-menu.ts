@@ -1,13 +1,13 @@
 import './nav-menu.scss'
 import Component from '../templates/component';
 import { PageIds } from '../types_and_enums/types_and_enums';
-import book from '../../assets/icon_book.svg'
-import chart from '../../assets/icon_chart.svg'
-import home from '../../assets/icon_home.svg'
-import medal from '../../assets/icon_medal.svg'
-import user from '../../assets/user_signin_icon.svg'
-import hard_words from '../../assets/hard_words.svg'
-import logout from '../../assets/logout.svg'
+import book from '../../assets/icon_book.png'
+import chart from '../../assets/icon_chart.png'
+import home from '../../assets/icon_home.png'
+import medal from '../../assets/icon_games.png'
+import user from '../../assets/user_sign_in.png'
+import hard_words from '../../assets/hard_words.png'
+import logout from '../../assets/logout.png'
 import AccessForm from '../access-form/access-form';
 import { SignInResponse } from '../api/types';
 import { createElement } from '../utils/utils';

@@ -122,7 +122,8 @@ export default class StatisticsPage extends Page {
       block.append(block_wrapper);
       sessions_wrapper.append(block);
     }
-    block.append(sessions_wrapper);
+    const graph = new GraphNewWordsPerDay('div', 'graph-container', array)
+    block.append(sessions_wrapper, graph.render());
     return block;
   }
 
@@ -167,7 +168,6 @@ export default class StatisticsPage extends Page {
       const words_learned_desc = document.createElement('p');
       words_learned_desc.classList.add("block_desc_desc");
       words_learned_desc.textContent = 'number of words you have learned so far';
-  
       words_learned_wrapper.append(words_learned_count, words_learned_desc);
       wrapper.append(header, words_learned_wrapper, this.generateGamestats('sprint', stats.optional.sprint!), this.generateGamestats('audio_call', stats.optional.audio_call!), this.generateWordsStats(stats.optional.words_statistics));
       emptyDiv.remove();

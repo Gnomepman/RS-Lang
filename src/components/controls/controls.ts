@@ -1,7 +1,7 @@
 import Component from '../templates/component';
 import { createElement, getPageFromSessionStorage } from '../utils/utils';
-import home_icon from '../../assets/home.svg';
-import miniGames_icon from '../../assets/mini-games.svg';
+import home_icon from '../../assets/icon_home.png'; 
+import miniGames_icon from '../../assets/icon_games.png'
 import './controls.scss';
 
 export type PaginationButtons = {

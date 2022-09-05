@@ -135,7 +135,7 @@ export default class Sprint_game extends Page {
       const word_original = document.createElement("a");
       word_original.classList.add("original");
       const word_translation = document.createElement("a");
-      word_original.classList.add("translation");
+      word_translation.classList.add("translation");
       word_original.textContent = wordToGuess.word;
       //Buttons
       const buttonsWrapper = this.createDivBlock("buttons_wrapper");
