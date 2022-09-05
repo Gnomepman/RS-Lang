@@ -134,6 +134,7 @@
 
 @media screen and (max-width: 768px) {
     .choose_game_wrapper{
+        height: auto;
         .choose_games{
             flex-direction: column;
             margin-top: 25px;
