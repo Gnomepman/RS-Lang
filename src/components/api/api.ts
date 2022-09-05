@@ -510,6 +510,15 @@ class Api {
     console.log("Finished saving progress")
   }
 
+  async updateWordsCountInStatistics(){
+    const previousStats = this.getUserStatistics();
+    const { id, ...temp} = JSON.parse(JSON.stringify(previousStats));
+    const newStats = (temp as statistics);
+    newStats.learnedWords = (await this.getAllUserLearnedWords() as AggregatedWords[])[0].paginatedResults.length;
+    console.log((await this.getAllUserLearnedWords() as AggregatedWords[])[0].paginatedResults);
+    this.updateUserStatistics(newStats);
+  }
+
 }
 
 export default Api;

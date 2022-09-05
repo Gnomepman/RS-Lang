@@ -189,6 +189,10 @@ class WordCard extends Component {
           difficulty: difficulty,
           optional: { id: this.container.id, learned, progress},
         });
+        if (classToAdd === 'js-learned'){
+          console.log("added word to learned")
+          await api.updateWordsCountInStatistics();
+        }
         // if adding of word was successful
         if (typeof response === 'object') {
           loadingAnimation.stop();
@@ -226,6 +230,10 @@ class WordCard extends Component {
         }
         // if you want remove from added
       } else {
+        if (classToAdd === "js-learned") {
+          console.log("removing word from learned");
+          await api.updateWordsCountInStatistics();
+        }
         const loadingAnimation = new LoadingAnimation(
           'div',
           'loading-animation',
